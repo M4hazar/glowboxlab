@@ -13,10 +13,16 @@ export function HomeJsonLd({ dict }: { dict: Dictionary }) {
         name: site.name,
         url: site.url,
         logo: absoluteUrl("/brand/sygnet.svg"),
+        email: site.email,
         telephone: site.phone,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: site.city,
+          addressCountry: "GB",
+        },
         slogan: "Your idea. Made to glow.",
         sameAs: site.socials.map((s) => s.href),
-        areaServed: ["GB", "PL"],
+        areaServed: "Europe",
       },
       {
         "@type": "WebSite",
@@ -31,7 +37,7 @@ export function HomeJsonLd({ dict }: { dict: Dictionary }) {
         name: dict.hero.eyebrow,
         description: dict.meta.description,
         provider: { "@id": `${site.url}/#organization` },
-        areaServed: ["GB", "PL"],
+        areaServed: "Europe",
         url,
       },
       {

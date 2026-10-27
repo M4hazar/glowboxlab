@@ -36,6 +36,15 @@ export function SiteFooter({
               />
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">{t.tagline}</p>
+            <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+              <a
+                href={`mailto:${site.email}`}
+                className="text-foreground transition-colors hover:text-brand-soft"
+              >
+                {site.email}
+              </a>
+              <span>{dict.contact.location}</span>
+            </p>
           </div>
           <ul className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">
             {site.socials.map((social) => (

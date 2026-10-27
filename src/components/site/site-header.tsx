@@ -155,7 +155,7 @@ export function SiteHeader({
                     rel="noopener"
                     className="inline-flex h-12 items-center justify-center rounded-lg border border-white/15 font-medium"
                   >
-                    {dict.quote.whatsapp}
+                    {dict.contact.whatsapp}
                   </a>
                   <LanguageSwitch
                     dict={dict}

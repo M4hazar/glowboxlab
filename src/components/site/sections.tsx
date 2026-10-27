@@ -1,4 +1,3 @@
-import { CheckIcon } from "lucide-react";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import type { Dictionary } from "@/content/en";
@@ -105,14 +104,6 @@ export function Process({ dict }: { dict: Dictionary }) {
           </li>
         ))}
       </ol>
-      <ul className="mt-14 flex flex-wrap gap-x-8 gap-y-3 text-foreground/85">
-        {t.facts.map((fact) => (
-          <li key={fact} className="flex items-center gap-2.5">
-            <CheckIcon className="size-4 text-brand-soft" aria-hidden />
-            {fact}
-          </li>
-        ))}
-      </ul>
     </Section>
   );
 }

@@ -5,35 +5,44 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { Dictionary } from "@/content/en";
-import { SectionHeading } from "./sections";
+import { Section } from "./sections";
 
 export function Faq({ dict }: { dict: Dictionary }) {
   const t = dict.faq;
+  const items = t.items.map((item, i) => ({ ...item, value: `item-${i}` }));
+  const half = Math.ceil(items.length / 2);
+  // Dwie kolumny na szerokim ekranie, w kolejności czytania: najpierw lewa, potem prawa.
+  const columns = [items.slice(0, half), items.slice(half)];
+
   return (
-    <section id="faq" aria-labelledby="faq-title" className="py-20 sm:py-28">
-      <div className="section grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-        <SectionHeading id="faq-title" title={t.title} />
-        <Accordion
-          type="single"
-          collapsible
-          className="border-t border-white/10"
-        >
-          {t.items.map((item, i) => (
-            <AccordionItem
-              key={item.q}
-              value={`item-${i}`}
-              className="border-white/10"
-            >
-              <AccordionTrigger className="py-5 text-left text-base font-semibold hover:no-underline sm:text-lg [&>svg]:size-5">
-                {item.q}
-              </AccordionTrigger>
-              <AccordionContent className="pr-8 pb-5 text-base leading-relaxed text-muted-foreground">
-                {item.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </div>
-    </section>
+    <Section id="faq" title={t.title}>
+      <Accordion
+        type="single"
+        collapsible
+        className="mt-12 grid border-t border-white/10 lg:grid-cols-2 lg:gap-x-16 lg:border-t-0"
+      >
+        {columns.map((column) => (
+          <div
+            key={column[0]?.value}
+            className="lg:border-t lg:border-white/10"
+          >
+            {column.map((item) => (
+              <AccordionItem
+                key={item.value}
+                value={item.value}
+                className="border-white/10 last:border-b"
+              >
+                <AccordionTrigger className="py-5 text-left text-base font-semibold hover:no-underline sm:text-lg [&>svg]:size-5">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="pr-8 pb-5 text-base leading-relaxed text-muted-foreground">
+                  {item.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </div>
+        ))}
+      </Accordion>
+    </Section>
   );
 }

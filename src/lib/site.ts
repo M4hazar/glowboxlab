@@ -1,16 +1,30 @@
 // Dane kontaktowe i adresy marki w jednym miejscu.
+const instagram = {
+  name: "Instagram",
+  href: "https://www.instagram.com/glowboxlab",
+} as const;
+const facebook = {
+  name: "Facebook",
+  href: "https://www.facebook.com/glowboxlab",
+} as const;
+
 export const site = {
   name: "GlowBox Lab",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://glowboxlab.com",
+  // Adres do potwierdzenia, na razie w domenie marki.
+  email: "hello@glowboxlab.com",
   phone: "+44 7749 789776",
   phoneHref: "tel:+447749789776",
   whatsapp: "https://wa.me/447749789776",
   handle: "@glowboxlab",
+  city: "Walsall",
+  instagram,
+  facebook,
   socials: [
-    { name: "Instagram", href: "https://www.instagram.com/glowboxlab" },
+    instagram,
+    facebook,
     { name: "TikTok", href: "https://www.tiktok.com/@glowboxlab" },
     { name: "YouTube", href: "https://www.youtube.com/@glowboxlab" },
-    { name: "Facebook", href: "https://www.facebook.com/glowboxlab" },
   ],
 } as const;
 

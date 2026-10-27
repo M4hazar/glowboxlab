@@ -7,7 +7,7 @@ export const pl: Dictionary = {
   meta: {
     title: "GlowBox Lab | LED boxy na zamówienie",
     description:
-      "Personalizowane lightboxy LED z druku 3D. Twoje logo, napis lub pomysł w formie podświetlanego boxa dla firmy, do pokoju gamingowego albo na prezent. Działamy w Wielkiej Brytanii i w Polsce.",
+      "Personalizowane lightboxy LED z druku 3D. Twoje logo, napis lub pomysł w formie podświetlanego boxa dla firmy, do pokoju gamingowego albo na prezent. Działamy w Walsall w Wielkiej Brytanii i wysyłamy do Polski oraz całej Europy.",
     ogImage: "/og/glowbox-lab-pl.jpg",
     ogAlt:
       "Lightbox LED GlowBox Lab z sześciokątnym logo podświetlonym na niebiesko",
@@ -24,6 +24,7 @@ export const pl: Dictionary = {
     { label: "Realizacje", href: "#work" },
     { label: "Jak to działa", href: "#process" },
     { label: "FAQ", href: "#faq" },
+    { label: "Kontakt", href: "#quote" },
   ],
   cta: "Zamów wycenę",
   hero: {
@@ -92,12 +93,6 @@ export const pl: Dictionary = {
         text: "Po akceptacji projektu drukujemy go w 3D i składamy.",
       },
     ],
-    facts: [
-      "Obudowa z druku 3D",
-      "Podświetlenie LED",
-      "Do 4 kolorów druku",
-      "Do 256 × 256 mm",
-    ],
   },
   faq: {
     title: "Najczęstsze pytania",
@@ -123,17 +118,14 @@ export const pl: Dictionary = {
         a: "Termin ustalamy razem z wyceną. Produkcję zaczynamy po akceptacji projektu.",
       },
       {
-        q: "Czy pracujecie z klientami z Polski?",
-        a: "Tak. Pracujemy z klientami z Wielkiej Brytanii i Polski, po polsku i po angielsku.",
+        q: "Czy wysyłacie do Polski?",
+        a: "Tak. Wysyłamy do Polski, Wielkiej Brytanii i reszty Europy. Możesz też odebrać lightbox osobiście w Walsall. Rozmawiamy po polsku i po angielsku.",
       },
     ],
   },
   quote: {
     title: "Zaprojektujmy Twój lightbox",
     lead: "Opisz pomysł i dołącz grafikę, jeśli ją masz. Odpiszemy z ceną i kolejnymi krokami.",
-    chat: "Wolisz porozmawiać?",
-    whatsapp: "Napisz na WhatsApp",
-    call: "Zadzwoń",
     form: {
       name: "Imię",
       email: "E-mail",
@@ -184,6 +176,15 @@ export const pl: Dictionary = {
       generic:
         "Coś poszło nie tak i zapytanie nie zostało wysłane. Spróbuj ponownie albo napisz do nas na WhatsApp.",
     },
+  },
+  contact: {
+    email: "E-mail",
+    call: "Zadzwoń",
+    whatsapp: "Napisz na WhatsApp",
+    location: "Walsall, Wielka Brytania",
+    delivery:
+      "Wysyłamy do Polski, Wielkiej Brytanii i całej Europy. Możesz też odebrać zamówienie osobiście w Walsall.",
+    socials: "GlowBox Lab w mediach społecznościowych",
   },
   footer: {
     tagline: "Personalizowane lightboxy LED z druku 3D.",

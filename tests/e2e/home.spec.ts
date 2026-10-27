@@ -2,6 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 import { en } from "../../src/content/en";
 import { pl } from "../../src/content/pl";
+import { site } from "../../src/lib/site";
 
 const pages = [
   { path: "/", dict: en },
@@ -22,6 +23,29 @@ for (const { path, dict } of pages) {
     await expect(page.locator("#quote form")).toBeVisible();
   });
 }
+
+test("sekcja kontaktu pokazuje e-mail, telefon, miasto i media społecznościowe", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const contact = page.locator("#quote");
+  await expect(contact.getByRole("link", { name: site.email })).toHaveAttribute(
+    "href",
+    `mailto:${site.email}`,
+  );
+  await expect(contact.getByRole("link", { name: site.phone })).toHaveAttribute(
+    "href",
+    site.phoneHref,
+  );
+  await expect(contact.getByText(en.contact.location)).toBeVisible();
+  const socials = contact.getByRole("list", { name: en.contact.socials });
+  await expect(
+    socials.getByRole("link", { name: site.instagram.name }),
+  ).toHaveAttribute("href", site.instagram.href);
+  await expect(
+    socials.getByRole("link", { name: site.facebook.name }),
+  ).toHaveAttribute("href", site.facebook.href);
+});
 
 test("przełącznik języka prowadzi do polskiej wersji", async ({
   page,

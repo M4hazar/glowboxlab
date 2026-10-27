@@ -5,7 +5,7 @@ export const en = {
   meta: {
     title: "GlowBox Lab | Custom LED Lightboxes",
     description:
-      "Custom LED lightboxes, 3D printed to order. Your logo, name or idea turned into a glowing sign for your brand, gaming setup or a personal gift. Based in the UK, working with clients in the UK and Poland.",
+      "Custom LED lightboxes, 3D printed to order. Your logo, name or idea turned into a glowing sign for your brand, gaming setup or a personal gift. Based in Walsall, UK, shipping across the UK and Europe.",
     ogImage: "/og/glowbox-lab-en.jpg",
     ogAlt: "GlowBox Lab LED lightbox with the hexagon logo glowing blue",
   },
@@ -21,6 +21,7 @@ export const en = {
     { label: "Work", href: "#work" },
     { label: "How it works", href: "#process" },
     { label: "FAQ", href: "#faq" },
+    { label: "Contact", href: "#quote" },
   ],
   cta: "Get a quote",
   hero: {
@@ -89,12 +90,6 @@ export const en = {
         text: "Once you approve the design, we 3D print and assemble your lightbox.",
       },
     ],
-    facts: [
-      "3D printed housing",
-      "LED backlight",
-      "Up to 4 print colours",
-      "Up to 256 × 256 mm",
-    ],
   },
   faq: {
     title: "Common questions",
@@ -120,17 +115,14 @@ export const en = {
         a: "We agree the date together with the quote. Production starts once you approve the design.",
       },
       {
-        q: "Do you work with clients in Poland?",
-        a: "Yes. We work with clients in the UK and Poland, in English and in Polish.",
+        q: "Where do you deliver?",
+        a: "Across the UK and the rest of Europe, Poland included. You can also collect your lightbox in person in Walsall. We speak English and Polish.",
       },
     ],
   },
   quote: {
     title: "Let's design your lightbox",
     lead: "Describe your idea and attach a graphic if you have one. We will reply with a price and the next steps.",
-    chat: "Prefer to chat?",
-    whatsapp: "Message us on WhatsApp",
-    call: "Call",
     form: {
       name: "Name",
       email: "Email",
@@ -181,6 +173,15 @@ export const en = {
       generic:
         "Something went wrong and the inquiry was not sent. Please try again or message us on WhatsApp.",
     },
+  },
+  contact: {
+    email: "Email",
+    call: "Call",
+    whatsapp: "Message us on WhatsApp",
+    location: "Walsall, United Kingdom",
+    delivery:
+      "We ship across the UK and Europe. You can also collect in person in Walsall.",
+    socials: "GlowBox Lab on social media",
   },
   footer: {
     tagline: "Custom LED lightboxes, 3D printed to order.",
