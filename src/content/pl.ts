@@ -22,61 +22,39 @@ export const pl: Dictionary = {
   },
   nav: [
     { label: "Realizacje", href: "#work" },
-    { label: "Personalizacja", href: "#personalisation" },
     { label: "Jak to działa", href: "#process" },
     { label: "FAQ", href: "#faq" },
   ],
-  cta: "Wycena",
+  cta: "Zamów wycenę",
   hero: {
     eyebrow: "Lightboxy LED na zamówienie",
     title: ["Twoje pomysły.", "W nowym świetle."],
-    lead: "Personalizowane lightboxy LED z druku 3D. Twoje logo, napis lub pomysł w formie, która przyciąga uwagę.",
-    primary: "Zaprojektuj swój lightbox",
+    lead: "Lightboxy LED z druku 3D, robione na zamówienie. Z Twojego logo, napisu albo samego pomysłu.",
+    primary: "Zamów wycenę",
     secondary: "Zobacz realizacje",
-    points: [
-      "Projekt do akceptacji przed produkcją",
-      "Do 4 kolorów druku",
-      "Wielka Brytania i Polska",
-    ],
     imageAlt:
       "Sześciokątny lightbox GlowBox Lab z białym i niebieskim podświetlonym logo na ciemnym tle",
-    scroll: "Poznaj GlowBox Lab",
   },
   viewer: {
-    eyebrow: "Podgląd 3D",
-    title: ["Obróć. Przybliż.", "Włącz światło."],
-    lead: "Poznaj lightbox GlowBox Lab z każdej strony. To nasz model z logo, zbudowany z tego samego pliku, który drukujemy.",
-    label: "GlowBox Lab / model pokazowy",
-    dragHint: "Przeciągnij, aby obrócić",
+    title: "Zobacz w 3D",
+    lead: "Obróć, przybliż i włącz światło.",
     light: "Światło",
-    on: "ON",
-    off: "OFF",
     zoomIn: "Przybliż",
     zoomOut: "Oddal",
     rotateLeft: "Obróć w lewo",
     rotateRight: "Obróć w prawo",
-    reset: "Widok początkowy",
     fullscreen: "Pełny ekran",
     exitFullscreen: "Zamknij pełny ekran",
-    ledColour: "Kolor LED",
-    colours: { white: "Białe", blue: "Niebieskie" },
-    note: "Model pokazowy, 16 × 17 cm, głębokość 3,2 cm. Dostępne kolory światła zależą od modelu.",
     loading: "Ładowanie modelu 3D",
     fallback:
       "Podgląd 3D nie jest dostępny na tym urządzeniu, dlatego pokazujemy lightbox na zdjęciu.",
     canvasLabel:
-      "Interaktywny model 3D lightboxa GlowBox Lab. Użyj przycisków poniżej, aby obrócić, przybliżyć i włączyć światło.",
+      "Interaktywny model 3D lightboxa GlowBox Lab. Przeciągnij, aby obrócić, albo użyj przycisków poniżej.",
   },
   work: {
-    eyebrow: "Realizacje",
-    title: "Projekty z charakterem.",
-    lead: "Każdy lightbox zaczyna się od czyjegoś pomysłu. Oto kilka form, jakie przybrały.",
+    title: "Realizacje",
+    lead: "Kilka form, jakie może przybrać lightbox.",
     note: "Przykładowe wizualizacje.",
-    cta: {
-      title: "Twój pomysł może być następny.",
-      text: "Prześlij logo, imię albo luźną myśl. Zamienimy je w światło.",
-      link: "Zacznij swój projekt",
-    },
     items: [
       {
         image: "/images/work-devils.webp",
@@ -88,136 +66,71 @@ export const pl: Dictionary = {
         image: "/images/work-heart.webp",
         alt: "Lightbox w kształcie czerwonego serca z imionami Agnieszka i Paweł oraz żółtymi różami",
         title: "Osobisty prezent",
-        text: "Imiona, daty i detale na ślub, rocznicę albo urodziny.",
+        text: "Imiona i daty na ślub, rocznicę albo urodziny.",
       },
       {
         image: "/images/work-logo.webp",
         alt: "Sześciokątny lightbox z logo GlowBox Lab widziany z boku",
         title: "Twoje logo w świetle",
-        text: "Czysta forma i równe podświetlenie na biurko, do sklepu lub studia.",
+        text: "Na biurko, do sklepu albo do studia.",
       },
     ],
-  },
-  personalisation: {
-    eyebrow: "Personalizacja",
-    title: ["Twój pomysł.", "Nasz projekt."],
-    lead: "Niezależnie od tego, czy masz gotowy plik, czy tylko luźną myśl, zajmiemy się resztą.",
-    imageAlt:
-      "Wydrukowany projekt logo GlowBox Lab obok gotowego, podświetlonego lightboxa",
-    paths: [
-      {
-        title: "Masz gotową grafikę?",
-        text: "Prześlij logo, grafikę lub napis. Sprawdzimy plik i przygotujemy go do druku 3D.",
-      },
-      {
-        title: "Masz tylko pomysł?",
-        text: "Opisz go w kilku słowach albo dołącz szkic lub inspirację. Zaprojektujemy lightbox na Twoją prośbę.",
-      },
-    ],
-    link: "Opowiedz nam o swoim projekcie",
   },
   process: {
-    eyebrow: "Jak to działa",
-    title: "Od pomysłu do światła.",
+    title: "Jak to działa",
     steps: [
       {
-        title: "Opisz pomysł",
-        text: "Prześlij grafikę albo napisz, czego potrzebujesz. Podaj wymiary i liczbę sztuk.",
+        title: "Wyślij pomysł",
+        text: "Logo, grafikę albo sam opis. Dodaj wymiary i liczbę sztuk.",
       },
       {
-        title: "Otrzymaj wycenę i projekt",
-        text: "Przygotujemy cenę i wizualizację lightboxa. Możesz poprosić o zmiany.",
+        title: "Dostań wycenę i projekt",
+        text: "Odeślemy cenę i wizualizację. Możesz poprosić o zmiany.",
       },
       {
-        title: "Stworzymy lightbox",
-        text: "Po akceptacji projektu drukujemy i składamy Twój lightbox.",
+        title: "Robimy lightbox",
+        text: "Po akceptacji projektu drukujemy go w 3D i składamy.",
       },
     ],
-  },
-  technology: {
-    eyebrow: "Technologia i jakość",
-    title: ["Przemyślana forma.", "Światło z charakterem."],
-    imageAlt:
-      "Zbliżenie krawędzi lightboxa z czarną, fakturowaną ramą z druku 3D i niebieskim światłem",
-    features: [
-      {
-        title: "Druk 3D",
-        text: "Obudowa i detale są dopasowane do Twojego projektu, a nie do szablonu.",
-      },
-      {
-        title: "Podświetlenie LED",
-        text: "Światło wydobywa kształt i kolory frontu.",
-      },
-      {
-        title: "Do 4 kolorów",
-        text: "Front drukujemy w maksymalnie czterech kolorach, dobranych razem z Tobą.",
-      },
-      {
-        title: "Wymiary na miarę",
-        text: "Rozmiar i proporcje wynikają z Twojego projektu, do 256 × 256 mm.",
-      },
-    ],
-  },
-  inspiration: {
-    eyebrow: "Inspiracje",
-    title: "Znajdź dla niego swoje miejsce.",
-    lead: "W domu, w biurze, przy stanowisku gamingowym lub w przestrzeni Twojej marki.",
-    note: "Przykładowe aranżacje.",
-    items: [
-      {
-        image: "/images/inspiration-office.webp",
-        alt: "Podświetlony sześciokątny lightbox na biurku obok monitora i rośliny",
-        title: "Biuro i gaming",
-      },
-      {
-        image: "/images/inspiration-home.webp",
-        alt: "Podświetlony sześciokątny lightbox na drewnianej półce z książkami i rośliną",
-        title: "Dom i przestrzenie komercyjne",
-      },
+    facts: [
+      "Obudowa z druku 3D",
+      "Podświetlenie LED",
+      "Do 4 kolorów druku",
+      "Do 256 × 256 mm",
     ],
   },
   faq: {
-    eyebrow: "Dobrze wiedzieć",
-    title: "Masz pytania?",
+    title: "Najczęstsze pytania",
     items: [
       {
         q: "Czy mogę przesłać własną grafikę?",
-        a: "Tak. Możesz wysłać logo, napis lub inspirację. Sprawdzimy, jak przygotować je do druku 3D, i damy znać, jeśli coś wymaga poprawy.",
+        a: "Tak. Najlepiej plik wektorowy (SVG, PDF, AI lub EPS), ale PNG i JPG w dobrej jakości też się sprawdzą. Sprawdzimy plik i damy znać, jeśli coś trzeba poprawić.",
       },
       {
         q: "Co, jeśli mam tylko pomysł?",
-        a: "To wystarczy, żeby zacząć. Opisz go, dołącz szkic lub zdjęcia inspiracji, a my zaprojektujemy lightbox.",
-      },
-      {
-        q: "Od czego zależy wycena?",
-        a: "Głównie od rozmiaru, złożoności kształtu, liczby kolorów druku i liczby sztuk. Indywidualną wycenę otrzymasz po wysłaniu zapytania.",
+        a: "To wystarczy. Opisz go albo dołącz szkic lub inspirację, a my zaprojektujemy lightbox.",
       },
       {
         q: "Jak duży może być lightbox?",
-        a: "Maksymalnie 256 × 256 mm z przodu i do 256 mm głębokości, bo tyle nasza drukarka wykonuje w jednym kawałku. Podaj wymiary, jakie masz na myśli, a dobierzemy najlepsze proporcje.",
+        a: "Maksymalnie 256 × 256 mm z przodu i 256 mm głębokości. Tyle nasza drukarka wykonuje w jednym kawałku.",
       },
       {
-        q: "Jakie pliki są najlepsze?",
-        a: "Najczystszy efekt dają pliki wektorowe (SVG, PDF, AI lub EPS). Sprawdzą się też PNG i JPG w wysokiej rozdzielczości.",
+        q: "Od czego zależy cena?",
+        a: "Od rozmiaru, kształtu, liczby kolorów i liczby sztuk. Cenę podamy po otrzymaniu zapytania.",
       },
       {
-        q: "Czy można zmieniać kolor światła?",
-        a: "To zależy od modelu. Niektóre lightboxy możemy wykonać z regulacją koloru LED, więc wspomnij o tym w zapytaniu.",
-      },
-      {
-        q: "Jak ustalamy termin realizacji?",
+        q: "Ile trwa realizacja?",
         a: "Termin ustalamy razem z wyceną. Produkcję zaczynamy po akceptacji projektu.",
       },
       {
         q: "Czy pracujecie z klientami z Polski?",
-        a: "Tak. Działamy w Wielkiej Brytanii i pracujemy z klientami z Wielkiej Brytanii i Polski, po polsku i po angielsku.",
+        a: "Tak. Pracujemy z klientami z Wielkiej Brytanii i Polski, po polsku i po angielsku.",
       },
     ],
   },
   quote: {
-    eyebrow: "Zacznijmy od pomysłu",
-    title: ["Zaprojektujmy", "Twój lightbox."],
-    lead: "Opisz, co chcesz stworzyć, i dołącz grafikę. Odpiszemy z wyceną i propozycją kolejnych kroków.",
+    title: "Zaprojektujmy Twój lightbox",
+    lead: "Opisz pomysł i dołącz grafikę, jeśli ją masz. Odpiszemy z ceną i kolejnymi krokami.",
     chat: "Wolisz porozmawiać?",
     whatsapp: "Napisz na WhatsApp",
     call: "Zadzwoń",
@@ -274,8 +187,6 @@ export const pl: Dictionary = {
   },
   footer: {
     tagline: "Personalizowane lightboxy LED z druku 3D.",
-    explore: "Na stronie",
-    findUs: "Znajdziesz nas tutaj",
     privacy: "Prywatność",
     cookies: "Cookies",
     terms: "Zasady wyceny",

@@ -4,13 +4,7 @@ import { Faq } from "./faq";
 import { Hero } from "./hero";
 import { HomeJsonLd } from "./json-ld";
 import { QuoteSection } from "./quote-section";
-import {
-  Inspiration,
-  Personalisation,
-  Process,
-  Technology,
-  Work,
-} from "./sections";
+import { Process, Work } from "./sections";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 
@@ -22,10 +16,7 @@ export function HomePage({ dict }: { dict: Dictionary }) {
         <Hero dict={dict} />
         <ViewerSection dict={dict} />
         <Work dict={dict} />
-        <Personalisation dict={dict} />
         <Process dict={dict} />
-        <Technology dict={dict} />
-        <Inspiration dict={dict} />
         <Faq dict={dict} />
         <QuoteSection dict={dict} />
       </main>

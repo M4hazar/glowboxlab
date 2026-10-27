@@ -67,6 +67,8 @@ tests/e2e             testy Playwright i axe
 - Teksty zmieniasz w `src/content/en.ts` i `src/content/pl.ts`. Test pilnuje,
   żeby obie wersje miały te same pola i żeby nie było w nich długich myślników.
 - Telefon, WhatsApp i profile społecznościowe są w `src/lib/site.ts`.
+- Język: przeglądarka po polsku trafia z `/` na `/pl`, każda inna zostaje na angielskiej wersji.
+  Ręczny wybór w przełączniku zapisuje się w ciasteczku `NEXT_LOCALE` (`src/proxy.ts`).
 - Zdjęcia w galerii i inspiracjach to na razie przykładowe wizualizacje.
   Zastąp je zdjęciami prawdziwych realizacji w `public/images` (te same nazwy plików).
 

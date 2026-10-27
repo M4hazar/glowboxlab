@@ -1,21 +1,22 @@
 "use client";
 
 import {
-  Hand,
+  LightbulbIcon,
+  LightbulbOffIcon,
   Maximize2Icon,
   Minimize2Icon,
   MinusIcon,
   PlusIcon,
   RotateCcwIcon,
   RotateCwIcon,
-  ScanIcon,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { SectionHeading } from "@/components/site/sections";
 import type { Dictionary } from "@/content/en";
 import { cn } from "@/lib/utils";
-import type { LedColour, SceneHandle } from "./lightbox-scene";
+import type { SceneHandle } from "./lightbox-scene";
 
 const LightboxScene = dynamic(() => import("./lightbox-scene"), { ssr: false });
 
@@ -33,23 +34,22 @@ export function ViewerSection({ dict }: { dict: Dictionary }) {
   const frame = useRef<HTMLDivElement>(null);
   const handle = useRef<SceneHandle | null>(null);
   const [light, setLight] = useState(true);
-  const [led, setLed] = useState<LedColour>("white");
   const [mode, setMode] = useState<"poster" | "3d" | "fallback">("poster");
   const [near, setNear] = useState(false);
   const [visible, setVisible] = useState(false);
   const [ready, setReady] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  // Model 3D ładuje się dopiero, gdy sekcja zbliża się do ekranu.
+  // Model 3D ładuje się dopiero, gdy podgląd jest już na ekranie, żeby nie spowalniać wejścia na stronę.
   useEffect(() => {
     const el = frame.current;
     if (!el) return;
     const io = new IntersectionObserver(
       ([entry]) => {
         setVisible(entry.isIntersecting);
-        if (entry.isIntersecting) setNear(true);
+        if (entry.intersectionRatio >= 0.2) setNear(true);
       },
-      { rootMargin: "300px 0px" },
+      { threshold: [0, 0.2] },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -72,48 +72,30 @@ export function ViewerSection({ dict }: { dict: Dictionary }) {
   }, [expanded, close]);
 
   const iconButton =
-    "inline-flex size-11 items-center justify-center rounded-lg border border-white/12 bg-white/[0.03] text-foreground/90 transition-colors hover:border-white/25 hover:bg-white/[0.07] disabled:opacity-40 sm:size-10";
+    "inline-flex size-11 items-center justify-center rounded-lg border border-white/12 text-foreground/90 transition-colors hover:border-white/30 hover:bg-white/[0.06] disabled:opacity-40";
 
   return (
     <section
       id="preview"
       aria-labelledby="preview-title"
-      className="relative py-20 sm:py-28"
+      className="py-20 sm:py-28"
     >
       <div className="section">
-        <div className="max-w-3xl">
-          <p className="eyebrow">{t.eyebrow}</p>
-          <h2 id="preview-title" className="display mt-4 text-4xl sm:text-6xl">
-            {t.title.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </h2>
-          <p className="mt-5 max-w-xl text-lg text-pretty text-muted-foreground">
-            {t.lead}
-          </p>
-        </div>
+        <SectionHeading id="preview-title" title={t.title} lead={t.lead} />
 
         <div
           ref={frame}
           className={cn(
             "relative mt-12 overflow-hidden border border-white/10 bg-[#05070a]",
             expanded
-              ? "fixed inset-0 z-[60] mt-0 rounded-none border-0"
-              : "rounded-2xl shadow-[0_40px_120px_-40px_rgb(0_127_255/0.35)]",
+              ? "fixed inset-0 z-[60] mt-0 flex flex-col rounded-none border-0"
+              : "rounded-2xl",
           )}
         >
-          <p className="pointer-events-none absolute top-4 left-5 z-10 text-xs text-muted-foreground">
-            {t.label}
-          </p>
-
           <div
             className={cn(
               "relative w-full",
-              expanded
-                ? "h-[calc(100dvh-9.5rem)] sm:h-[calc(100dvh-5.5rem)]"
-                : "aspect-[4/5] sm:aspect-[16/9]",
+              expanded ? "flex-1" : "aspect-[4/5] sm:aspect-[16/9]",
             )}
             role="img"
             aria-label={t.canvasLabel}
@@ -137,7 +119,7 @@ export function ViewerSection({ dict }: { dict: Dictionary }) {
                 className="object-cover"
               />
               {mode !== "fallback" && (
-                <span className="absolute bottom-24 left-1/2 -translate-x-1/2 text-xs text-muted-foreground sm:bottom-6">
+                <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs text-muted-foreground">
                   {t.loading}
                 </span>
               )}
@@ -151,7 +133,6 @@ export function ViewerSection({ dict }: { dict: Dictionary }) {
               >
                 <LightboxScene
                   light={light}
-                  led={led}
                   active={visible}
                   handle={handle}
                   onReady={() => setReady(true)}
@@ -161,150 +142,86 @@ export function ViewerSection({ dict }: { dict: Dictionary }) {
           </div>
 
           {mode === "fallback" && (
-            <p className="px-5 pt-3 text-sm text-muted-foreground">
+            <p className="px-5 pt-4 text-sm text-muted-foreground">
               {t.fallback}
             </p>
           )}
 
-          <div className="relative z-10 flex flex-col gap-4 border-t border-white/[0.07] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-            <p className="hidden items-center gap-2.5 text-sm text-muted-foreground sm:flex">
-              <Hand className="size-5" aria-hidden />
-              {t.dragHint}
-            </p>
-
-            <div className="flex flex-wrap items-center justify-between gap-4 sm:justify-center sm:gap-6">
-              <fieldset className="flex items-center gap-3">
-                <legend className="sr-only">{t.light}</legend>
-                <span aria-hidden className="text-sm font-medium">
-                  {t.light}
-                </span>
-                <div className="flex rounded-lg border border-white/12 bg-white/[0.03] p-1">
-                  {([false, true] as const).map((value) => (
-                    <button
-                      key={String(value)}
-                      type="button"
-                      aria-pressed={light === value}
-                      onClick={() => setLight(value)}
-                      className={cn(
-                        "h-9 min-w-14 rounded-md px-3 text-sm font-semibold tracking-wide transition-colors",
-                        light === value
-                          ? "bg-primary text-white"
-                          : "text-muted-foreground hover:text-foreground",
-                      )}
-                    >
-                      {value ? t.on : t.off}
-                    </button>
-                  ))}
-                </div>
-              </fieldset>
-
-              <fieldset className="flex items-center gap-3">
-                <legend className="sr-only">{t.ledColour}</legend>
-                <span aria-hidden className="text-sm font-medium">
-                  {t.ledColour}
-                </span>
-                <div className="flex gap-2">
-                  {(["white", "blue"] as const).map((value) => (
-                    <button
-                      key={value}
-                      type="button"
-                      aria-pressed={led === value}
-                      aria-label={t.colours[value]}
-                      title={t.colours[value]}
-                      onClick={() => {
-                        setLed(value);
-                        setLight(true);
-                      }}
-                      className={cn(
-                        "flex size-9 items-center justify-center rounded-full border transition-colors",
-                        led === value
-                          ? "border-brand-soft"
-                          : "border-white/15 hover:border-white/35",
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          "size-5 rounded-full",
-                          value === "white"
-                            ? "bg-white shadow-[0_0_12px_rgb(255_255_255/0.6)]"
-                            : "bg-brand shadow-[0_0_12px_rgb(0_127_255/0.8)]",
-                        )}
-                      />
-                    </button>
-                  ))}
-                </div>
-              </fieldset>
-            </div>
-
-            <div className="flex items-center justify-between gap-2 sm:justify-end">
-              <button
-                type="button"
-                className={iconButton}
-                aria-label={t.rotateLeft}
-                title={t.rotateLeft}
-                disabled={!ready}
-                onClick={() => handle.current?.rotateBy(-Math.PI / 4)}
-              >
-                <RotateCcwIcon className="size-4" />
-              </button>
-              <button
-                type="button"
-                className={iconButton}
-                aria-label={t.rotateRight}
-                title={t.rotateRight}
-                disabled={!ready}
-                onClick={() => handle.current?.rotateBy(Math.PI / 4)}
-              >
-                <RotateCwIcon className="size-4" />
-              </button>
-              <button
-                type="button"
-                className={iconButton}
-                aria-label={t.zoomOut}
-                title={t.zoomOut}
-                disabled={!ready}
-                onClick={() => handle.current?.zoomBy(1 / 1.25)}
-              >
-                <MinusIcon className="size-4" />
-              </button>
-              <button
-                type="button"
-                className={iconButton}
-                aria-label={t.zoomIn}
-                title={t.zoomIn}
-                disabled={!ready}
-                onClick={() => handle.current?.zoomBy(1.25)}
-              >
-                <PlusIcon className="size-4" />
-              </button>
-              <button
-                type="button"
-                className={iconButton}
-                aria-label={t.reset}
-                title={t.reset}
-                disabled={!ready}
-                onClick={() => handle.current?.reset()}
-              >
-                <ScanIcon className="size-4" />
-              </button>
-              <button
-                type="button"
-                className={iconButton}
-                aria-label={expanded ? t.exitFullscreen : t.fullscreen}
-                title={expanded ? t.exitFullscreen : t.fullscreen}
-                aria-pressed={expanded}
-                onClick={() => setExpanded((v) => !v)}
-              >
-                {expanded ? (
-                  <Minimize2Icon className="size-4" />
-                ) : (
-                  <Maximize2Icon className="size-4" />
-                )}
-              </button>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-2 border-t border-white/[0.07] p-4">
+            <button
+              type="button"
+              aria-label={t.light}
+              title={t.light}
+              aria-pressed={light}
+              onClick={() => setLight((v) => !v)}
+              className={cn(
+                iconButton,
+                light &&
+                  "border-primary bg-primary text-white hover:border-brand-strong hover:bg-brand-strong",
+              )}
+            >
+              {light ? (
+                <LightbulbIcon className="size-5" />
+              ) : (
+                <LightbulbOffIcon className="size-5" />
+              )}
+            </button>
+            <button
+              type="button"
+              className={iconButton}
+              aria-label={t.rotateLeft}
+              title={t.rotateLeft}
+              disabled={!ready}
+              onClick={() => handle.current?.rotateBy(-Math.PI / 4)}
+            >
+              <RotateCcwIcon className="size-4" />
+            </button>
+            <button
+              type="button"
+              className={iconButton}
+              aria-label={t.rotateRight}
+              title={t.rotateRight}
+              disabled={!ready}
+              onClick={() => handle.current?.rotateBy(Math.PI / 4)}
+            >
+              <RotateCwIcon className="size-4" />
+            </button>
+            <button
+              type="button"
+              className={iconButton}
+              aria-label={t.zoomOut}
+              title={t.zoomOut}
+              disabled={!ready}
+              onClick={() => handle.current?.zoomBy(1 / 1.25)}
+            >
+              <MinusIcon className="size-4" />
+            </button>
+            <button
+              type="button"
+              className={iconButton}
+              aria-label={t.zoomIn}
+              title={t.zoomIn}
+              disabled={!ready}
+              onClick={() => handle.current?.zoomBy(1.25)}
+            >
+              <PlusIcon className="size-4" />
+            </button>
+            <button
+              type="button"
+              className={iconButton}
+              aria-label={expanded ? t.exitFullscreen : t.fullscreen}
+              title={expanded ? t.exitFullscreen : t.fullscreen}
+              aria-pressed={expanded}
+              onClick={() => setExpanded((v) => !v)}
+            >
+              {expanded ? (
+                <Minimize2Icon className="size-4" />
+              ) : (
+                <Maximize2Icon className="size-4" />
+              )}
+            </button>
           </div>
         </div>
-        <p className="mt-4 text-xs text-muted-foreground">{t.note}</p>
       </div>
     </section>
   );
