@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "bradlc.vscode-tailwindcss",
+    "ms-playwright.playwright",
+    "vitest.explorer",
+    "yoavbls.pretty-ts-errors",
+    "usernamehw.errorlens",
+    "anthropic.claude-code"
+  ]
+}

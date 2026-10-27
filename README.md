@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GlowBox starter
 
-## Getting Started
+Szablon nowoczesnej strony: **Next.js 16 + React 19 + Tailwind CSS v4 + shadcn/ui**,
+z lintowaniem (Biome), testami (Vitest, Playwright + axe), audytem Lighthouse
+i CI na GitHub Actions. Gotowy do pracy z Claude Code, Cursorem i Copilotem.
 
-First, run the development server:
+## Start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Node 24 LTS (np. przez fnm/nvm: `fnm use` czyta .nvmrc)
+corepack enable        # albo: npm i -g pnpm
+pnpm install
+cp .env.example .env.local
+pnpm dev               # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Komendy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Komenda                       | Co robi                                                      |
+| ----------------------------- | ------------------------------------------------------------ |
+| `pnpm dev`                    | serwer deweloperski (Turbopack)                              |
+| `pnpm build` / `pnpm start`   | build produkcyjny i jego uruchomienie                        |
+| `pnpm lint` / `pnpm lint:fix` | Biome: lint, formatowanie, sortowanie importów               |
+| `pnpm typecheck`              | TypeScript bez emisji                                        |
+| `pnpm test`                   | testy jednostkowe (Vitest + Testing Library)                 |
+| `pnpm test:e2e`               | testy E2E i dostępności (Playwright + axe), desktop i mobile |
+| `pnpm lighthouse`             | Lighthouse CI z progami jakości                              |
+| `pnpm check`                  | wszystko po kolei                                            |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Pierwsze uruchomienie Playwrighta lokalnie: `pnpm exec playwright install chromium`.
 
-## Learn More
+## Struktura
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/app/            strony, layout, Server Actions, sitemap/robots
+src/components/ui   komponenty shadcn/ui (dodawaj: pnpm dlx shadcn@latest add dialog)
+src/components/site kompozycje strony (formularz, animacje)
+src/lib             narzędzia i schematy Zod
+tests/e2e           testy Playwright
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Automatyzacja
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **lefthook**: przed commitem Biome + typecheck, przed pushem testy.
+- **GitHub Actions** (`.github/workflows/ci.yml`): lint, typy, testy, build, E2E, Lighthouse.
+- **AI**: `AGENTS.md` (zasady projektu dla agentów), `CLAUDE.md`, `.mcp.json`
+  (Next.js DevTools, Playwright, shadcn, Context7).
