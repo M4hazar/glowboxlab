@@ -53,7 +53,7 @@ test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
   await form.getByRole("button", { name: f.increase }).click();
   await form
     .getByLabel(f.description)
-    .fill("Our café logo, about 40 cm wide, for the wall behind the counter.");
+    .fill("Our café logo, about 20 cm wide, for the wall behind the counter.");
   await form.locator('input[type="file"]').setInputFiles({
     name: "logo.svg",
     mimeType: "image/svg+xml",

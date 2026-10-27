@@ -13,8 +13,8 @@ export type QuoteErrorKey =
   | "fileSize"
   | "fileCount";
 
-export const projectTypes = ["logo", "gift", "gaming", "other"] as const;
-
+// Największy lightbox, jaki mieści drukarka: 256 × 256 × 256 mm.
+export const MAX_SIZE_MM = 256;
 export const MAX_FILES = 3;
 export const MAX_TOTAL_BYTES = 4 * 1024 * 1024;
 export const ACCEPTED_EXTENSIONS = [
@@ -35,7 +35,10 @@ const dimension = z
   .string()
   .trim()
   .transform((v) => v.replace(",", "."))
-  .refine((v) => v === "" || (Number(v) > 0 && Number(v) <= 500), "size");
+  .refine(
+    (v) => v === "" || (Number(v) > 0 && Number(v) <= MAX_SIZE_MM),
+    "size",
+  );
 
 export const quoteSchema = z
   .object({
@@ -46,7 +49,6 @@ export const quoteSchema = z
       .trim()
       .max(30, "phone")
       .refine((v) => v === "" || /^[+()\d\s-]{7,}$/.test(v), "phone"),
-    projectType: z.enum(projectTypes).optional(),
     width: dimension,
     height: dimension,
     sizeUnsure: z.boolean(),
@@ -79,12 +81,10 @@ export function readQuoteForm(formData: FormData) {
     const value = formData.get(key);
     return typeof value === "string" ? value : "";
   };
-  const projectType = text("projectType");
   return {
     name: text("name"),
     email: text("email"),
     phone: text("phone"),
-    projectType: projectType === "" ? undefined : projectType,
     width: text("width"),
     height: text("height"),
     sizeUnsure: formData.get("sizeUnsure") === "on",

@@ -22,13 +22,6 @@ export type QuoteState =
   | { status: "failed" }
   | { status: "success"; name: string };
 
-const typeLabels: Record<string, string> = {
-  logo: "Logo / business sign",
-  gift: "Personal gift",
-  gaming: "Gaming / setup",
-  other: "Other",
-};
-
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -40,13 +33,12 @@ function escapeHtml(value: string) {
 function summary(data: QuoteInput) {
   const size = data.sizeUnsure
     ? "Not sure, wants advice"
-    : `${data.width} × ${data.height} cm`;
+    : `${data.width} × ${data.height} mm`;
   return [
     ["Name", data.name],
     ["Email", data.email],
     ["Phone", data.phone || "n/a"],
     ["Language", data.locale.toUpperCase()],
-    ["Type", data.projectType ? typeLabels[data.projectType] : "n/a"],
     ["Size", size],
     ["Quantity", String(data.quantity)],
     ["Needed by", data.deadline || "n/a"],
@@ -124,7 +116,7 @@ export async function submitQuote(
       from,
       to: to.split(",").map((s) => s.trim()),
       replyTo: data.email,
-      subject: `Quote request: ${data.name}${data.projectType ? ` (${typeLabels[data.projectType]})` : ""}`,
+      subject: `Quote request: ${data.name}`,
       html,
       text,
       attachments,

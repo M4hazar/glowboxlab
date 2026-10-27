@@ -27,7 +27,6 @@ import {
   ACCEPT_ATTR,
   fieldErrors,
   MAX_FILES,
-  projectTypes,
   type QuoteErrorKey,
   type QuoteField,
   type QuoteFieldErrors,
@@ -283,32 +282,10 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
         </div>
       </div>
 
-      <fieldset>
-        <legend className="mb-3 text-sm font-medium">
-          {t.projectType}{" "}
-          <span className="font-normal text-muted-foreground">
-            ({t.optional})
-          </span>
-        </legend>
-        <div className="flex flex-wrap gap-2">
-          {projectTypes.map((type) => (
-            <label key={type} className="cursor-pointer">
-              <input
-                type="radio"
-                name="projectType"
-                value={type}
-                className="peer sr-only"
-              />
-              <span className="inline-flex h-10 items-center rounded-full border border-white/12 px-4 text-sm text-foreground/85 transition-colors peer-checked:border-brand-soft peer-checked:bg-brand/15 peer-checked:text-foreground peer-focus-visible:ring-[3px] peer-focus-visible:ring-brand/40 hover:border-white/30">
-                {t.projectTypes[type]}
-              </span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
       <div className="grid gap-6 sm:grid-cols-[1fr_auto]">
-        <fieldset aria-describedby={sizeError ? id("size-error") : undefined}>
+        <fieldset
+          aria-describedby={cn(id("size-hint"), sizeError && id("size-error"))}
+        >
           <legend className="mb-2 text-sm font-medium">{t.size}</legend>
           <div className="grid grid-cols-2 gap-3">
             {(["width", "height"] as const).map((dim) => (
@@ -338,6 +315,12 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
               </div>
             ))}
           </div>
+          <p
+            id={id("size-hint")}
+            className="mt-2 text-xs text-muted-foreground"
+          >
+            {t.sizeHint}
+          </p>
           <label className="mt-3 flex cursor-pointer items-center gap-3 text-sm text-foreground/85">
             <input
               type="checkbox"

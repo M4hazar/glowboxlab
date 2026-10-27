@@ -11,7 +11,6 @@ const valid = {
   name: "Paweł",
   email: "pawel@example.com",
   phone: "+44 7749 789776",
-  projectType: "logo",
   width: "40",
   height: "30,5",
   sizeUnsure: false,
@@ -41,6 +40,11 @@ describe("quoteSchema", () => {
     expect(
       errorsFor({ ...valid, width: "", height: "", sizeUnsure: true }),
     ).toEqual({});
+  });
+
+  it("dopuszcza wymiary do 256 mm, czyli maksimum drukarki", () => {
+    expect(errorsFor({ ...valid, width: "256", height: "256" })).toEqual({});
+    expect(errorsFor({ ...valid, width: "257" })).toEqual({ width: "size" });
   });
 
   it("odrzuca wymiary spoza zakresu", () => {
@@ -89,19 +93,17 @@ describe("quoteSchema", () => {
 });
 
 describe("readQuoteForm", () => {
-  it("czyta pola formularza, checkboxy i pusty typ projektu", () => {
+  it("czyta pola formularza i checkboxy", () => {
     const data = new FormData();
     data.set("name", "Ola");
     data.set("sizeUnsure", "on");
     data.set("consent", "on");
-    data.set("projectType", "");
     const out = readQuoteForm(data);
     expect(out).toMatchObject({
       name: "Ola",
       email: "",
       sizeUnsure: true,
       consent: true,
-      projectType: undefined,
     });
   });
 });

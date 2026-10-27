@@ -150,10 +150,7 @@ function WorkCard({
         </div>
         {/* Na telefonie podpis pod zdjęciem, żeby nie zasłaniał grafiki */}
         <figcaption className="p-6 md:absolute md:inset-x-0 md:bottom-0 md:p-7">
-          <span className="inline-flex rounded-full border border-white/15 bg-black/40 px-3 py-1 text-[0.7rem] font-semibold tracking-[0.16em] text-foreground/85 uppercase backdrop-blur">
-            {item.tag}
-          </span>
-          <p className="mt-3 text-xl font-bold tracking-tight">{item.title}</p>
+          <p className="text-xl font-bold tracking-tight">{item.title}</p>
           <p className="mt-1 text-sm text-foreground/75">{item.text}</p>
         </figcaption>
       </figure>
