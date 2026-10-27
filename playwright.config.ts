@@ -23,5 +23,7 @@ export default defineConfig({
     command: `pnpm start --port ${PORT}`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
+    // Formularz wyceny loguje zapytanie zamiast wysyłać e-mail.
+    env: { QUOTE_DRY_RUN: "1" },
   },
 });
