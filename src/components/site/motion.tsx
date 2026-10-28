@@ -11,8 +11,9 @@ import {
 
 // Decyzja o animacjach zapada przed pierwszym wyświetleniem strony, więc nic nie mignie:
 // data-motion włącza animacje (gdy system nie prosi o ograniczenie ruchu),
-// data-intro pokazuje ekran startowy tylko przy pierwszym wejściu w danej karcie.
-const motionScript = `(function(){try{var d=document.documentElement;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.dataset.motion="";if(!sessionStorage.getItem("gbl-intro")){sessionStorage.setItem("gbl-intro","1");d.dataset.intro="";setTimeout(function(){delete d.dataset.intro},3500)}}catch(e){}})()`;
+// data-intro pokazuje ekran startowy przy każdym wczytaniu i odświeżeniu strony
+// (przejścia między podstronami nie wczytują strony od nowa, więc go nie powtarzają).
+const motionScript = `(function(){try{var d=document.documentElement;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.dataset.motion="";d.dataset.intro="";setTimeout(function(){delete d.dataset.intro},3500)}catch(e){}})()`;
 
 export function MotionScript() {
   // biome-ignore lint/security/noDangerouslySetInnerHtml: stały skrypt bez danych od użytkownika
@@ -21,10 +22,12 @@ export function MotionScript() {
 
 // Ekran startowy: logo rysuje się i zapala, a potem przelatuje do nagłówka (animacje w globals.css).
 // Nie blokuje kliknięć i znika sam po około dwóch sekundach.
+// Styl inline ukrywa go, gdyby arkusz stylów nie wczytał się w całości (np. stara wersja z pamięci
+// przeglądarki); wtedy duże logo nie wypadnie na stronę. Pokazuje go dopiero reguła z globals.css.
 export function Intro() {
   const wordWidth = LOGO_WIDTH - MARK_WIDTH;
   return (
-    <div className="intro" aria-hidden>
+    <div className="intro" aria-hidden style={{ display: "none" }}>
       <div className="intro-bg" />
       <div className="intro-logo">
         <svg
