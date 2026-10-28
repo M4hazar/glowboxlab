@@ -139,6 +139,14 @@ export const pl: Dictionary = {
       quantity: "Liczba sztuk",
       deadline: "Na kiedy",
       description: "Opisz swój pomysł",
+      placeholders: {
+        name: "Anna",
+        email: "anna@example.com",
+        phone: "+48 600 000 000",
+        width: "200",
+        height: "150",
+        depth: "60",
+      },
       descriptionPlaceholder:
         "Na przykład: logo naszej kawiarni, około 20 cm szerokości, białe i niebieskie światło, na ścianę za ladą.",
       files: "Dodaj grafikę",

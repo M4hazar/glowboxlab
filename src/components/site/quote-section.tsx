@@ -40,8 +40,9 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
       aria-labelledby="quote-title"
       className="border-t border-white/[0.07] py-20 sm:py-28"
     >
-      <div className="section grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-        <div>
+      {/* Kolumny mają równą wysokość: zapewnienia lądują na dole, na wysokości końca formularza. */}
+      <div className="section grid gap-12 lg:grid-cols-[1fr_1.25fr] lg:gap-16">
+        <div className="flex flex-col">
           <SectionHeading id="quote-title" title={t.title} lead={t.lead} />
 
           <ul className="mt-10 flex flex-col gap-5 text-lg">
@@ -76,7 +77,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
           {/* WhatsApp na całą szerokość, bo to najszybszy kontakt, pod nim reszta po dwa. */}
           <ul
             aria-label={c.socials}
-            className="mt-10 grid max-w-sm grid-cols-2 gap-2.5"
+            className="mt-10 mb-10 grid max-w-sm grid-cols-2 gap-2.5"
           >
             <li className="col-span-2">
               <a
@@ -110,7 +111,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
             ))}
           </ul>
 
-          <ul className="mt-10 grid gap-3 border-t border-white/[0.07] pt-8 text-muted-foreground">
+          <ul className="grid gap-3 border-t border-white/[0.07] pt-8 text-muted-foreground lg:mt-auto">
             {c.promises.map((text, i) => {
               const Icon = promiseIcons[i];
               return (

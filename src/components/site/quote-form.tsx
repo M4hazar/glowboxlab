@@ -222,6 +222,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             id={id("name")}
             name="name"
             autoComplete="name"
+            placeholder={t.placeholders.name}
             maxLength={80}
             required
             className={inputClass}
@@ -237,6 +238,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             id={id("email")}
             name="email"
             type="email"
+            placeholder={t.placeholders.email}
             autoComplete="email"
             inputMode="email"
             maxLength={160}
@@ -257,6 +259,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             id={id("phone")}
             name="phone"
             type="tel"
+            placeholder={t.placeholders.phone}
             autoComplete="tel"
             inputMode="tel"
             maxLength={30}
@@ -283,7 +286,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
+      <div className="grid gap-4 sm:grid-cols-[1fr_auto] lg:grid-cols-1 xl:grid-cols-[1fr_auto]">
         {/* Każdy wymiar ma widoczną etykietę, bo podpowiedź w polu znika po wpisaniu liczby. */}
         <fieldset>
           <legend className="sr-only">{t.size}</legend>
@@ -296,6 +299,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
                     id={id(dim)}
                     name={dim}
                     inputMode="decimal"
+                    placeholder={t.placeholders[dim]}
                     className={cn(inputClass, "pr-10")}
                     aria-invalid={Boolean(sizeError)}
                     aria-describedby={cn(

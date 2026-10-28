@@ -136,6 +136,14 @@ export const en = {
       quantity: "Quantity",
       deadline: "Needed by",
       description: "Describe your idea",
+      placeholders: {
+        name: "Emma",
+        email: "emma@example.com",
+        phone: "+44 7700 900000",
+        width: "200",
+        height: "150",
+        depth: "60",
+      },
       descriptionPlaceholder:
         "For example: our café logo, about 20 cm wide, white and blue light, for the wall behind the counter.",
       files: "Attach graphic",
