@@ -142,12 +142,6 @@
   }
 }
 
-@property --hole {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: -120px;
-}
-
 .intro {
   display: none;
   /* Docelowe miejsce logo: dokładnie tam, gdzie logo w nagłówku (.section i h-16/lg:h-20). */
@@ -260,11 +254,6 @@
       scale(var(--k));
   }
 }
-@keyframes intro-open {
-  to {
-    --hole: 150vmax;
-  }
-}
 @keyframes intro-out {
   to {
     opacity: 0;
@@ -322,27 +311,26 @@
    * Ekran startowy, około 2,3 s:
    * kontur sygnetu się rysuje, biała ścianka się wypełnia, niebieskie elementy zapalają się
    * jak LED, napis wysuwa się zza krawędzi, a całe logo przelatuje na swoje miejsce
-   * w nagłówku, podczas gdy tło otwiera się od środka i odsłania stronę.
+   * w nagłówku, podczas gdy tło płynnie znika i odsłania stronę.
    */
   [data-intro] .intro {
     position: fixed;
     inset: 0;
+    /* Na telefonie pasek przeglądarki zmienia wysokość okna; tło sięga zawsze do samego dołu. */
+    min-height: 100lvh;
     z-index: 100;
     /* biome-ignore lint/complexity/noImportantStyles: wygrywa ze stylem inline, który ukrywa ekran startowy bez tego arkusza */
     display: block !important;
     pointer-events: none;
     animation: intro-done 0s 2.3s forwards;
   }
+  /* Tło znika samą przezroczystością, bez maski z animowaną zmienną (@property): z maską
+     na iPhonie strona była widoczna pod logo od pierwszej chwili. */
   [data-intro] .intro-bg {
     position: absolute;
     inset: 0;
     background: var(--background);
-    mask-image: radial-gradient(
-      circle at 50% 50%,
-      transparent var(--hole),
-      #000 calc(var(--hole) + 120px)
-    );
-    animation: intro-open 0.85s cubic-bezier(0.7, 0, 0.2, 1) 1.4s forwards;
+    animation: intro-out 0.7s ease 1.4s forwards;
   }
   [data-intro] .intro-logo {
     position: absolute;

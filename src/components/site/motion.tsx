@@ -18,7 +18,9 @@ import {
 // więc nic nie trzeba zapisywać w przeglądarce; odświeżenie pokazuje ekran startowy jak zwykle.
 // Do wczytania strony przewijanie jest natychmiastowe, żeby adres z #sekcją od razu
 // otwierał się na niej, zamiast przewijać się od góry.
-const motionScript = `(function(){try{var d=document.documentElement,skip=false;d.style.scrollBehavior="auto";addEventListener("load",function(){setTimeout(function(){d.style.scrollBehavior=""})});try{var pl=function(p){return p==="/pl"||p.indexOf("/pl/")===0},n=performance.getEntriesByType("navigation")[0],r=new URL(document.referrer);skip=(!n||n.type==="navigate")&&r.origin===location.origin&&pl(r.pathname)!==pl(location.pathname)}catch(e){}if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.dataset.motion="";if(skip){d.dataset.instant="";return}d.dataset.intro="";setTimeout(function(){delete d.dataset.intro},3500)}catch(e){}})()`;
+// Odświeżenie zawsze otwiera stronę od góry: bez #sekcji w adresie i bez przywracania
+// poprzedniej pozycji (przywracanie wraca po chwili, żeby przycisk Wstecz działał jak zwykle).
+const motionScript = `(function(){try{var d=document.documentElement,h=history,skip=false,n=performance.getEntriesByType("navigation")[0],type=n?n.type:"navigate",reload=type==="reload";d.style.scrollBehavior="auto";if(reload){h.scrollRestoration="manual";if(location.hash)h.replaceState(h.state,"",location.pathname+location.search)}addEventListener("load",function(){if(reload)scrollTo(0,0);setTimeout(function(){d.style.scrollBehavior=""});if(reload)setTimeout(function(){h.scrollRestoration="auto"},1000)});try{var pl=function(p){return p==="/pl"||p.indexOf("/pl/")===0},r=new URL(document.referrer);skip=type==="navigate"&&r.origin===location.origin&&pl(r.pathname)!==pl(location.pathname)}catch(e){}if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.dataset.motion="";if(skip){d.dataset.instant="";return}d.dataset.intro="";setTimeout(function(){delete d.dataset.intro},3500)}catch(e){}})()`;
 
 export function MotionScript() {
   // biome-ignore lint/security/noDangerouslySetInnerHtml: stały skrypt bez danych od użytkownika
