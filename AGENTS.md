@@ -13,7 +13,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Strona marki GlowBox Lab (lightboxy LED z druku 3D). Angielska pod `/`, polska pod `/pl`.
 
 Stos: Next.js 16 (App Router, Cache Components, Turbopack), React 19, TypeScript,
-Tailwind CSS v4, shadcn/ui (styl new-york, Radix), Motion, React Three Fiber (three.js),
+Tailwind CSS v4, shadcn/ui (styl new-york, Radix), React Three Fiber (three.js),
 Zod, Resend, Biome, Vitest, Playwright (+ axe), Lighthouse CI.
 Menedżer pakietów: **pnpm** (Node 24 LTS).
 
@@ -32,7 +32,8 @@ Menedżer pakietów: **pnpm** (Node 24 LTS).
 - Komponenty UI dodawaj przez `pnpm dlx shadcn@latest add <nazwa>` do `src/components/ui`;
   nie edytuj ich bez potrzeby, kompozycje twórz w `src/components/site`.
 - Kolory tylko przez tokeny motywu (`bg-background`, `text-brand`, `text-muted-foreground` itd.)
-  z `src/app/globals.css`. Strona jest tylko w ciemnym motywie.
+  z `src/app/globals.css` (także `ink` zamiast `white/...` dla linii i delikatnych teł).
+  Strona ma motyw ciemny i jasny (wybór z urządzenia albo przełącznika); sprawdzaj oba.
 - Domyślnie Server Components; `"use client"` tylko tam, gdzie potrzebna interaktywność.
 - Formularze: schemat Zod w `src/lib`, obsługa przez Server Action.
 - Każda nowa strona ma `metadata` (przez `pageMetadata` z `src/lib/metadata.ts`) i trasę

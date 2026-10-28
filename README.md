@@ -69,6 +69,8 @@ tests/e2e             testy Playwright i axe
 - Telefon, e-mail, miasto, WhatsApp i profile społecznościowe są w `src/lib/site.ts`.
 - Język: przeglądarka po polsku trafia z `/` na `/pl`, każda inna zostaje na angielskiej wersji.
   Ręczny wybór w przełączniku zapisuje się w ciasteczku `NEXT_LOCALE` (`src/proxy.ts`).
+- Motyw: strona jest ciemna albo jasna według ustawień urządzenia. Ręczny wybór przełącznikiem
+  zapisuje się w ciasteczku `theme`. Kolory są w tokenach w `src/app/globals.css` (oba motywy).
 - Zdjęcia w realizacjach to na razie przykładowe wizualizacje.
   Zastąp je zdjęciami prawdziwych realizacji w `public/images` (te same nazwy plików).
 

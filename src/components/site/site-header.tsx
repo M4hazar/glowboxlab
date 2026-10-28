@@ -14,6 +14,8 @@ import type { Dictionary } from "@/content/en";
 import { LOCALE_COOKIE } from "@/lib/locale";
 import { type Locale, type RouteKey, routes, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { Logo } from "./logo";
+import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader({
   dict,
@@ -88,7 +90,7 @@ export function SiteHeader({
       className={cn(
         "rise fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ease-glow [--intro:0s] [--rise:-16px]",
         scrolled
-          ? "border-b border-white/[0.07] bg-background/65 backdrop-blur-xl"
+          ? "border-b border-ink/[0.07] bg-background/65 backdrop-blur-xl"
           : "border-b border-transparent",
       )}
     >
@@ -100,14 +102,7 @@ export function SiteHeader({
       </a>
       <div className="section flex h-16 items-center justify-between gap-6 lg:h-20">
         <Link href={home} aria-label={dict.a11y.home} className="shrink-0">
-          {/* biome-ignore lint/performance/noImgElement: logo SVG nie potrzebuje optymalizacji */}
-          <img
-            src="/brand/logo.svg"
-            alt=""
-            width={744}
-            height={225}
-            className="header-logo h-8 w-auto lg:h-9"
-          />
+          <Logo className="header-logo h-8 w-auto lg:h-9" />
         </Link>
 
         <nav
@@ -135,7 +130,7 @@ export function SiteHeader({
                 <a
                   href={anchor(item.href)}
                   aria-current={current === item.href ? "true" : undefined}
-                  className="block rounded-md px-4 py-2 transition-colors duration-300 hover:text-foreground aria-[current=true]:text-white"
+                  className="block rounded-md px-4 py-2 transition-colors duration-300 hover:text-foreground aria-[current=true]:text-foreground"
                 >
                   {item.label}
                 </a>
@@ -145,11 +140,10 @@ export function SiteHeader({
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-4">
-          <LanguageSwitch
-            dict={dict}
-            routeKey={routeKey}
-            className="hidden sm:flex"
-          />
+          <div className="hidden items-center gap-1 sm:flex">
+            <ThemeToggle dict={dict} />
+            <LanguageSwitch dict={dict} routeKey={routeKey} />
+          </div>
           <a
             href={anchor("#quote")}
             className="press hidden h-10 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white hover:bg-brand-strong sm:inline-flex"
@@ -166,18 +160,11 @@ export function SiteHeader({
             <SheetContent
               side="right"
               showCloseButton={false}
-              className="w-full border-white/10 bg-background/95 backdrop-blur-xl sm:max-w-sm"
+              className="w-full border-ink/10 bg-background/95 backdrop-blur-xl sm:max-w-sm"
             >
               <div className="flex h-16 items-center justify-between px-5">
                 <SheetTitle className="sr-only">{dict.a11y.mainNav}</SheetTitle>
-                {/* biome-ignore lint/performance/noImgElement: logo SVG */}
-                <img
-                  src="/brand/logo.svg"
-                  alt=""
-                  width={744}
-                  height={225}
-                  className="h-8 w-auto"
-                />
+                <Logo className="h-8 w-auto" />
                 <SheetClose
                   aria-label={dict.a11y.closeMenu}
                   className="-mr-2 inline-flex size-11 items-center justify-center rounded-lg"
@@ -191,10 +178,7 @@ export function SiteHeader({
               >
                 <ul className="flex flex-col">
                   {dict.nav.map((item) => (
-                    <li
-                      key={item.href}
-                      className="border-b border-white/[0.07]"
-                    >
+                    <li key={item.href} className="border-b border-ink/[0.07]">
                       <SheetClose asChild>
                         <a
                           href={anchor(item.href)}
@@ -228,15 +212,14 @@ export function SiteHeader({
                     href={site.whatsapp.href}
                     target="_blank"
                     rel="noopener"
-                    className="inline-flex h-12 items-center justify-center rounded-lg border border-white/15 font-medium"
+                    className="inline-flex h-12 items-center justify-center rounded-lg border border-ink/15 font-medium"
                   >
                     {dict.contact.whatsapp}
                   </a>
-                  <LanguageSwitch
-                    dict={dict}
-                    routeKey={routeKey}
-                    className="justify-center pt-2"
-                  />
+                  <div className="flex items-center justify-center gap-2 pt-2">
+                    <ThemeToggle dict={dict} />
+                    <LanguageSwitch dict={dict} routeKey={routeKey} />
+                  </div>
                 </div>
               </nav>
             </SheetContent>
@@ -264,9 +247,7 @@ export function LanguageSwitch({
     >
       {(["en", "pl"] as const).map((locale, i) => (
         <span key={locale} className="flex items-center">
-          {i > 0 && (
-            <span aria-hidden className="mx-1.5 h-3 w-px bg-white/20" />
-          )}
+          {i > 0 && <span aria-hidden className="mx-1.5 h-3 w-px bg-ink/20" />}
           {locale === current ? (
             <span
               aria-current="true"

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Dictionary } from "@/content/en";
 import { type Locale, type RouteKey, routes, site } from "@/lib/site";
 import { CurrentYear } from "./current-year";
+import { Logo } from "./logo";
 import { LanguageSwitch } from "./site-header";
 
 export function SiteFooter({
@@ -16,7 +17,7 @@ export function SiteFooter({
   const home = routes.home[locale];
 
   return (
-    <footer className="border-t border-white/[0.07] py-12">
+    <footer className="border-t border-ink/[0.07] py-12">
       <div className="section flex flex-col gap-10">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
@@ -25,14 +26,7 @@ export function SiteFooter({
               aria-label={dict.a11y.home}
               className="inline-block"
             >
-              {/* biome-ignore lint/performance/noImgElement: logo SVG */}
-              <img
-                src="/brand/logo.svg"
-                alt=""
-                width={744}
-                height={225}
-                className="h-9 w-auto"
-              />
+              <Logo className="h-9 w-auto" />
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">{t.tagline}</p>
             <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
@@ -61,7 +55,7 @@ export function SiteFooter({
           </ul>
         </div>
 
-        <div className="flex flex-col gap-5 border-t border-white/[0.07] pt-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-5 border-t border-ink/[0.07] pt-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>
             © <CurrentYear /> {t.rights}, {site.owner}
           </p>

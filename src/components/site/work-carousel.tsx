@@ -7,7 +7,6 @@ import {
   PauseIcon,
   PlayIcon,
 } from "lucide-react";
-import { useReducedMotion } from "motion/react";
 import Link from "next/link";
 import {
   type MouseEvent,
@@ -20,6 +19,7 @@ import {
 } from "react";
 import type { Dictionary } from "@/content/en";
 import { iconButton, WorkCard, WorkDialog } from "./portfolio";
+import { useReducedMotion } from "./use-reduced-motion";
 
 // Pasek powtarza projekty kilka razy, żeby przewijał się bez końca.
 // Prawdziwy zestaw to kopia nr 1, pozostałe są ukryte przed czytnikami ekranu i klawiaturą.

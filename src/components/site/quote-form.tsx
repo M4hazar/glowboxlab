@@ -40,7 +40,7 @@ import { cn } from "@/lib/utils";
 const initial: QuoteState = { status: "idle" };
 
 const inputClass =
-  "h-11 w-full rounded-lg border border-input bg-white/[0.03] px-3.5 text-base text-foreground sm:text-sm placeholder:text-muted-foreground/70 transition-colors outline-none hover:border-white/25 focus-visible:border-brand-soft focus-visible:ring-[3px] focus-visible:ring-brand/25 aria-invalid:border-destructive disabled:opacity-40";
+  "h-11 w-full rounded-lg border border-input bg-ink/[0.03] px-3.5 text-base text-foreground sm:text-sm placeholder:text-muted-foreground/70 transition-colors outline-none hover:border-ink/25 focus-visible:border-brand-soft focus-visible:ring-[3px] focus-visible:ring-brand/25 aria-invalid:border-destructive disabled:opacity-40";
 
 function formatSize(bytes: number) {
   return bytes < 1024 * 1024
@@ -281,7 +281,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             name="deadline"
             type="date"
             min={today}
-            className={cn(inputClass, "[color-scheme:dark]")}
+            className={inputClass}
           />
         </div>
       </div>
@@ -346,7 +346,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
 
         <div>
           <Label htmlFor={id("quantity")} text={t.quantity} />
-          <div className="flex h-11 w-fit items-center rounded-lg border border-input bg-white/[0.03] transition-colors has-[:focus-visible]:border-brand-soft has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-brand/25 has-[[aria-invalid=true]]:border-destructive">
+          <div className="flex h-11 w-fit items-center rounded-lg border border-input bg-ink/[0.03] transition-colors has-[:focus-visible]:border-brand-soft has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-brand/25 has-[[aria-invalid=true]]:border-destructive">
             <button
               type="button"
               aria-label={t.decrease}
@@ -427,11 +427,11 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             "flex cursor-pointer items-center gap-3 rounded-lg border border-dashed px-4 py-3 transition-colors has-[:focus-visible]:border-brand-soft has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-brand/25",
             dragging
               ? "border-brand-soft bg-brand/10"
-              : "border-white/20 hover:border-white/35 hover:bg-white/[0.02]",
+              : "border-ink/20 hover:border-ink/35 hover:bg-ink/[0.02]",
             fileError && "border-destructive",
           )}
         >
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/[0.05]">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-ink/[0.05]">
             <PaperclipIcon className="size-4" aria-hidden />
           </span>
           <span>
@@ -458,7 +458,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             {files.map((file, i) => (
               <li
                 key={`${file.name}-${file.size}-${file.lastModified}`}
-                className="flex items-center gap-3 rounded-lg bg-white/[0.04] px-4 py-2 text-sm"
+                className="flex items-center gap-3 rounded-lg bg-ink/[0.04] px-4 py-2 text-sm"
               >
                 <FileIcon
                   className="size-4 shrink-0 text-brand-soft"

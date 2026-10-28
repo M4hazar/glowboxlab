@@ -19,19 +19,19 @@ export function Faq({ dict }: { dict: Dictionary }) {
       <Accordion
         type="single"
         collapsible
-        className="mt-12 grid border-t border-white/10 lg:grid-cols-2 lg:gap-x-16 lg:border-t-0"
+        className="mt-12 grid border-t border-ink/10 lg:grid-cols-2 lg:gap-x-16 lg:border-t-0"
       >
         {columns.map((column, i) => (
           <div
             key={column[0]?.value}
             data-reveal={i + 1}
-            className="lg:border-t lg:border-white/10"
+            className="lg:border-t lg:border-ink/10"
           >
             {column.map((item) => (
               <AccordionItem
                 key={item.value}
                 value={item.value}
-                className="border-white/10 last:border-b"
+                className="border-ink/10 last:border-b"
               >
                 <AccordionTrigger className="py-5 text-left text-base font-semibold hover:no-underline sm:text-lg [&>svg]:size-5">
                   {item.q}

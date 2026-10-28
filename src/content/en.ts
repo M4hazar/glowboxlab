@@ -16,6 +16,8 @@ export const en = {
     home: "GlowBox Lab home page",
     language: "Language",
     mainNav: "Main navigation",
+    toLight: "Switch to light mode",
+    toDark: "Switch to dark mode",
   },
   nav: [
     { label: "Home", href: "#top" },

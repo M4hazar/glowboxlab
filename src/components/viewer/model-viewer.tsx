@@ -9,6 +9,7 @@ import {
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { type RefObject, useEffect, useRef, useState } from "react";
+import { useTheme } from "@/components/site/use-theme";
 import type { Dictionary } from "@/content/en";
 import { cn } from "@/lib/utils";
 import type { SceneHandle } from "./lightbox-scene";
@@ -104,6 +105,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
   const [light, setLight] = useState(true);
   const [mode, setMode] = useState<"poster" | "3d" | "fallback">("poster");
   const [ready, setReady] = useState(false);
+  const theme = useTheme();
 
   // Model ładuje się i renderuje tylko wtedy, gdy jest na ekranie.
   useEffect(() => {
@@ -124,7 +126,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
 
   const loading = mode === "3d" && !ready;
   const iconButton =
-    "press inline-flex size-11 items-center justify-center rounded-lg border border-white/12 text-foreground/90 hover:border-white/30 hover:bg-white/[0.06] disabled:opacity-40";
+    "press inline-flex size-11 items-center justify-center rounded-lg border border-ink/12 text-foreground/90 hover:border-ink/30 hover:bg-ink/[0.06] disabled:opacity-40";
 
   return (
     <div ref={viewer}>
@@ -134,17 +136,24 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
         aria-label={t.canvasLabel}
         className="relative aspect-square w-full [mask-image:radial-gradient(closest-side,black_72%,transparent)]"
       >
-        {/* Plakat to render tej samej sceny w tym samym kadrze. Zostaje pod modelem 3D,
-            który pojawia się nad nim, więc przejście jest niewidoczne. */}
-        <Image
-          src={`/images/lightbox-${light ? "on" : "off"}.webp`}
-          alt=""
-          fill
-          loading="eager"
-          fetchPriority="high"
-          sizes="(min-width: 1024px) 640px, 100vw"
-          className="object-cover"
-        />
+        {/* Plakat to render tej samej sceny w tym samym kadrze i na tle motywu. Zostaje pod
+            modelem 3D, który pojawia się nad nim, więc przejście jest niewidoczne. Który plakat
+            widać, decyduje CSS (atrybut motywu na <html>), więc nic nie mignie przed hydratacją. */}
+        {(["dark", "light"] as const).map((variant) => (
+          <Image
+            key={variant}
+            src={`/images/lightbox-${light ? "on" : "off"}${variant === "light" ? "-light" : ""}.webp`}
+            alt=""
+            fill
+            loading="eager"
+            fetchPriority="high"
+            sizes="(min-width: 1024px) 640px, 100vw"
+            className={cn(
+              "object-cover",
+              variant === "light" ? "hidden light:block" : "light:hidden",
+            )}
+          />
+        ))}
         {mode === "3d" && (
           <div
             className={cn(
@@ -154,6 +163,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           >
             <LightboxScene
               light={light}
+              theme={theme ?? "dark"}
               active={visible}
               handle={handle}
               onReady={() => setReady(true)}

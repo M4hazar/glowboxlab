@@ -1,7 +1,27 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* Warianty motywu: atrybut data-theme ze skryptu w <head>, a bez JavaScriptu samo prefers-color-scheme. */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme]) *) {
+      @slot;
+    }
+  }
+}
+@custom-variant light {
+  &:where([data-theme="light"], [data-theme="light"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: light) {
+    &:where(:root:not([data-theme]) *) {
+      @slot;
+    }
+  }
+}
 
 @theme inline {
   --font-sans: var(--font-jakarta);
@@ -29,6 +49,7 @@
   --color-brand-soft: var(--brand-soft);
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--ink);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -38,11 +59,17 @@
 }
 
 /*
- * GlowBox Lab: ciemny motyw marki.
+ * GlowBox Lab: ciemny i jasny motyw marki.
  * Niebieski #007FFF to kolor logo (poświata, akcenty, ikony).
  * Przyciski mają ciemniejszy odcień, żeby biały tekst spełniał WCAG AA.
+ * --ink to kolor cienkich linii i delikatnych teł (biały na ciemnym, grafitowy na jasnym).
+ *
+ * Motyw ustawia skrypt w <head> (src/components/site/theme-script.tsx) w atrybucie data-theme na <html>:
+ * ręczny wybór z ciasteczka albo ustawienie urządzenia. Bez JavaScriptu decyduje samo
+ * prefers-color-scheme.
  */
 :root {
+  --ink: #ffffff;
   --radius: 0.75rem;
   --background: #05070a;
   --foreground: #f5f7fa;
@@ -68,6 +95,55 @@
   --input: rgb(255 255 255 / 0.14);
   --ring: #3d9bff;
   color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --ink: #0b0e13;
+    --background: #f6f7f9;
+    --foreground: #0b0e13;
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --card: #ffffff;
+    --card-foreground: #0b0e13;
+    --popover: #ffffff;
+    --popover-foreground: #0b0e13;
+    --brand-soft: #0062cc;
+    --secondary: #eceef2;
+    --secondary-foreground: #0b0e13;
+    --muted: #eceef2;
+    --muted-foreground: #556070;
+    --accent: #eceef2;
+    --accent-foreground: #0b0e13;
+    --destructive: #c62828;
+    --border: rgb(11 14 19 / 0.1);
+    --input: rgb(11 14 19 / 0.22);
+    --ring: #0066d6;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --ink: #0b0e13;
+  --background: #f6f7f9;
+  --foreground: #0b0e13;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --card: #ffffff;
+  --card-foreground: #0b0e13;
+  --popover: #ffffff;
+  --popover-foreground: #0b0e13;
+  --brand-soft: #0062cc;
+  --secondary: #eceef2;
+  --secondary-foreground: #0b0e13;
+  --muted: #eceef2;
+  --muted-foreground: #556070;
+  --accent: #eceef2;
+  --accent-foreground: #0b0e13;
+  --destructive: #c62828;
+  --border: rgb(11 14 19 / 0.1);
+  --input: rgb(11 14 19 / 0.22);
+  --ring: #0066d6;
+  color-scheme: light;
 }
 
 @layer base {

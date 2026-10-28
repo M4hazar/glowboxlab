@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { jakarta } from "@/app/fonts";
+import { Logo } from "@/components/site/logo";
+import { ThemeScript } from "@/components/site/theme-script";
 import { en } from "@/content/en";
 import { pl } from "@/content/pl";
 import "./globals.css";
@@ -11,17 +13,13 @@ export const metadata: Metadata = {
 
 export default function GlobalNotFound() {
   return (
-    <html lang="en" className={`${jakarta.variable} dark`}>
+    <html lang="en" className={jakarta.variable} suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body className="flex min-h-dvh items-center justify-center px-6">
         <main className="max-w-xl text-center">
-          {/* biome-ignore lint/performance/noImgElement: logo SVG */}
-          <img
-            src="/brand/sygnet.svg"
-            alt=""
-            width={96}
-            height={97}
-            className="mx-auto h-20 w-auto"
-          />
+          <Logo mark className="mx-auto h-20 w-auto" />
           <p className="eyebrow mt-10">404</p>
           <h1 className="display mt-4 text-4xl sm:text-5xl">
             {en.notFound.title}
@@ -40,7 +38,7 @@ export default function GlobalNotFound() {
             <a
               href="/pl"
               lang="pl"
-              className="inline-flex h-12 items-center rounded-lg border border-white/15 px-6 font-medium"
+              className="inline-flex h-12 items-center rounded-lg border border-ink/15 px-6 font-medium"
             >
               {pl.notFound.back}
             </a>
