@@ -19,8 +19,8 @@ export const en = {
   },
   nav: [
     { label: "Home", href: "#top" },
-    { label: "Work", href: "#work" },
-    { label: "How it works", href: "#process" },
+    { label: "Portfolio", href: "#work" },
+    { label: "How to order", href: "#process" },
     { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#quote" },
   ],
@@ -30,7 +30,7 @@ export const en = {
     title: ["Your idea.", "Made to glow."],
     lead: "Each one is 3D printed from scratch. All we need is a logo, a name or a short description.",
     primary: "Get a quote",
-    secondary: "See our work",
+    secondary: "View portfolio",
   },
   viewer: {
     light: "Light",
@@ -46,7 +46,7 @@ export const en = {
       "Interactive 3D model of the GlowBox Lab lightbox. Drag to rotate or use the buttons below.",
   },
   work: {
-    title: "Our work",
+    title: "Portfolio",
     lead: "A few of the forms a lightbox can take.",
     controls: {
       roledescription: "carousel",
@@ -100,7 +100,7 @@ export const en = {
     ],
   },
   process: {
-    title: "How it works",
+    title: "How to order",
     steps: [
       {
         title: "Send your idea",

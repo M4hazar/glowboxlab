@@ -21,9 +21,9 @@ export const pl: Dictionary = {
     mainNav: "Główna nawigacja",
   },
   nav: [
-    { label: "Start", href: "#top" },
-    { label: "Realizacje", href: "#work" },
-    { label: "Jak to działa", href: "#process" },
+    { label: "Home", href: "#top" },
+    { label: "Portfolio", href: "#work" },
+    { label: "Jak zamówić", href: "#process" },
     { label: "FAQ", href: "#faq" },
     { label: "Kontakt", href: "#quote" },
   ],
@@ -33,7 +33,7 @@ export const pl: Dictionary = {
     title: ["Twoje pomysły.", "W nowym świetle."],
     lead: "Każdy drukujemy w 3D od podstaw. Wystarczy logo, napis albo krótki opis.",
     primary: "Zamów wycenę",
-    secondary: "Zobacz realizacje",
+    secondary: "Zobacz portfolio",
   },
   viewer: {
     light: "Światło",
@@ -49,7 +49,7 @@ export const pl: Dictionary = {
       "Interaktywny model 3D lightboxa GlowBox Lab. Przeciągnij, aby obrócić, albo użyj przycisków poniżej.",
   },
   work: {
-    title: "Realizacje",
+    title: "Portfolio",
     lead: "Kilka form, jakie może przybrać lightbox.",
     controls: {
       roledescription: "karuzela",
@@ -106,7 +106,7 @@ export const pl: Dictionary = {
     ],
   },
   process: {
-    title: "Jak to działa",
+    title: "Jak zamówić",
     steps: [
       {
         title: "Wyślij pomysł",

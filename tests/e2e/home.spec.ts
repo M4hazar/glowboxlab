@@ -50,7 +50,7 @@ test("sekcja kontaktu pokazuje e-mail, telefon, miasto i media społecznościowe
   ).toHaveAttribute("href", site.whatsapp);
 });
 
-test("przycisk Start w menu wraca na stronę główną", async ({
+test("przycisk Home w menu wraca na stronę główną", async ({
   page,
   isMobile,
 }) => {
@@ -136,7 +136,7 @@ test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
   await expect(viewer.getByRole("button", { name: t.zoomIn })).toHaveCount(0);
 });
 
-test("realizacje: pasek się przewija, staje i pokazuje szczegóły projektu", async ({
+test("portfolio: pasek się przewija, staje i pokazuje szczegóły projektu", async ({
   page,
 }) => {
   const t = en.work;
