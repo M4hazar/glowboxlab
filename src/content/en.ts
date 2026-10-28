@@ -176,6 +176,10 @@ export const en = {
         a: "The size, the shape, the number of colours and the quantity. You get the exact price in a free quote.",
       },
       {
+        q: "Is every lightbox identical?",
+        a: "Each lightbox is printed layer by layer, so fine print lines may be visible and the shade can vary slightly between material batches or from colours on screen. This is a natural feature of 3D printing that gives every piece its own character and does not affect how it works.",
+      },
+      {
         q: "How long does it take?",
         a: "The lead time is agreed individually, together with the quote. Production starts once you approve the design.",
       },
@@ -221,8 +225,7 @@ export const en = {
       filesDrop: "Drop files here or click to choose",
       filesSelected: "Attached files",
       remove: "Remove",
-      consent:
-        "I consent to GlowBox Lab processing my details to handle this inquiry.",
+      notice: "We use these details only to prepare your quote.",
       privacy: "Privacy policy",
       submit: "Send quote request",
       sending: "Sending",
@@ -238,7 +241,6 @@ export const en = {
       size: "Enter a size of up to 256 × 256 × 256 mm, or tick “Not sure about the size”.",
       quantity: "Enter a quantity from 1 to 500.",
       description: "The description should be at least 20 characters long.",
-      consent: "Please confirm to send the inquiry.",
       fileType: "This file type is not supported: {file}",
       fileSize: "The files are too large. The limit is 4 MB in total.",
       fileCount: "You can attach up to 3 files.",
@@ -264,7 +266,7 @@ export const en = {
     tagline: "Custom LED lightboxes, 3D printed to order.",
     privacy: "Privacy",
     cookies: "Cookies",
-    terms: "Quote terms",
+    terms: "Quote and order terms",
     rights: "GlowBox Lab",
   },
   portfolio: {
@@ -275,7 +277,7 @@ export const en = {
   },
   legal: {
     back: "Back to home page",
-    updated: "Last updated: 27 October 2026",
+    updated: "Last updated: 28 October 2026",
   },
   notFound: {
     title: "This page does not exist.",

@@ -31,7 +31,6 @@ export function SiteFooter({
                 alt=""
                 width={744}
                 height={225}
-                loading="lazy"
                 className="h-9 w-auto"
               />
             </Link>
@@ -77,7 +76,7 @@ export function SiteFooter({
             </li>
             <li>
               <Link
-                href={`${routes.privacy[locale]}#cookies`}
+                href={routes.cookies[locale]}
                 className="hover:text-foreground"
               >
                 {t.cookies}

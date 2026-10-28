@@ -1,5 +1,26 @@
 import type { NextConfig } from "next";
 
+// Polityka treści: wszystko z własnej domeny. Skrypty inline są potrzebne Next.js (strony są
+// statyczne, więc bez nonce), 'wasm-unsafe-eval' dekoderowi modelu 3D. Tylko w produkcji,
+// bo serwer deweloperski potrzebuje eval i websocketu. Na podglądach Vercela dochodzi pasek Vercela.
+const preview = process.env.VERCEL_ENV === "preview";
+const vercelLive = preview ? " https://vercel.live" : "";
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${vercelLive}`,
+  `style-src 'self' 'unsafe-inline'${vercelLive}`,
+  `img-src 'self' data: blob:${preview ? " https://vercel.live https://vercel.com" : ""}`,
+  `font-src 'self'${preview ? " https://vercel.live https://assets.vercel.com" : ""}`,
+  `connect-src 'self' data: blob:${preview ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`,
+  "worker-src 'self' blob:",
+  `frame-src ${preview ? "https://vercel.live" : "'none'"}`,
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
@@ -20,6 +41,11 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: [
+          ...(process.env.NODE_ENV === "production"
+            ? [{ key: "Content-Security-Policy", value: contentSecurityPolicy }]
+            : []),
+          { key: "Strict-Transport-Security", value: "max-age=63072000" },
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

@@ -22,7 +22,6 @@ describe("QuoteForm", () => {
     expect(await screen.findByText(pl.quote.errors.summary)).toBeVisible();
     expect(screen.getByText(pl.quote.errors.name)).toBeVisible();
     expect(screen.getByText(pl.quote.errors.size)).toBeVisible();
-    expect(screen.getByText(pl.quote.errors.consent)).toBeVisible();
     expect(screen.getByLabelText(pl.quote.form.name)).toHaveAttribute(
       "aria-invalid",
       "true",
@@ -62,7 +61,6 @@ describe("QuoteForm", () => {
       screen.getByLabelText(f.filesDrop, { exact: false }),
       new File(["<svg/>"], "logo.svg", { type: "image/svg+xml" }),
     );
-    await user.click(screen.getByLabelText(f.consent, { exact: false }));
     await user.click(screen.getByRole("button", { name: f.submit }));
 
     expect(

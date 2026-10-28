@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { en } from "@/content/en";
-import { privacy, terms } from "@/content/legal";
+import { cookies, privacy, terms } from "@/content/legal";
 import { pl } from "@/content/pl";
 
 function strings(value: unknown): string[] {
@@ -21,7 +21,7 @@ function shape(value: unknown): unknown {
 }
 
 describe("treści strony", () => {
-  const all = [en, pl, privacy, terms];
+  const all = [en, pl, privacy, cookies, terms];
 
   it("nie zawierają długich ani średnich myślników", () => {
     const offending = all.flatMap(strings).filter((s) => /[–—]/.test(s));
@@ -31,6 +31,7 @@ describe("treści strony", () => {
   it("wersja polska ma te same klucze i liczbę elementów co angielska", () => {
     expect(shape(pl)).toEqual(shape(en));
     expect(shape(privacy.pl)).toEqual(shape(privacy.en));
+    expect(shape(cookies.pl)).toEqual(shape(cookies.en));
     expect(shape(terms.pl)).toEqual(shape(terms.en));
   });
 

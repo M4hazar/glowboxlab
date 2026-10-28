@@ -42,6 +42,7 @@ export const routes = {
   home: { en: "/", pl: "/pl" },
   portfolio: { en: "/portfolio", pl: "/pl/portfolio" },
   privacy: { en: "/privacy", pl: "/pl/polityka-prywatnosci" },
+  cookies: { en: "/cookies", pl: "/pl/polityka-cookies" },
   terms: { en: "/quote-terms", pl: "/pl/zasady-wyceny" },
 } as const;
 

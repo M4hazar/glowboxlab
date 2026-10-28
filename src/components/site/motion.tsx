@@ -1,4 +1,3 @@
-import { SKIP_INTRO_KEY } from "@/lib/locale";
 import {
   LOGO_HEIGHT,
   LOGO_WIDTH,
@@ -14,10 +13,12 @@ import {
 // data-motion włącza animacje (gdy system nie prosi o ograniczenie ruchu),
 // data-intro pokazuje ekran startowy przy każdym wczytaniu i odświeżeniu strony
 // (przejścia między podstronami nie wczytują strony od nowa, więc go nie powtarzają).
-// Po zmianie języka ekran startowy się nie pokazuje, strony przenikają się płynnie.
+// Po zmianie języka ekran startowy się nie pokazuje, strony przenikają się płynnie. Zmianę języka
+// poznajemy po poprzedniej stronie (document.referrer) z tej samej witryny w drugim języku,
+// więc nic nie trzeba zapisywać w przeglądarce; odświeżenie pokazuje ekran startowy jak zwykle.
 // Do wczytania strony przewijanie jest natychmiastowe, żeby adres z #sekcją od razu
 // otwierał się na niej, zamiast przewijać się od góry.
-const motionScript = `(function(){try{var d=document.documentElement,skip=null;d.style.scrollBehavior="auto";addEventListener("load",function(){setTimeout(function(){d.style.scrollBehavior=""})});try{skip=sessionStorage.getItem("${SKIP_INTRO_KEY}");sessionStorage.removeItem("${SKIP_INTRO_KEY}")}catch(e){}if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.dataset.motion="";if(skip){d.dataset.instant="";return}d.dataset.intro="";setTimeout(function(){delete d.dataset.intro},3500)}catch(e){}})()`;
+const motionScript = `(function(){try{var d=document.documentElement,skip=false;d.style.scrollBehavior="auto";addEventListener("load",function(){setTimeout(function(){d.style.scrollBehavior=""})});try{var pl=function(p){return p==="/pl"||p.indexOf("/pl/")===0},n=performance.getEntriesByType("navigation")[0],r=new URL(document.referrer);skip=(!n||n.type==="navigate")&&r.origin===location.origin&&pl(r.pathname)!==pl(location.pathname)}catch(e){}if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.dataset.motion="";if(skip){d.dataset.instant="";return}d.dataset.intro="";setTimeout(function(){delete d.dataset.intro},3500)}catch(e){}})()`;
 
 export function MotionScript() {
   // biome-ignore lint/security/noDangerouslySetInnerHtml: stały skrypt bez danych od użytkownika

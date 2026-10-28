@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+// Zod sprawdza przy pierwszym użyciu, czy wolno mu tworzyć kod przez Function(),
+// co nasza polityka bezpieczeństwa treści (CSP) blokuje i zgłasza jako błąd. Bez tego trybu nie próbuje.
+z.config({ jitless: true });
+
 // Komunikaty błędów to klucze z `quote.errors` w słownikach, tłumaczone w UI.
 export type QuoteErrorKey =
   | "name"
@@ -8,7 +12,6 @@ export type QuoteErrorKey =
   | "size"
   | "quantity"
   | "description"
-  | "consent"
   | "fileType"
   | "fileSize"
   | "fileCount";
@@ -64,7 +67,6 @@ export const quoteSchema = z
       .trim()
       .min(20, "description")
       .max(3000, "description"),
-    consent: z.literal(true, { error: "consent" }),
     locale: z.enum(["en", "pl"]),
   })
   // Brak wymiarów sprawdzamy także wtedy, gdy inne pola mają błędy,
@@ -95,7 +97,6 @@ export function readQuoteForm(formData: FormData) {
     quantity: text("quantity"),
     deadline: text("deadline"),
     description: text("description"),
-    consent: formData.get("consent") === "on",
     locale: text("locale"),
   };
 }

@@ -6,7 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     (["en", "pl"] as const).map((locale) => ({
       url: absoluteUrl(routes[key][locale]),
       changeFrequency:
-        key === "privacy" || key === "terms"
+        key === "privacy" || key === "cookies" || key === "terms"
           ? ("yearly" as const)
           : ("monthly" as const),
       priority: key === "home" ? 1 : key === "portfolio" ? 0.7 : 0.3,

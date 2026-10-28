@@ -18,7 +18,6 @@ const valid = {
   quantity: "2",
   deadline: "",
   description: "Logo kawiarni na ścianę za ladą, białe światło.",
-  consent: true,
   locale: "pl",
 };
 
@@ -88,14 +87,12 @@ describe("quoteSchema", () => {
         email: "nie-email",
         phone: "abc",
         description: "za krótko",
-        consent: false,
       }),
     ).toEqual({
       name: "name",
       email: "email",
       phone: "phone",
       description: "description",
-      consent: "consent",
     });
   });
 
@@ -116,13 +113,11 @@ describe("readQuoteForm", () => {
     const data = new FormData();
     data.set("name", "Ola");
     data.set("sizeUnsure", "on");
-    data.set("consent", "on");
     const out = readQuoteForm(data);
     expect(out).toMatchObject({
       name: "Ola",
       email: "",
       sizeUnsure: true,
-      consent: true,
     });
   });
 });
