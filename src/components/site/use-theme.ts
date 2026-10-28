@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { isTheme, type Theme } from "@/lib/theme";
+import { isTheme, THEME_COLORS, type Theme } from "@/lib/theme";
 
 export function currentTheme(): Theme {
   const value = document.documentElement.dataset.theme;
@@ -10,11 +10,20 @@ export function currentTheme(): Theme {
 
 // Aktualny motyw strony (undefined przed hydratacją). Przełączniki w nagłówku i w menu
 // mobilnym, a także zmiana ustawień urządzenia, zmieniają ten sam atrybut na <html>,
-// więc hook go obserwuje.
+// więc hook go obserwuje. Przy okazji ustawia kolor paska przeglądarki (theme-color):
+// React po hydratacji dokłada własne kopie tych znaczników, których skrypt w <head> nie widział.
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>();
   useEffect(() => {
-    const read = () => setTheme(currentTheme());
+    const read = () => {
+      const next = currentTheme();
+      setTheme(next);
+      for (const meta of document.querySelectorAll<HTMLMetaElement>(
+        'meta[name="theme-color"]',
+      )) {
+        meta.content = THEME_COLORS[next];
+      }
+    };
     read();
     const mo = new MutationObserver(read);
     mo.observe(document.documentElement, {

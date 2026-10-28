@@ -2,7 +2,7 @@
 
 import { MoonIcon, SunIcon } from "lucide-react";
 import type { Dictionary } from "@/content/en";
-import { THEME_COLORS, THEME_COOKIE } from "@/lib/theme";
+import { THEME_COOKIE } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 import { currentTheme, useTheme } from "./use-theme";
 
@@ -20,13 +20,9 @@ export function ThemeToggle({
     const next = currentTheme() === "light" ? "dark" : "light";
     // biome-ignore lint/suspicious/noDocumentCookie: Cookie Store API jest w Safari dopiero od 18.4
     document.cookie = `${THEME_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
+    // Kolor paska przeglądarki ustawia useTheme, które obserwuje ten atrybut.
     const apply = () => {
       document.documentElement.dataset.theme = next;
-      for (const meta of document.querySelectorAll<HTMLMetaElement>(
-        'meta[name="theme-color"]',
-      )) {
-        meta.content = THEME_COLORS[next];
-      }
     };
     // Płynne przejście całej strony naraz, zamiast osobnych animacji kolorów poszczególnych elementów.
     if (
