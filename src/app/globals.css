@@ -130,7 +130,7 @@
  * nie prosi o ograniczenie ruchu, i data-intro przy każdym wczytaniu strony. Bez JavaScriptu
  * i przy prefers-reduced-motion strona jest od razu widoczna, bez animacji.
  * Animacje wejścia mają wypełnienie backwards: po zakończeniu nie zostawiają transformacji,
- * która zmieniłaby pozycjonowanie elementów fixed (pełny ekran modelu 3D).
+ * która zmieniłaby pozycjonowanie elementów fixed w ich wnętrzu.
  * Reguły są poza warstwami Tailwinda, więc działają też na elementach z klasami narzędziowymi.
  */
 @utility press {

@@ -22,8 +22,6 @@ import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.j
 
 export type SceneHandle = {
   rotateBy: (radians: number) => void;
-  zoomBy: (factor: number) => void;
-  resetZoom: () => void;
 };
 
 export type LightboxSceneProps = {
@@ -31,7 +29,6 @@ export type LightboxSceneProps = {
   active: boolean;
   handle?: RefObject<SceneHandle | null>;
   onReady?: () => void;
-  onResize?: () => void;
 };
 
 const MODEL_URL = "/models/glowbox-lightbox.glb";
@@ -185,7 +182,6 @@ function CameraRig({
   rotation: RefObject<number>;
 }) {
   const { camera } = useThree();
-  const zoom = useRef(1);
   const target = useMemo(() => new THREE.Vector3(0, -0.05, 0), []);
 
   useEffect(() => {
@@ -202,41 +198,8 @@ function CameraRig({
     rotateBy: (radians) => {
       rotation.current += radians;
     },
-    zoomBy: (factor) => {
-      zoom.current = THREE.MathUtils.clamp(zoom.current * factor, 0.7, 1.9);
-    },
-    // Bez płynnego przejścia: wywoływane, gdy model jest ukryty (wyjście z pełnego ekranu).
-    resetZoom: () => {
-      zoom.current = 1;
-      camera.position.sub(target).setLength(BASE_DISTANCE).add(target);
-    },
   }));
 
-  useFrame((_, delta) => {
-    const desired = BASE_DISTANCE / zoom.current;
-    const offset = camera.position.clone().sub(target);
-    const length = THREE.MathUtils.damp(offset.length(), desired, 6, delta);
-    camera.position.copy(target).add(offset.setLength(length));
-  });
-
-  return null;
-}
-
-// Po zmianie rozmiaru (np. pełny ekran) zgłasza, że obraz w nowym rozmiarze jest już narysowany.
-function ResizeSignal({ onResize }: { onResize?: () => void }) {
-  const size = useThree((state) => state.size);
-  const frames = useRef(0);
-  useEffect(() => {
-    frames.current = size.width > 0 && size.height > 0 ? 0 : -1;
-  }, [size.width, size.height]);
-  useFrame(() => {
-    if (frames.current < 0) return;
-    frames.current += 1;
-    if (frames.current > 2) {
-      frames.current = -1;
-      onResize?.();
-    }
-  });
   return null;
 }
 
@@ -275,7 +238,6 @@ export default function LightboxScene({
   active,
   handle,
   onReady,
-  onResize,
 }: LightboxSceneProps) {
   const rotation = useRef(0);
   const level = useRef(light ? 1 : 0);
@@ -325,7 +287,6 @@ export default function LightboxScene({
         <LightBloom level={level} />
         <ReadySignal onReady={onReady} />
       </Suspense>
-      <ResizeSignal onResize={onResize} />
       <CameraRig handle={handle} rotation={rotation} />
       <OrbitControls
         makeDefault

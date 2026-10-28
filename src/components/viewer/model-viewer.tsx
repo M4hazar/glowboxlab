@@ -3,23 +3,12 @@
 import {
   LightbulbIcon,
   LightbulbOffIcon,
-  LoaderCircleIcon,
-  Maximize2Icon,
-  Minimize2Icon,
-  MinusIcon,
-  PlusIcon,
   RotateCcwIcon,
   RotateCwIcon,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import {
-  type RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/content/en";
 import { cn } from "@/lib/utils";
 import type { SceneHandle } from "./lightbox-scene";
@@ -115,18 +104,6 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
   const [light, setLight] = useState(true);
   const [mode, setMode] = useState<"poster" | "3d" | "fallback">("poster");
   const [ready, setReady] = useState(false);
-  // Plakat jest potrzebny tylko do pierwszego pojawienia się modelu 3D.
-  const [posterDone, setPosterDone] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  // Po przełączeniu pełnego ekranu model jest ukryty, dopóki nie narysuje się w nowym rozmiarze.
-  const [settling, setSettling] = useState(false);
-  const settled = useCallback(() => setSettling(false), []);
-  const toggleExpanded = (value: boolean) => {
-    setExpanded(value);
-    if (mode === "3d") setSettling(true);
-    // Przybliżenie jest tylko na pełnym ekranie, więc po wyjściu kadr wraca do zwykłego.
-    if (!value) handle.current?.resetZoom();
-  };
 
   // Model ładuje się i renderuje tylko wtedy, gdy jest na ekranie.
   useEffect(() => {
@@ -145,56 +122,20 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
     }
   }, [start, mode]);
 
-  const close = useCallback(() => {
-    setExpanded(false);
-    setSettling(true);
-    handle.current?.resetZoom();
-  }, []);
-
-  // Zabezpieczenie, gdyby rozmiar się nie zmienił i model nie dał znaku.
-  useEffect(() => {
-    if (!settling) return;
-    const timer = window.setTimeout(settled, 800);
-    return () => window.clearTimeout(timer);
-  }, [settling, settled]);
-  useEffect(() => {
-    if (!expanded) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
-    document.documentElement.style.overflow = "hidden";
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.documentElement.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [expanded, close]);
-
   const loading = mode === "3d" && !ready;
   const iconButton =
     "press inline-flex size-11 items-center justify-center rounded-lg border border-white/12 text-foreground/90 hover:border-white/30 hover:bg-white/[0.06] disabled:opacity-40";
 
   return (
-    <div
-      ref={viewer}
-      className={cn(
-        expanded && "fixed inset-0 z-[60] flex flex-col bg-background",
-      )}
-    >
+    <div ref={viewer}>
       <div
         ref={frame}
         role="img"
         aria-label={t.canvasLabel}
-        className={cn(
-          "relative w-full",
-          expanded
-            ? "flex-1"
-            : "aspect-square [mask-image:radial-gradient(closest-side,black_72%,transparent)]",
-        )}
+        className="relative aspect-square w-full [mask-image:radial-gradient(closest-side,black_72%,transparent)]"
       >
-        {/* Plakat to render tej samej sceny w tym samym kadrze. Model 3D pojawia się nad nim,
-            więc przejście jest niewidoczne, a potem plakat znika: pokazuje domyślne ujęcie
-            i po obrocie modelu prześwitywałby przy wyjściu z pełnego ekranu. Na pełnym ekranie
-            kadr modelu jest inny niż plakatu (zwłaszcza na telefonie), więc plakat się chowa,
-            a do wczytania modelu widać tylko wskaźnik ładowania. */}
+        {/* Plakat to render tej samej sceny w tym samym kadrze. Zostaje pod modelem 3D,
+            który pojawia się nad nim, więc przejście jest niewidoczne. */}
         <Image
           src={`/images/lightbox-${light ? "on" : "off"}.webp`}
           alt=""
@@ -202,46 +143,24 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           loading="eager"
           fetchPriority="high"
           sizes="(min-width: 1024px) 640px, 100vw"
-          className={cn(
-            "object-cover",
-            expanded && "object-contain",
-            ((expanded && mode !== "fallback") || posterDone) && "invisible",
-          )}
+          className="object-cover"
         />
-        {expanded && loading && (
-          <div
-            aria-hidden
-            className="absolute inset-0 flex items-center justify-center [animation:appear_0.3s_ease_0.3s_backwards]"
-          >
-            <LoaderCircleIcon className="size-8 text-muted-foreground motion-safe:animate-spin" />
-          </div>
-        )}
         {mode === "3d" && (
           <div
             className={cn(
-              "absolute inset-0 transition-opacity",
-              settling ? "duration-0" : "duration-300",
-              ready && !settling ? "opacity-100" : "opacity-0",
+              "absolute inset-0 transition-opacity duration-300",
+              ready ? "opacity-100" : "opacity-0",
             )}
-            onTransitionEnd={() => setPosterDone(true)}
-            // Przejście przerwane pełnym ekranem: plakat i tak już nie wróci.
-            onTransitionCancel={() => setPosterDone(true)}
           >
             <LightboxScene
               light={light}
               active={visible}
               handle={handle}
               onReady={() => setReady(true)}
-              onResize={settled}
             />
           </div>
         )}
       </div>
-
-      {/* Komunikat dla czytników ekranu jest poza role="img", bo jej zawartość nie jest odczytywana. */}
-      <p role="status" className="sr-only">
-        {expanded && loading ? t.loading : ""}
-      </p>
 
       {mode === "fallback" && (
         <p className="px-5 pt-4 text-center text-sm text-muted-foreground">
@@ -249,14 +168,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
         </p>
       )}
 
-      <div
-        className={cn(
-          "flex flex-wrap items-center justify-center gap-2",
-          expanded
-            ? "border-t border-white/[0.07] p-4"
-            : "relative z-10 -mt-10",
-        )}
-      >
+      <div className="relative z-10 -mt-10 flex flex-wrap items-center justify-center gap-2">
         <button
           type="button"
           aria-label={t.light}
@@ -294,44 +206,6 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           onClick={() => handle.current?.rotateBy(Math.PI / 4)}
         >
           <RotateCwIcon className="size-4" />
-        </button>
-        {expanded && (
-          <>
-            <button
-              type="button"
-              className={iconButton}
-              aria-label={t.zoomOut}
-              title={t.zoomOut}
-              disabled={loading}
-              onClick={() => handle.current?.zoomBy(1 / 1.25)}
-            >
-              <MinusIcon className="size-4" />
-            </button>
-            <button
-              type="button"
-              className={iconButton}
-              aria-label={t.zoomIn}
-              title={t.zoomIn}
-              disabled={loading}
-              onClick={() => handle.current?.zoomBy(1.25)}
-            >
-              <PlusIcon className="size-4" />
-            </button>
-          </>
-        )}
-        <button
-          type="button"
-          className={iconButton}
-          aria-label={expanded ? t.exitFullscreen : t.fullscreen}
-          title={expanded ? t.exitFullscreen : t.fullscreen}
-          aria-pressed={expanded}
-          onClick={() => toggleExpanded(!expanded)}
-        >
-          {expanded ? (
-            <Minimize2Icon className="size-4" />
-          ) : (
-            <Maximize2Icon className="size-4" />
-          )}
         </button>
       </div>
     </div>

@@ -126,11 +126,10 @@ test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
+test("model 3D na górze strony: przycisk światła i obrót, bez pełnego ekranu", async ({
   page,
 }) => {
   const t = en.viewer;
-  // Model się nie wczytuje, więc na pełnym ekranie widać stan ładowania.
   await page.route("**/*.glb", () => {});
   await page.goto("/");
   const viewer = page.locator("#top");
@@ -138,51 +137,14 @@ test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
   await expect(light).toHaveAttribute("aria-pressed", "true");
   await light.click();
   await expect(light).toHaveAttribute("aria-pressed", "false");
-
-  const full = viewer.getByRole("button", { name: t.fullscreen });
-  await full.click();
+  // Paweł zrezygnował z pełnego ekranu i przybliżania: zostają tylko światło i obrót.
+  await expect(viewer.getByRole("button")).toHaveCount(3);
   await expect(
-    viewer.getByRole("button", { name: t.exitFullscreen }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await expect(viewer.getByRole("button", { name: t.zoomIn })).toBeVisible();
-  await expect(viewer.getByRole("status")).toHaveText(t.loading);
-  await page.keyboard.press("Escape");
-  await expect(full).toHaveAttribute("aria-pressed", "false");
-  await expect(viewer.getByRole("button", { name: t.zoomIn })).toHaveCount(0);
-});
-
-test("obrócony model 3D po wyjściu z pełnego ekranu nie wraca na chwilę do plakatu", async ({
-  page,
-  isMobile,
-}) => {
-  // Logika jest ta sama na każdym ekranie, a programowy WebGL rysuje pełny ekran telefonu
-  // (gęstość pikseli 2,6) zbyt wolno jak na test, więc sprawdzamy tylko na komputerze.
-  test.skip(
-    isMobile,
-    "pełny ekran telefonu w programowym WebGL trwa ponad minutę",
-  );
-  test.slow();
-  const t = en.viewer;
-  await page.goto("/");
-  const viewer = page.locator("#top");
-  // Plakat pokazuje domyślne ujęcie, więc po pojawieniu się modelu 3D znika na stałe.
-  const poster = viewer.locator('[role="img"] img');
-  await expect(poster).toBeHidden({ timeout: 60000 });
-
-  await viewer.getByRole("button", { name: t.fullscreen }).click();
-  const right = viewer.getByRole("button", { name: t.rotateRight });
-  await expect(right).toBeEnabled();
-  await right.click();
-  await viewer.getByRole("button", { name: t.zoomIn }).click();
-  await viewer.getByRole("button", { name: t.exitFullscreen }).click();
+    viewer.getByRole("button", { name: t.rotateLeft }),
+  ).toBeVisible();
   await expect(
-    viewer.getByRole("button", { name: t.fullscreen }),
-  ).toHaveAttribute("aria-pressed", "false");
-  await expect(poster).toBeHidden();
-  // Programowy WebGL w testach rysuje wolno, więc model wraca dłużej niż na prawdziwym urządzeniu.
-  await expect(
-    viewer.locator('[role="img"] > div', { has: page.locator("canvas") }),
-  ).toHaveCSS("opacity", "1", { timeout: 20000 });
+    viewer.getByRole("button", { name: t.rotateRight }),
+  ).toBeVisible();
 });
 
 test("portfolio: pasek się przewija, staje i pokazuje szczegóły projektu", async ({
