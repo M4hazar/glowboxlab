@@ -45,20 +45,17 @@ export function WorkCard({
       className={cn("group block text-left outline-none", className)}
       {...props}
     >
-      {/* Zewnętrzna ramka niesie światło przy kursorze, wewnętrzna przycina zdjęcie. */}
-      <span data-spotlight className="relative block rounded-2xl">
-        <span className="relative block aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-surface transition-colors group-hover:border-white/25 group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background">
-          <Image
-            src={work.image}
-            alt=""
-            fill
-            draggable={false}
-            sizes={sizes}
-            className="object-cover transition-transform duration-700 ease-glow group-hover:scale-[1.04]"
-          />
-          <span className="absolute right-3 bottom-3 inline-flex size-9 translate-y-1 items-center justify-center rounded-full bg-background/70 text-foreground opacity-0 backdrop-blur transition-[opacity,translate] duration-300 ease-glow group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
-            <PlusIcon className="size-4" aria-hidden />
-          </span>
+      <span className="relative block aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-surface transition-colors group-hover:border-white/25 group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background">
+        <Image
+          src={work.image}
+          alt=""
+          fill
+          draggable={false}
+          sizes={sizes}
+          className="object-cover transition-transform duration-700 ease-glow group-hover:scale-[1.04]"
+        />
+        <span className="absolute right-3 bottom-3 inline-flex size-9 translate-y-1 items-center justify-center rounded-full bg-background/70 text-foreground opacity-0 backdrop-blur transition-[opacity,translate] duration-300 ease-glow group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+          <PlusIcon className="size-4" aria-hidden />
         </span>
       </span>
       <span className="mt-5 block text-xl font-semibold tracking-tight">

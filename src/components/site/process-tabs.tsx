@@ -102,7 +102,6 @@ export function ProcessTabs({
 
       <div
         data-reveal="2"
-        data-spotlight
         className="relative mt-8 rounded-2xl border border-white/10 bg-surface sm:mt-10"
       >
         {t.steps.map((step, i) => {

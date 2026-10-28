@@ -312,6 +312,30 @@ test("animacje: ekran startowy raz na kartę, sekcje odsłaniają się przy prze
   await expect(faq).toHaveCSS("opacity", "1");
 });
 
+test("nagłówek zostaje widoczny i wskazuje sekcję na ekranie", async ({
+  page,
+  isMobile,
+}) => {
+  await page.route("**/*.glb", () => {});
+  await page.goto("/pl");
+  await page.evaluate(() =>
+    document.querySelector("#faq")?.scrollIntoView({ block: "center" }),
+  );
+  const header = page.locator("header");
+  await expect(header).toBeInViewport();
+  await expect(header).toHaveCSS("translate", "none");
+  if (isMobile) {
+    await page.getByRole("button", { name: pl.a11y.menu }).click();
+    await expect(
+      page.getByRole("dialog").getByRole("link", { name: "FAQ" }),
+    ).toHaveAttribute("aria-current", "true");
+  } else {
+    await expect(
+      header.getByRole("link", { name: "FAQ", exact: true }),
+    ).toHaveAttribute("aria-current", "true");
+  }
+});
+
 test("przy ograniczonym ruchu strona nie ma animacji", async ({ browser }) => {
   const context = await browser.newContext({ reducedMotion: "reduce" });
   const page = await context.newPage();

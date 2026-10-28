@@ -18,6 +18,8 @@ const youtube = {
 
 export const site = {
   name: "GlowBox Lab",
+  // Osoba prowadząca sprzedaż. Adresu domowego celowo nie publikujemy.
+  owner: "Mateusz Pawlak",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://glowboxlab.com",
   // Adres do potwierdzenia, na razie w domenie marki.
   email: "hello@glowboxlab.com",

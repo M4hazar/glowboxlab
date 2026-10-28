@@ -133,8 +133,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
 
         <div
           data-reveal="1"
-          data-spotlight
-          className="relative rounded-2xl border border-white/10 bg-surface p-5 sm:p-8"
+          className="rounded-2xl border border-white/10 bg-surface p-5 sm:p-8"
         >
           <QuoteForm dict={dict} />
         </div>

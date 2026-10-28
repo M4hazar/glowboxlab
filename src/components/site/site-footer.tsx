@@ -64,7 +64,7 @@ export function SiteFooter({
 
         <div className="flex flex-col gap-5 border-t border-white/[0.07] pt-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>
-            © <CurrentYear /> {t.rights}
+            © <CurrentYear /> {t.rights}, {site.owner}
           </p>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             <li>
