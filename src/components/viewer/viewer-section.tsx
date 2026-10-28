@@ -109,14 +109,20 @@ export function ViewerSection({ dict }: { dict: Dictionary }) {
                   : "opacity-100",
               )}
             >
+              {/* Plakaty są renderami tej samej sceny w proporcjach ramki (4:5 i 16:9), więc model nie przeskakuje po załadowaniu */}
               <Image
-                src={
-                  light ? "/images/viewer-on.webp" : "/images/viewer-off.webp"
-                }
+                src={`/images/viewer-tall-${light ? "on" : "off"}.webp`}
+                alt=""
+                fill
+                sizes="100vw"
+                className="object-cover sm:hidden"
+              />
+              <Image
+                src={`/images/viewer-wide-${light ? "on" : "off"}.webp`}
                 alt=""
                 fill
                 sizes="(min-width: 1280px) 1216px, 100vw"
-                className="object-cover"
+                className="hidden object-cover sm:block"
               />
               {mode !== "fallback" && (
                 <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs text-muted-foreground">
