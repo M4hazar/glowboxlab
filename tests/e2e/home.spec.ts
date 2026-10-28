@@ -114,22 +114,26 @@ test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("podgląd 3D: przycisk światła i pełny ekran", async ({ page }) => {
+test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
+  page,
+}) => {
   const t = en.viewer;
-  await page.goto("/#preview");
-  const viewer = page.locator("#preview");
+  await page.goto("/");
+  const viewer = page.locator("#top");
   const light = viewer.getByRole("button", { name: t.light, exact: true });
-  await expect(light).toHaveAttribute("aria-pressed", "true");
-  await light.click();
   await expect(light).toHaveAttribute("aria-pressed", "false");
+  await light.click();
+  await expect(light).toHaveAttribute("aria-pressed", "true");
 
   const full = viewer.getByRole("button", { name: t.fullscreen });
   await full.click();
   await expect(
     viewer.getByRole("button", { name: t.exitFullscreen }),
   ).toHaveAttribute("aria-pressed", "true");
+  await expect(viewer.getByRole("button", { name: t.zoomIn })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(full).toHaveAttribute("aria-pressed", "false");
+  await expect(viewer.getByRole("button", { name: t.zoomIn })).toHaveCount(0);
 });
 
 test.describe("przeglądarka po polsku", () => {

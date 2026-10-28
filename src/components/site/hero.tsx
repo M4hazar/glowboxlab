@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "lucide-react";
-import Image from "next/image";
+import { ModelViewer } from "@/components/viewer/model-viewer";
 import type { Dictionary } from "@/content/en";
 
 export function Hero({ dict }: { dict: Dictionary }) {
@@ -31,16 +31,8 @@ export function Hero({ dict }: { dict: Dictionary }) {
           </div>
         </div>
 
-        <div className="relative mx-auto aspect-square w-full max-w-[560px] [mask-image:radial-gradient(closest-side,black_72%,transparent)] lg:max-w-[640px]">
-          <Image
-            src="/images/hero.webp"
-            alt={t.imageAlt}
-            fill
-            priority
-            fetchPriority="high"
-            sizes="(min-width: 1024px) 640px, 100vw"
-            className="object-cover"
-          />
+        <div className="mx-auto w-full max-w-[560px] lg:max-w-[640px]">
+          <ModelViewer dict={dict} />
         </div>
       </div>
     </section>

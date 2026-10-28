@@ -10,6 +10,7 @@ import {
 } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import type { BloomEffect } from "postprocessing";
 import {
   type RefObject,
   Suspense,
@@ -35,9 +36,10 @@ export type LightboxSceneProps = {
 
 const MODEL_URL = "/models/glowbox-lightbox.glb";
 const SCALE = 10; // model jest w metrach, scena w decymetrach
-const BASE_DISTANCE = 6.4;
+const BASE_DISTANCE = 5.5;
 const INITIAL_AZIMUTH = -0.62;
-const INITIAL_ELEVATION = 0.06;
+const INITIAL_ELEVATION = 0.1;
+const BLOOM = 0.8;
 
 // Kolory światła: część niebieska, część biała, poświata na podłodze.
 const GLOW = { blue: "#0055ff", white: "#ffffff", spill: "#1a7cff" };
@@ -46,25 +48,25 @@ function useLightboxMaterials() {
   return useMemo(
     () => ({
       housing: new THREE.MeshStandardMaterial({
-        color: "#0b0c0e",
-        roughness: 0.62,
+        color: "#16181c",
+        roughness: 0.55,
         metalness: 0.05,
       }),
       face: new THREE.MeshStandardMaterial({
-        color: "#050506",
+        color: "#060708",
         roughness: 0.45,
         metalness: 0.0,
       }),
       blue: new THREE.MeshStandardMaterial({
         color: "#0a5fc4",
-        roughness: 0.4,
+        roughness: 0.45,
         emissive: new THREE.Color(GLOW.blue),
         emissiveIntensity: 0,
         toneMapped: false,
       }),
       white: new THREE.MeshStandardMaterial({
-        color: "#d9dadc",
-        roughness: 0.4,
+        color: "#e4e5e7",
+        roughness: 0.45,
         emissive: new THREE.Color(GLOW.white),
         emissiveIntensity: 0,
         toneMapped: false,
@@ -76,9 +78,11 @@ function useLightboxMaterials() {
 
 function Lightbox({
   light,
+  level,
   rotation,
 }: {
   light: boolean;
+  level: RefObject<number>;
   rotation: RefObject<number>;
 }) {
   const { scene } = useGLTF(MODEL_URL);
@@ -86,7 +90,6 @@ function Lightbox({
   const group = useRef<THREE.Group>(null);
   const spill = useRef<THREE.PointLight>(null);
   const pool = useRef<THREE.MeshBasicMaterial>(null);
-  const level = useRef(light ? 1 : 0);
 
   const model = useMemo(() => {
     const root = scene.clone(true);
@@ -184,6 +187,38 @@ function Lightbox({
         />
       </mesh>
     </>
+  );
+}
+
+// Zgaszony lightbox stoi w jasnym świetle studyjnym. Po włączeniu światło
+// studyjne przygasa, żeby podświetlenie było lepiej widoczne.
+function StudioLights({ level }: { level: RefObject<number> }) {
+  const key = useRef<THREE.DirectionalLight>(null);
+  useFrame(() => {
+    if (key.current) {
+      key.current.intensity = THREE.MathUtils.lerp(3.8, 1.1, level.current);
+    }
+  });
+  return <directionalLight ref={key} position={[-3.5, 4.5, 4]} />;
+}
+
+// Poświata (bloom) rośnie razem ze światłem, więc zgaszony lightbox nie świeci.
+function LightBloom({ level }: { level: RefObject<number> }) {
+  const bloom = useRef<BloomEffect>(null);
+  useFrame(() => {
+    if (bloom.current) bloom.current.intensity = level.current * BLOOM;
+  });
+  return (
+    <EffectComposer multisampling={4}>
+      <Bloom
+        ref={bloom}
+        mipmapBlur
+        luminanceThreshold={0.25}
+        luminanceSmoothing={0.1}
+        intensity={0}
+        radius={0.35}
+      />
+    </EffectComposer>
   );
 }
 
@@ -289,6 +324,7 @@ export default function LightboxScene({
   onReady,
 }: LightboxSceneProps) {
   const rotation = useRef(0);
+  const level = useRef(light ? 1 : 0);
 
   return (
     <Canvas
@@ -306,7 +342,7 @@ export default function LightboxScene({
       <color attach="background" args={["#05070a"]} />
       <fog attach="fog" args={["#05070a", 7, 16]} />
       <ambientLight intensity={0.12} />
-      <directionalLight position={[-3, 4, 4]} intensity={1.1} />
+      <StudioLights level={level} />
       <spotLight
         position={[4, 3, -3]}
         angle={0.5}
@@ -315,7 +351,7 @@ export default function LightboxScene({
         color="#7fb8ff"
       />
       <Suspense fallback={null}>
-        <Lightbox light={light} rotation={rotation} />
+        <Lightbox light={light} level={level} rotation={rotation} />
         <Floor />
         <ContactShadows
           position={[0, -1.015, 0]}
@@ -340,15 +376,7 @@ export default function LightboxScene({
             scale={[4, 2, 1]}
           />
         </Environment>
-        <EffectComposer multisampling={4}>
-          <Bloom
-            mipmapBlur
-            luminanceThreshold={0.25}
-            luminanceSmoothing={0.1}
-            intensity={0.8}
-            radius={0.35}
-          />
-        </EffectComposer>
+        <LightBloom level={level} />
         <ReadySignal onReady={onReady} />
       </Suspense>
       <CameraRig handle={handle} rotation={rotation} />
