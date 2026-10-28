@@ -112,7 +112,7 @@ export const en = {
       },
       {
         q: "Where do you deliver?",
-        a: "Across Europe. You can also collect your lightbox in person in Walsall. We speak English and Polish.",
+        a: "Across Europe. You can also collect your lightbox in person in Walsall.",
       },
     ],
   },
@@ -177,6 +177,11 @@ export const en = {
     location: "Walsall, United Kingdom",
     delivery: "We ship across Europe. You can also collect in person.",
     socials: "GlowBox Lab on social media",
+    promises: [
+      "We reply within 24 hours",
+      "Free quote, no obligation",
+      "We speak English and Polish",
+    ],
   },
   footer: {
     tagline: "Custom LED lightboxes, 3D printed to order.",

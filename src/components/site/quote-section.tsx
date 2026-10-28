@@ -1,6 +1,14 @@
-import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import {
+  BadgeCheckIcon,
+  ClockIcon,
+  LanguagesIcon,
+  MailIcon,
+  MapPinIcon,
+  PhoneIcon,
+} from "lucide-react";
 import type { Dictionary } from "@/content/en";
 import { site } from "@/lib/site";
+import { cn } from "@/lib/utils";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -13,18 +21,19 @@ import { SectionHeading } from "./sections";
 
 const contactLink =
   "inline-flex items-center gap-4 font-medium transition-colors hover:text-brand-soft";
+const socialLink =
+  "flex h-11 items-center justify-center gap-2.5 rounded-lg border text-sm font-medium transition-colors";
 
 export function QuoteSection({ dict }: { dict: Dictionary }) {
   const t = dict.quote;
   const c = dict.contact;
-  // WhatsApp pierwszy, bo to najszybszy kontakt.
   const socials = [
-    { ...site.whatsapp, Icon: WhatsAppIcon },
     { ...site.instagram, Icon: InstagramIcon },
     { ...site.facebook, Icon: FacebookIcon },
     { ...site.tiktok, Icon: TikTokIcon },
     { ...site.youtube, Icon: YouTubeIcon },
   ];
+  const promiseIcons = [ClockIcon, BadgeCheckIcon, LanguagesIcon];
   return (
     <section
       id="quote"
@@ -64,20 +73,56 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
             </li>
           </ul>
 
-          <ul aria-label={c.socials} className="mt-10 flex flex-wrap gap-2.5">
+          {/* WhatsApp na całą szerokość, bo to najszybszy kontakt, pod nim reszta po dwa. */}
+          <ul
+            aria-label={c.socials}
+            className="mt-10 grid max-w-sm grid-cols-2 gap-2.5"
+          >
+            <li className="col-span-2">
+              <a
+                href={site.whatsapp.href}
+                target="_blank"
+                rel="noopener"
+                className={cn(
+                  socialLink,
+                  "border-brand/50 bg-brand/10 hover:border-brand-soft hover:bg-brand/20",
+                )}
+              >
+                <WhatsAppIcon className="size-4" />
+                {site.whatsapp.name}
+              </a>
+            </li>
             {socials.map(({ name, href, Icon }) => (
               <li key={href}>
                 <a
                   href={href}
                   target="_blank"
                   rel="noopener"
-                  className="inline-flex h-11 items-center gap-2.5 rounded-full border border-white/15 px-4 text-sm font-medium transition-colors hover:border-white/40 hover:text-brand-soft"
+                  className={cn(
+                    socialLink,
+                    "border-white/15 hover:border-white/40 hover:text-brand-soft",
+                  )}
                 >
                   <Icon className="size-4" />
                   {name}
                 </a>
               </li>
             ))}
+          </ul>
+
+          <ul className="mt-10 grid gap-3 border-t border-white/[0.07] pt-8 text-muted-foreground">
+            {c.promises.map((text, i) => {
+              const Icon = promiseIcons[i];
+              return (
+                <li key={text} className="flex items-center gap-3">
+                  <Icon
+                    className="size-5 shrink-0 text-brand-soft"
+                    aria-hidden
+                  />
+                  {text}
+                </li>
+              );
+            })}
           </ul>
         </div>
 

@@ -38,6 +38,9 @@ test("sekcja kontaktu pokazuje e-mail, telefon, miasto i media społecznościowe
     site.phoneHref,
   );
   await expect(contact.getByText(en.contact.location)).toBeVisible();
+  for (const text of en.contact.promises) {
+    await expect(contact.getByText(text)).toBeVisible();
+  }
   // Podpisane przyciski, WhatsApp jako pierwszy.
   const socials = contact
     .getByRole("list", { name: en.contact.socials })

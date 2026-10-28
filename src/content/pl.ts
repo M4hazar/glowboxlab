@@ -115,7 +115,7 @@ export const pl: Dictionary = {
       },
       {
         q: "Gdzie wysyłacie?",
-        a: "W całej Europie. Możesz też odebrać lightbox osobiście w Walsall. Rozmawiamy po polsku i po angielsku.",
+        a: "W całej Europie. Możesz też odebrać lightbox osobiście w Walsall.",
       },
     ],
   },
@@ -181,6 +181,11 @@ export const pl: Dictionary = {
     delivery:
       "Wysyłamy w całej Europie. Możesz też odebrać zamówienie osobiście.",
     socials: "GlowBox Lab w mediach społecznościowych",
+    promises: [
+      "Odpowiadamy w ciągu 24 godzin",
+      "Bezpłatna wycena, bez zobowiązań",
+      "Rozmawiamy po polsku i po angielsku",
+    ],
   },
   footer: {
     tagline: "Personalizowane lightboxy LED z druku 3D.",
