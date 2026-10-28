@@ -100,7 +100,7 @@ export const en = {
       },
       {
         q: "How big can a lightbox be?",
-        a: "Up to 256 × 256 mm at the front and 256 mm deep. That is what our printer makes in one piece.",
+        a: "Up to 256 × 256 × 256 mm. That is what our printer makes in one piece.",
       },
       {
         q: "What does the price depend on?",
@@ -129,7 +129,7 @@ export const en = {
       height: "Height",
       depth: "Depth",
       unit: "mm",
-      sizeHint: "Up to 256 mm in each dimension.",
+      sizeHint: "Maximum size: 256 × 256 × 256 mm.",
       sizeUnsure: "Not sure yet, please advise",
       decrease: "Decrease quantity",
       increase: "Increase quantity",
@@ -166,7 +166,7 @@ export const en = {
       name: "Please enter your name.",
       email: "Please enter a valid email address.",
       phone: "Please enter a valid phone number.",
-      size: "Enter a size of up to 256 mm, or tick “Not sure yet”.",
+      size: "Enter a size of up to 256 × 256 × 256 mm, or tick “Not sure yet”.",
       quantity: "Enter a quantity from 1 to 500.",
       description: "Tell us a little more (at least 20 characters).",
       consent: "Please confirm to send the inquiry.",

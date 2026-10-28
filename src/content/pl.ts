@@ -103,7 +103,7 @@ export const pl: Dictionary = {
       },
       {
         q: "Jak duży może być lightbox?",
-        a: "Maksymalnie 256 × 256 mm z przodu i 256 mm głębokości. Tyle nasza drukarka wykonuje w jednym kawałku.",
+        a: "Maksymalnie 256 × 256 × 256 mm. Tyle nasza drukarka wykonuje w jednym kawałku.",
       },
       {
         q: "Od czego zależy cena?",
@@ -132,7 +132,7 @@ export const pl: Dictionary = {
       height: "Wysokość",
       depth: "Głębokość",
       unit: "mm",
-      sizeHint: "Maksymalnie 256 mm w każdym wymiarze.",
+      sizeHint: "Maksymalny rozmiar: 256 × 256 × 256 mm.",
       sizeUnsure: "Nie wiem jeszcze, pomóżcie dobrać",
       decrease: "Zmniejsz liczbę sztuk",
       increase: "Zwiększ liczbę sztuk",
@@ -169,7 +169,7 @@ export const pl: Dictionary = {
       name: "Podaj swoje imię.",
       email: "Podaj poprawny adres e-mail.",
       phone: "Podaj poprawny numer telefonu.",
-      size: "Podaj wymiary do 256 mm albo zaznacz „Nie wiem jeszcze”.",
+      size: "Podaj wymiary do 256 × 256 × 256 mm albo zaznacz „Nie wiem jeszcze”.",
       quantity: "Podaj liczbę sztuk od 1 do 500.",
       description: "Napisz trochę więcej (co najmniej 20 znaków).",
       consent: "Potwierdź zgodę, aby wysłać zapytanie.",
