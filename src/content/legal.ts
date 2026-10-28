@@ -151,7 +151,7 @@ export const terms: Record<Locale, LegalDoc> = {
       {
         heading: "Lead time and delivery",
         body: [
-          `We ship across the UK and Europe, or you can collect your order in person in ${site.city}. We agree the production time and the delivery method together with the quote, because they depend on the project and on where you are.`,
+          `We ship across Europe, or you can collect your order in person in ${site.city}. We agree the production time and the delivery method together with the quote, because they depend on the project and on where you are.`,
         ],
       },
     ],
@@ -189,7 +189,7 @@ export const terms: Record<Locale, LegalDoc> = {
       {
         heading: "Termin i dostawa",
         body: [
-          `Wysyłamy do Polski, Wielkiej Brytanii i reszty Europy, a zamówienie możesz też odebrać osobiście w ${site.city}. Czas realizacji i sposób dostawy ustalamy razem z wyceną, bo zależą od projektu i od tego, gdzie jesteś.`,
+          `Wysyłamy w całej Europie, a zamówienie możesz też odebrać osobiście w ${site.city}. Czas realizacji i sposób dostawy ustalamy razem z wyceną, bo zależą od projektu i od tego, gdzie jesteś.`,
         ],
       },
     ],

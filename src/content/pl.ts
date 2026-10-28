@@ -7,7 +7,7 @@ export const pl: Dictionary = {
   meta: {
     title: "GlowBox Lab | LED boxy na zamówienie",
     description:
-      "Personalizowane lightboxy LED z druku 3D. Twoje logo, napis lub pomysł w formie podświetlanego boxa dla firmy, do pokoju gamingowego albo na prezent. Działamy w Walsall w Wielkiej Brytanii i wysyłamy do Polski oraz całej Europy.",
+      "Personalizowane lightboxy LED z druku 3D. Twoje logo, napis lub pomysł w formie podświetlanego boxa dla firmy, do pokoju gamingowego albo na prezent. Działamy w Walsall w Wielkiej Brytanii i wysyłamy w całej Europie.",
     ogImage: "/og/glowbox-lab-pl.jpg",
     ogAlt:
       "Lightbox LED GlowBox Lab z sześciokątnym logo podświetlonym na niebiesko",
@@ -21,6 +21,7 @@ export const pl: Dictionary = {
     mainNav: "Główna nawigacja",
   },
   nav: [
+    { label: "Start", href: "#top" },
     { label: "Realizacje", href: "#work" },
     { label: "Jak to działa", href: "#process" },
     { label: "FAQ", href: "#faq" },
@@ -30,15 +31,11 @@ export const pl: Dictionary = {
   hero: {
     eyebrow: "Lightboxy LED na zamówienie",
     title: ["Twoje pomysły.", "W nowym świetle."],
-    lead: "Lightboxy LED z druku 3D, robione na zamówienie. Z Twojego logo, napisu albo samego pomysłu.",
+    lead: "Każdy drukujemy w 3D od podstaw. Wystarczy logo, napis albo krótki opis.",
     primary: "Zamów wycenę",
     secondary: "Zobacz realizacje",
-    imageAlt:
-      "Sześciokątny lightbox GlowBox Lab z białym i niebieskim podświetlonym logo na ciemnym tle",
   },
   viewer: {
-    title: "Zobacz w 3D",
-    lead: "Obróć, przybliż i włącz światło.",
     light: "Światło",
     zoomIn: "Przybliż",
     zoomOut: "Oddal",
@@ -46,7 +43,6 @@ export const pl: Dictionary = {
     rotateRight: "Obróć w prawo",
     fullscreen: "Pełny ekran",
     exitFullscreen: "Zamknij pełny ekran",
-    loading: "Ładowanie modelu 3D",
     fallback:
       "Podgląd 3D nie jest dostępny na tym urządzeniu, dlatego pokazujemy lightbox na zdjęciu.",
     canvasLabel:
@@ -90,7 +86,7 @@ export const pl: Dictionary = {
       },
       {
         title: "Robimy lightbox",
-        text: "Po akceptacji projektu drukujemy go w 3D i składamy.",
+        text: "Gdy zaakceptujesz projekt, drukujemy obudowę w 3D i montujemy LED.",
       },
     ],
   },
@@ -118,8 +114,8 @@ export const pl: Dictionary = {
         a: "Termin ustalamy razem z wyceną. Produkcję zaczynamy po akceptacji projektu.",
       },
       {
-        q: "Czy wysyłacie do Polski?",
-        a: "Tak. Wysyłamy do Polski, Wielkiej Brytanii i reszty Europy. Możesz też odebrać lightbox osobiście w Walsall. Rozmawiamy po polsku i po angielsku.",
+        q: "Gdzie wysyłacie?",
+        a: "W całej Europie. Możesz też odebrać lightbox osobiście w Walsall. Rozmawiamy po polsku i po angielsku.",
       },
     ],
   },
@@ -182,7 +178,7 @@ export const pl: Dictionary = {
     whatsapp: "Napisz na WhatsApp",
     location: "Walsall, Wielka Brytania",
     delivery:
-      "Wysyłamy do Polski, Wielkiej Brytanii i całej Europy. Możesz też odebrać zamówienie osobiście w Walsall.",
+      "Wysyłamy w całej Europie. Możesz też odebrać zamówienie osobiście.",
     socials: "GlowBox Lab w mediach społecznościowych",
   },
   footer: {

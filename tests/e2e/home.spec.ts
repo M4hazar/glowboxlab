@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 import { en } from "../../src/content/en";
 import { pl } from "../../src/content/pl";
-import { site } from "../../src/lib/site";
+import { routes, site } from "../../src/lib/site";
 
 const pages = [
   { path: "/", dict: en },
@@ -48,6 +48,23 @@ test("sekcja kontaktu pokazuje e-mail, telefon, miasto i media społecznościowe
   await expect(
     socials.getByRole("link", { name: en.contact.whatsapp }),
   ).toHaveAttribute("href", site.whatsapp);
+});
+
+test("przycisk Start w menu wraca na stronę główną", async ({
+  page,
+  isMobile,
+}) => {
+  await page.goto(routes.privacy.pl);
+  if (isMobile) await page.getByRole("button", { name: pl.a11y.menu }).click();
+  const area = isMobile ? page.getByRole("dialog") : page.getByRole("banner");
+  await area
+    .getByRole("navigation", { name: pl.a11y.mainNav })
+    .getByRole("link", { name: pl.nav[0].label, exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/pl#top$/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    pl.hero.title[0],
+  );
 });
 
 test("przełącznik języka prowadzi do polskiej wersji", async ({
@@ -97,22 +114,26 @@ test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("podgląd 3D: przycisk światła i pełny ekran", async ({ page }) => {
+test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
+  page,
+}) => {
   const t = en.viewer;
-  await page.goto("/#preview");
-  const viewer = page.locator("#preview");
+  await page.goto("/");
+  const viewer = page.locator("#top");
   const light = viewer.getByRole("button", { name: t.light, exact: true });
-  await expect(light).toHaveAttribute("aria-pressed", "true");
-  await light.click();
   await expect(light).toHaveAttribute("aria-pressed", "false");
+  await light.click();
+  await expect(light).toHaveAttribute("aria-pressed", "true");
 
   const full = viewer.getByRole("button", { name: t.fullscreen });
   await full.click();
   await expect(
     viewer.getByRole("button", { name: t.exitFullscreen }),
   ).toHaveAttribute("aria-pressed", "true");
+  await expect(viewer.getByRole("button", { name: t.zoomIn })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(full).toHaveAttribute("aria-pressed", "false");
+  await expect(viewer.getByRole("button", { name: t.zoomIn })).toHaveCount(0);
 });
 
 test.describe("przeglądarka po polsku", () => {

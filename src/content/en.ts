@@ -5,7 +5,7 @@ export const en = {
   meta: {
     title: "GlowBox Lab | Custom LED Lightboxes",
     description:
-      "Custom LED lightboxes, 3D printed to order. Your logo, name or idea turned into a glowing sign for your brand, gaming setup or a personal gift. Based in Walsall, UK, shipping across the UK and Europe.",
+      "Custom LED lightboxes, 3D printed to order. Your logo, name or idea turned into a glowing sign for your brand, gaming setup or a personal gift. Based in Walsall, UK, shipping across Europe.",
     ogImage: "/og/glowbox-lab-en.jpg",
     ogAlt: "GlowBox Lab LED lightbox with the hexagon logo glowing blue",
   },
@@ -18,6 +18,7 @@ export const en = {
     mainNav: "Main navigation",
   },
   nav: [
+    { label: "Home", href: "#top" },
     { label: "Work", href: "#work" },
     { label: "How it works", href: "#process" },
     { label: "FAQ", href: "#faq" },
@@ -27,15 +28,11 @@ export const en = {
   hero: {
     eyebrow: "Custom LED lightboxes",
     title: ["Your idea.", "Made to glow."],
-    lead: "LED lightboxes, 3D printed to order. Made from your logo, a name or just an idea.",
+    lead: "Each one is 3D printed from scratch. All we need is a logo, a name or a short description.",
     primary: "Get a quote",
     secondary: "See our work",
-    imageAlt:
-      "GlowBox Lab hexagon lightbox with a white and blue glowing logo on a dark surface",
   },
   viewer: {
-    title: "See it in 3D",
-    lead: "Turn it, zoom in and switch the light on.",
     light: "Light",
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
@@ -43,7 +40,6 @@ export const en = {
     rotateRight: "Rotate right",
     fullscreen: "Full screen",
     exitFullscreen: "Exit full screen",
-    loading: "Loading 3D model",
     fallback:
       "The 3D preview is not available on this device, so here is the lightbox as a photo.",
     canvasLabel:
@@ -116,7 +112,7 @@ export const en = {
       },
       {
         q: "Where do you deliver?",
-        a: "Across the UK and the rest of Europe, Poland included. You can also collect your lightbox in person in Walsall. We speak English and Polish.",
+        a: "Across Europe. You can also collect your lightbox in person in Walsall. We speak English and Polish.",
       },
     ],
   },
@@ -178,8 +174,7 @@ export const en = {
     call: "Call",
     whatsapp: "Message us on WhatsApp",
     location: "Walsall, United Kingdom",
-    delivery:
-      "We ship across the UK and Europe. You can also collect in person in Walsall.",
+    delivery: "We ship across Europe. You can also collect in person.",
     socials: "GlowBox Lab on social media",
   },
   footer: {

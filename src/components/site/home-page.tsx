@@ -1,4 +1,3 @@
-import { ViewerSection } from "@/components/viewer/viewer-section";
 import type { Dictionary } from "@/content/en";
 import { Faq } from "./faq";
 import { Hero } from "./hero";
@@ -14,7 +13,6 @@ export function HomePage({ dict }: { dict: Dictionary }) {
       <SiteHeader dict={dict} routeKey="home" />
       <main id="main">
         <Hero dict={dict} />
-        <ViewerSection dict={dict} />
         <Work dict={dict} />
         <Process dict={dict} />
         <Faq dict={dict} />
