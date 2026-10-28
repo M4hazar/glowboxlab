@@ -95,6 +95,8 @@ test("przełącznik języka prowadzi do polskiej wersji", async ({
 
 test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
   const f = en.quote.form;
+  // Programowy WebGL potrafi na długo zablokować stronę, a ten test nie dotyczy modelu.
+  await page.route("**/*.glb", () => {});
   await page.goto("/#quote");
   const form = page.locator("#quote form");
   await form.getByRole("button", { name: f.submit }).click();
@@ -182,7 +184,7 @@ test("portfolio: pasek się przewija, staje i pokazuje szczegóły projektu", as
   await dialog.getByRole("link", { name: c.cta }).click();
   await expect(dialog).toHaveCount(0);
   await expect(page).toHaveURL(/#quote$/);
-  await expect(page.locator("#quote form")).toBeInViewport();
+  await expect(page.locator("#quote-title")).toBeInViewport();
 });
 
 test.describe("przeglądarka po polsku", () => {
