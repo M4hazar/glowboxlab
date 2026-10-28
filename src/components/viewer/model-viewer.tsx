@@ -162,7 +162,9 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
       <div
         className={cn(
           "flex flex-wrap items-center justify-center gap-2",
-          expanded ? "border-t border-white/[0.07] p-4" : "-mt-4",
+          expanded
+            ? "border-t border-white/[0.07] p-4"
+            : "relative z-10 -mt-10",
         )}
       >
         <button

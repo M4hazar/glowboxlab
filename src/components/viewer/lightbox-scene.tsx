@@ -1,10 +1,8 @@
 "use client";
 
 import {
-  ContactShadows,
   Environment,
   Lightformer,
-  MeshReflectorMaterial,
   OrbitControls,
   useGLTF,
 } from "@react-three/drei";
@@ -41,7 +39,7 @@ const INITIAL_AZIMUTH = -0.62;
 const INITIAL_ELEVATION = 0.1;
 const BLOOM = 0.8;
 
-// Kolory światła: część niebieska, część biała, poświata na podłodze.
+// Kolory światła: część niebieska, część biała i niebieska poświata przed frontem.
 const GLOW = { blue: "#0055ff", white: "#ffffff", spill: "#1a7cff" };
 
 function useLightboxMaterials() {
@@ -89,7 +87,6 @@ function Lightbox({
   const mats = useLightboxMaterials();
   const group = useRef<THREE.Group>(null);
   const spill = useRef<THREE.PointLight>(null);
-  const pool = useRef<THREE.MeshBasicMaterial>(null);
 
   const model = useMemo(() => {
     const root = scene.clone(true);
@@ -99,7 +96,6 @@ function Lightbox({
         obj.geometry,
         THREE.MathUtils.degToRad(28),
       );
-      obj.castShadow = true;
       const name = obj.name;
       if (name === "ring" || name === "logoBlue") obj.material = mats.blue;
       else if (name === "logoWhite") obj.material = mats.white;
@@ -108,29 +104,6 @@ function Lightbox({
     });
     return root;
   }, [scene, mats]);
-
-  const poolTexture = useMemo(() => {
-    const size = 256;
-    const canvas = document.createElement("canvas");
-    canvas.width = canvas.height = size;
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      const g = ctx.createRadialGradient(
-        size / 2,
-        size / 2,
-        0,
-        size / 2,
-        size / 2,
-        size / 2,
-      );
-      g.addColorStop(0, "rgba(255,255,255,1)");
-      g.addColorStop(0.35, "rgba(255,255,255,0.35)");
-      g.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, size, size);
-    }
-    return new THREE.CanvasTexture(canvas);
-  }, []);
 
   useFrame((_, delta) => {
     const target = light ? 1 : 0;
@@ -144,7 +117,6 @@ function Lightbox({
     mats.blue.emissiveIntensity = l * 1.7;
     mats.white.emissiveIntensity = l * 1.05;
     if (spill.current) spill.current.intensity = l * 6;
-    if (pool.current) pool.current.opacity = l * 0.55;
     if (group.current) {
       group.current.rotation.y = THREE.MathUtils.damp(
         group.current.rotation.y,
@@ -156,37 +128,18 @@ function Lightbox({
   });
 
   return (
-    <>
-      <group ref={group}>
-        {/* środek modelu w osi Z: front w z=0, tył w z=-32,4 mm */}
-        <primitive object={model} scale={SCALE} position={[0, 0, 0.162]} />
-        <pointLight
-          ref={spill}
-          position={[0, -0.4, 1.4]}
-          color={GLOW.spill}
-          distance={5}
-          decay={2}
-          intensity={0}
-        />
-      </group>
-      <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, -1.019, 0.5]}
-        renderOrder={1}
-      >
-        <planeGeometry args={[4.2, 3]} />
-        <meshBasicMaterial
-          ref={pool}
-          map={poolTexture}
-          color={GLOW.spill}
-          transparent
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-          opacity={0}
-          toneMapped={false}
-        />
-      </mesh>
-    </>
+    <group ref={group}>
+      {/* środek modelu w osi Z: front w z=0, tył w z=-32,4 mm */}
+      <primitive object={model} scale={SCALE} position={[0, 0, 0.162]} />
+      <pointLight
+        ref={spill}
+        position={[0, -0.4, 1.4]}
+        color={GLOW.spill}
+        distance={5}
+        decay={2}
+        intensity={0}
+      />
+    </group>
   );
 }
 
@@ -219,31 +172,6 @@ function LightBloom({ level }: { level: RefObject<number> }) {
         radius={0.35}
       />
     </EffectComposer>
-  );
-}
-
-function Floor() {
-  return (
-    <mesh
-      rotation={[-Math.PI / 2, 0, 0]}
-      position={[0, -1.02, 0]}
-      receiveShadow
-    >
-      <planeGeometry args={[40, 40]} />
-      <MeshReflectorMaterial
-        blur={[300, 90]}
-        resolution={512}
-        mixBlur={1}
-        mixStrength={10}
-        roughness={0.92}
-        depthScale={1}
-        minDepthThreshold={0.4}
-        maxDepthThreshold={1.3}
-        color="#07090c"
-        metalness={0.55}
-        mirror={0.5}
-      />
-    </mesh>
   );
 }
 
@@ -352,14 +280,6 @@ export default function LightboxScene({
       />
       <Suspense fallback={null}>
         <Lightbox light={light} level={level} rotation={rotation} />
-        <Floor />
-        <ContactShadows
-          position={[0, -1.015, 0]}
-          opacity={0.6}
-          scale={5}
-          blur={2.6}
-          far={1.5}
-        />
         <Environment resolution={128}>
           <Lightformer intensity={2} position={[0, 4, 2]} scale={[6, 1.5, 1]} />
           <Lightformer
