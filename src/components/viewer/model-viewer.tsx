@@ -19,15 +19,6 @@ import type { SceneHandle } from "./lightbox-scene";
 
 const LightboxScene = dynamic(() => import("./lightbox-scene"), { ssr: false });
 
-const START_EVENTS = [
-  "pointermove",
-  "pointerdown",
-  "touchstart",
-  "keydown",
-  "wheel",
-  "scroll",
-] as const;
-
 function hasWebGL() {
   try {
     const canvas = document.createElement("canvas");
@@ -37,27 +28,37 @@ function hasWebGL() {
   }
 }
 
-// Model 3D ładuje się po pierwszym ruchu użytkownika albo chwilę po załadowaniu strony,
-// żeby nie opóźniać pierwszego wyświetlenia. Do tego czasu widać plakat z tej samej sceny.
-function useDeferredStart() {
+const START_EVENTS = [
+  "pointerdown",
+  "pointermove",
+  "touchstart",
+  "keydown",
+  "wheel",
+  "scroll",
+] as const;
+
+// Model 3D ładuje się chwilę po załadowaniu strony albo od razu przy pierwszym
+// ruchu użytkownika, żeby był gotowy, zanim ktoś zacznie nim obracać, a nie
+// blokował wczytywania strony. Do tego czasu widać plakat z tej samej sceny.
+function useDeferredStart(delay = 3000) {
   const [start, setStart] = useState(false);
   useEffect(() => {
     let timer: number | undefined;
     const go = () => setStart(true);
-    const onLoad = () => {
-      timer = window.setTimeout(go, 2500);
+    const arm = () => {
+      timer = window.setTimeout(go, delay);
     };
     for (const name of START_EVENTS) {
       window.addEventListener(name, go, { once: true, passive: true });
     }
-    if (document.readyState === "complete") onLoad();
-    else window.addEventListener("load", onLoad, { once: true });
+    if (document.readyState === "complete") arm();
+    else window.addEventListener("load", arm, { once: true });
     return () => {
-      for (const name of START_EVENTS) window.removeEventListener(name, go);
-      window.removeEventListener("load", onLoad);
       window.clearTimeout(timer);
+      window.removeEventListener("load", arm);
+      for (const name of START_EVENTS) window.removeEventListener(name, go);
     };
-  }, []);
+  }, [delay]);
   return start;
 }
 
@@ -66,11 +67,18 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
   const frame = useRef<HTMLDivElement>(null);
   const handle = useRef<SceneHandle | null>(null);
   const start = useDeferredStart();
-  const [light, setLight] = useState(false);
+  const [light, setLight] = useState(true);
   const [mode, setMode] = useState<"poster" | "3d" | "fallback">("poster");
   const [visible, setVisible] = useState(true);
   const [ready, setReady] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  // Po przełączeniu pełnego ekranu model jest ukryty, dopóki nie narysuje się w nowym rozmiarze.
+  const [settling, setSettling] = useState(false);
+  const settled = useCallback(() => setSettling(false), []);
+  const toggleExpanded = (value: boolean) => {
+    setExpanded(value);
+    if (mode === "3d") setSettling(true);
+  };
 
   // Model ładuje się i renderuje tylko wtedy, gdy jest na ekranie.
   useEffect(() => {
@@ -89,7 +97,17 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
     }
   }, [start, visible, mode]);
 
-  const close = useCallback(() => setExpanded(false), []);
+  const close = useCallback(() => {
+    setExpanded(false);
+    setSettling(true);
+  }, []);
+
+  // Zabezpieczenie, gdyby rozmiar się nie zmienił i model nie dał znaku.
+  useEffect(() => {
+    if (!settling) return;
+    const timer = window.setTimeout(settled, 800);
+    return () => window.clearTimeout(timer);
+  }, [settling, settled]);
   useEffect(() => {
     if (!expanded) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
@@ -103,7 +121,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
 
   const loading = mode === "3d" && !ready;
   const iconButton =
-    "inline-flex size-11 items-center justify-center rounded-lg border border-white/12 text-foreground/90 transition-colors hover:border-white/30 hover:bg-white/[0.06] disabled:opacity-40";
+    "press inline-flex size-11 items-center justify-center rounded-lg border border-white/12 text-foreground/90 hover:border-white/30 hover:bg-white/[0.06] disabled:opacity-40";
 
   return (
     <div
@@ -122,25 +140,27 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
             : "aspect-square [mask-image:radial-gradient(closest-side,black_72%,transparent)]",
         )}
       >
-        {/* Plakat to render tej samej sceny w tym samym kadrze, więc model nie przeskakuje po załadowaniu */}
+        {/* Plakat to render tej samej sceny w tym samym kadrze. Zostaje pod modelem 3D,
+            który pojawia się nad nim, więc przejście jest niewidoczne. */}
         <Image
-          src={`/images/model-${light ? "on" : "off"}.webp`}
+          src={`/images/lightbox-${light ? "on" : "off"}.webp`}
           alt=""
           fill
           loading="eager"
           fetchPriority="high"
           sizes="(min-width: 1024px) 640px, 100vw"
           className={cn(
-            "object-cover transition-opacity duration-700",
-            mode === "3d" && ready && "opacity-0",
+            "object-cover",
             expanded && "object-contain",
+            expanded && ready && "invisible",
           )}
         />
         {mode === "3d" && (
           <div
             className={cn(
-              "absolute inset-0 transition-opacity duration-700",
-              ready ? "opacity-100" : "opacity-0",
+              "absolute inset-0 transition-opacity",
+              settling ? "duration-0" : "duration-300",
+              ready && !settling ? "opacity-100" : "opacity-0",
             )}
           >
             <LightboxScene
@@ -148,6 +168,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
               active={visible}
               handle={handle}
               onReady={() => setReady(true)}
+              onResize={settled}
             />
           </div>
         )}
@@ -235,7 +256,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           aria-label={expanded ? t.exitFullscreen : t.fullscreen}
           title={expanded ? t.exitFullscreen : t.fullscreen}
           aria-pressed={expanded}
-          onClick={() => setExpanded((v) => !v)}
+          onClick={() => toggleExpanded(!expanded)}
         >
           {expanded ? (
             <Minimize2Icon className="size-4" />

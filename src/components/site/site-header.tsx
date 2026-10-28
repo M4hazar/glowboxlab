@@ -2,7 +2,7 @@
 
 import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Sheet,
   SheetClose,
@@ -24,8 +24,15 @@ export function SiteHeader({
 }) {
   const locale = dict.locale as Locale;
   const home = routes.home[locale];
+  const nav = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  // Na podstronie portfolio menu od razu wskazuje Portfolio.
+  const [current, setCurrent] = useState<string | null>(
+    routeKey === "portfolio" ? "#work" : null,
+  );
+  const [pill, setPill] = useState<{ x: number; w: number; slide: boolean }>();
 
+  // Nagłówek jest zawsze widoczny; po przewinięciu dostaje półprzezroczyste, rozmyte tło.
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
@@ -33,15 +40,55 @@ export function SiteHeader({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Podświetla w menu sekcję, która jest na środku ekranu.
+  useEffect(() => {
+    if (routeKey !== "home") return;
+    const sections = dict.nav
+      .map((item) => document.querySelector<HTMLElement>(item.href))
+      .filter((el) => el !== null);
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setCurrent(`#${entry.target.id}`);
+        }
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    for (const el of sections) io.observe(el);
+    return () => io.disconnect();
+  }, [dict.nav, routeKey]);
+
+  // Podświetlenie przesuwa się pod pozycję menu aktywnej sekcji.
+  // Przy pierwszym pojawieniu staje od razu na miejscu, bez wjazdu z lewej.
+  useEffect(() => {
+    const el = nav.current;
+    if (!el || !current) return setPill(undefined);
+    const place = () => {
+      const link = el.querySelector<HTMLElement>('a[aria-current="true"]');
+      if (!link) return;
+      setPill((prev) => ({
+        x: link.offsetLeft,
+        w: link.offsetWidth,
+        slide: prev !== undefined,
+      }));
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [current]);
+
   const anchor = (href: string) =>
     routeKey === "home" ? href : `${home}${href}`;
 
   return (
+    // [--intro:0s]: nagłówek wchodzi od razu, pod ekranem startowym, żeby logo z ekranu
+    // startowego wylądowało na nieruchomym logo w nagłówku.
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500",
+        "rise fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ease-glow [--intro:0s] [--rise:-16px]",
         scrolled
-          ? "border-b border-white/[0.07] bg-background/75 backdrop-blur-xl"
+          ? "border-b border-white/[0.07] bg-background/65 backdrop-blur-xl"
           : "border-b border-transparent",
       )}
     >
@@ -59,17 +106,36 @@ export function SiteHeader({
             alt=""
             width={744}
             height={225}
-            className="h-8 w-auto lg:h-9"
+            className="header-logo h-8 w-auto lg:h-9"
           />
         </Link>
 
-        <nav aria-label={dict.a11y.mainNav} className="hidden lg:block">
-          <ul className="flex items-center gap-9 text-[0.9rem] text-foreground/80">
+        <nav
+          ref={nav}
+          aria-label={dict.a11y.mainNav}
+          className="relative hidden lg:block"
+        >
+          <span
+            aria-hidden
+            className={cn(
+              "absolute top-0 left-0 h-full rounded-md bg-primary/20 ring-1 ring-brand/40 ring-inset",
+              pill?.slide &&
+                "transition-[transform,width] duration-500 ease-glow",
+              !pill && "opacity-0",
+            )}
+            style={
+              pill
+                ? { width: pill.w, transform: `translateX(${pill.x}px)` }
+                : undefined
+            }
+          />
+          <ul className="relative flex items-center gap-1 text-[0.9rem] text-foreground/80">
             {dict.nav.map((item) => (
               <li key={item.href}>
                 <a
                   href={anchor(item.href)}
-                  className="transition-colors duration-300 hover:text-foreground"
+                  aria-current={current === item.href ? "true" : undefined}
+                  className="block rounded-md px-4 py-2 transition-colors duration-300 hover:text-foreground aria-[current=true]:text-white"
                 >
                   {item.label}
                 </a>
@@ -86,7 +152,7 @@ export function SiteHeader({
           />
           <a
             href={anchor("#quote")}
-            className="hidden h-10 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white shadow-glow-sm transition-colors hover:bg-brand-strong sm:inline-flex"
+            className="press hidden h-10 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white hover:bg-brand-strong sm:inline-flex"
           >
             {dict.cta}
           </a>
@@ -132,9 +198,18 @@ export function SiteHeader({
                       <SheetClose asChild>
                         <a
                           href={anchor(item.href)}
-                          className="block py-4 font-display text-2xl font-bold tracking-tight"
+                          aria-current={
+                            current === item.href ? "true" : undefined
+                          }
+                          className="flex items-center justify-between py-4 font-display text-2xl font-bold tracking-tight transition-colors aria-[current=true]:text-brand-soft"
                         >
                           {item.label}
+                          {current === item.href && (
+                            <span
+                              aria-hidden
+                              className="size-2 rounded-full bg-brand-soft"
+                            />
+                          )}
                         </a>
                       </SheetClose>
                     </li>
@@ -144,13 +219,13 @@ export function SiteHeader({
                   <SheetClose asChild>
                     <a
                       href={anchor("#quote")}
-                      className="inline-flex h-12 items-center justify-center rounded-lg bg-primary font-semibold text-white"
+                      className="press inline-flex h-12 items-center justify-center rounded-lg bg-primary font-semibold text-white hover:bg-brand-strong"
                     >
                       {dict.cta}
                     </a>
                   </SheetClose>
                   <a
-                    href={site.whatsapp}
+                    href={site.whatsapp.href}
                     target="_blank"
                     rel="noopener"
                     className="inline-flex h-12 items-center justify-center rounded-lg border border-white/15 font-medium"

@@ -21,9 +21,10 @@ export function Faq({ dict }: { dict: Dictionary }) {
         collapsible
         className="mt-12 grid border-t border-white/10 lg:grid-cols-2 lg:gap-x-16 lg:border-t-0"
       >
-        {columns.map((column) => (
+        {columns.map((column, i) => (
           <div
             key={column[0]?.value}
+            data-reveal={i + 1}
             className="lg:border-t lg:border-white/10"
           >
             {column.map((item) => (

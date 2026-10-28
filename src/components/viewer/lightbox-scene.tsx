@@ -30,13 +30,14 @@ export type LightboxSceneProps = {
   active: boolean;
   handle?: RefObject<SceneHandle | null>;
   onReady?: () => void;
+  onResize?: () => void;
 };
 
 const MODEL_URL = "/models/glowbox-lightbox.glb";
 const SCALE = 10; // model jest w metrach, scena w decymetrach
-const BASE_DISTANCE = 5.5;
-const INITIAL_AZIMUTH = -0.62;
-const INITIAL_ELEVATION = 0.1;
+const BASE_DISTANCE = 5.2;
+const INITIAL_AZIMUTH = 0.26;
+const INITIAL_ELEVATION = 0.03;
 const BLOOM = 0.8;
 
 // Kolory światła: część niebieska, część biała i niebieska poświata przed frontem.
@@ -149,10 +150,10 @@ function StudioLights({ level }: { level: RefObject<number> }) {
   const key = useRef<THREE.DirectionalLight>(null);
   useFrame(() => {
     if (key.current) {
-      key.current.intensity = THREE.MathUtils.lerp(3.8, 1.1, level.current);
+      key.current.intensity = THREE.MathUtils.lerp(5.5, 1.1, level.current);
     }
   });
-  return <directionalLight ref={key} position={[-3.5, 4.5, 4]} />;
+  return <directionalLight ref={key} position={[-4, 5, 2.5]} />;
 }
 
 // Poświata (bloom) rośnie razem ze światłem, więc zgaszony lightbox nie świeci.
@@ -215,6 +216,24 @@ function CameraRig({
   return null;
 }
 
+// Po zmianie rozmiaru (np. pełny ekran) zgłasza, że obraz w nowym rozmiarze jest już narysowany.
+function ResizeSignal({ onResize }: { onResize?: () => void }) {
+  const size = useThree((state) => state.size);
+  const frames = useRef(0);
+  useEffect(() => {
+    frames.current = size.width > 0 && size.height > 0 ? 0 : -1;
+  }, [size.width, size.height]);
+  useFrame(() => {
+    if (frames.current < 0) return;
+    frames.current += 1;
+    if (frames.current > 2) {
+      frames.current = -1;
+      onResize?.();
+    }
+  });
+  return null;
+}
+
 // Model pokazujemy dopiero po skompilowaniu shaderów i kilku klatkach,
 // żeby przejście z plakatu było płynne i bez przycięć.
 function ReadySignal({ onReady }: { onReady?: () => void }) {
@@ -250,6 +269,7 @@ export default function LightboxScene({
   active,
   handle,
   onReady,
+  onResize,
 }: LightboxSceneProps) {
   const rotation = useRef(0);
   const level = useRef(light ? 1 : 0);
@@ -299,6 +319,7 @@ export default function LightboxScene({
         <LightBloom level={level} />
         <ReadySignal onReady={onReady} />
       </Suspense>
+      <ResizeSignal onResize={onResize} />
       <CameraRig handle={handle} rotation={rotation} />
       <OrbitControls
         makeDefault

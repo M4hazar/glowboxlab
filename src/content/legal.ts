@@ -19,7 +19,7 @@ export const privacy: Record<Locale, LegalDoc> = {
       {
         heading: "Who we are",
         body: [
-          `GlowBox Lab makes custom LED lightboxes and is based in ${site.city}, United Kingdom. You can contact us through the quote form, by email at ${site.email}, or by phone and WhatsApp at ${site.phone}.`,
+          `GlowBox Lab is the trading name of ${site.owner}, who makes custom LED lightboxes in ${site.city}, United Kingdom, and is responsible for the personal data described on this page. You can contact us through the quote form, by email at ${site.email}, or by phone and WhatsApp at ${site.phone}.`,
         ],
       },
       {
@@ -72,7 +72,7 @@ export const privacy: Record<Locale, LegalDoc> = {
       {
         heading: "Kim jesteśmy",
         body: [
-          `GlowBox Lab wykonuje lightboxy LED na zamówienie i działa w ${site.city} w Wielkiej Brytanii. Możesz skontaktować się z nami przez formularz wyceny, e-mailem pod adresem ${site.email} albo telefonicznie i na WhatsApp pod numerem ${site.phone}.`,
+          `GlowBox Lab to nazwa, pod którą ${site.owner} wykonuje lightboxy LED na zamówienie w ${site.city} w Wielkiej Brytanii. ${site.owner} jest administratorem danych osobowych opisanych na tej stronie. Możesz skontaktować się z nami przez formularz wyceny, e-mailem pod adresem ${site.email} albo telefonicznie i na WhatsApp pod numerem ${site.phone}.`,
         ],
       },
       {

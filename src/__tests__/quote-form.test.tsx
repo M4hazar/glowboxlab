@@ -21,6 +21,7 @@ describe("QuoteForm", () => {
     );
     expect(await screen.findByText(pl.quote.errors.summary)).toBeVisible();
     expect(screen.getByText(pl.quote.errors.name)).toBeVisible();
+    expect(screen.getByText(pl.quote.errors.size)).toBeVisible();
     expect(screen.getByText(pl.quote.errors.consent)).toBeVisible();
     expect(screen.getByLabelText(pl.quote.form.name)).toHaveAttribute(
       "aria-invalid",
@@ -49,7 +50,9 @@ describe("QuoteForm", () => {
     const f = pl.quote.form;
     await user.type(screen.getByLabelText(f.name), "Paweł");
     await user.type(screen.getByLabelText(f.email), "pawel@example.com");
-    await user.click(screen.getByLabelText(f.sizeUnsure));
+    await user.type(screen.getByLabelText(f.width), "200");
+    await user.type(screen.getByLabelText(f.height), "150");
+    await user.type(screen.getByLabelText(f.depth), "60");
     await user.click(screen.getByRole("button", { name: f.increase }));
     await user.type(
       screen.getByLabelText(f.description),
@@ -68,7 +71,8 @@ describe("QuoteForm", () => {
     expect(submitQuote).toHaveBeenCalledOnce();
     const data = submitQuote.mock.calls[0][1] as FormData;
     expect(data.get("quantity")).toBe("2");
-    expect(data.get("sizeUnsure")).toBe("on");
+    expect(data.get("depth")).toBe("60");
+    expect(data.get("sizeUnsure")).toBeNull();
     expect(data.get("locale")).toBe("pl");
     expect((data.getAll("files")[0] as File).name).toBe("logo.svg");
   });
