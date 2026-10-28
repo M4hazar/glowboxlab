@@ -281,6 +281,7 @@ export const terms: Record<Locale, LegalDoc> = {
         heading: "Seller",
         body: [
           `GlowBox Lab is the trading name of ${site.owner}, ${site.city}, United Kingdom. Contact: ${site.email}, phone and WhatsApp ${site.phone}.`,
+          `Please send complaints and any other notices about your order by email to ${site.email}.`,
         ],
       },
       {
@@ -345,6 +346,7 @@ export const terms: Record<Locale, LegalDoc> = {
         heading: "Sprzedawca",
         body: [
           `GlowBox Lab to nazwa, pod którą działa ${site.owner}, ${site.city}, Wielka Brytania. Kontakt: ${site.email}, telefon i WhatsApp ${site.phone}.`,
+          `Reklamacje i inne zgłoszenia dotyczące zamówienia przesyłaj e-mailem na adres ${site.email}.`,
         ],
       },
       {
