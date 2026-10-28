@@ -1,4 +1,5 @@
-// Ścieżki logo z public/brand/logo.svg, rozdzielone na części do animacji ekranu startowego.
+// Ścieżki logo GlowBox Lab (z pliku SVG marki), rozdzielone na części:
+// logo w nagłówku i stopce (logo.tsx) oraz animacja ekranu startowego (motion.tsx).
 // Sygnet (lewa część) zajmuje x od 0 do 230, napis od 230 do końca viewBoxa.
 export const LOGO_HEIGHT = 225.4315;
 export const MARK_WIDTH = 230;

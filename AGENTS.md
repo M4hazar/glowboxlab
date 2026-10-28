@@ -13,7 +13,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Strona marki GlowBox Lab (lightboxy LED z druku 3D). Angielska pod `/`, polska pod `/pl`.
 
 Stos: Next.js 16 (App Router, Cache Components, Turbopack), React 19, TypeScript,
-Tailwind CSS v4, shadcn/ui (styl new-york, Radix), Motion, React Three Fiber (three.js),
+Tailwind CSS v4, shadcn/ui (styl new-york, Radix), React Three Fiber (three.js),
 Zod, Resend, Biome, Vitest, Playwright (+ axe), Lighthouse CI.
 Menedżer pakietów: **pnpm** (Node 24 LTS).
 
