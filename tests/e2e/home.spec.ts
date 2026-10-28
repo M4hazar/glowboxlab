@@ -378,6 +378,24 @@ test("animacje: ekran startowy przy każdym wczytaniu, sekcje odsłaniają się 
   await expect(faq).toHaveCSS("opacity", "1");
 });
 
+test("odświeżenie zawsze zaczyna stronę od góry", async ({ page }) => {
+  await page.route("**/*.glb", () => {});
+  const scrollY = () => page.evaluate(() => window.scrollY);
+
+  await page.goto("/pl");
+  await page.evaluate(() => window.scrollTo(0, 2000));
+  await expect.poll(scrollY).toBeGreaterThan(0);
+  await page.reload();
+  await expect.poll(scrollY).toBe(0);
+
+  // Z #sekcją w adresie odświeżenie też wraca na górę, a adres traci #sekcję.
+  await page.goto("/pl#faq");
+  await expect(page.locator("#faq")).toBeInViewport();
+  await page.reload();
+  await expect(page).toHaveURL(/\/pl$/);
+  await expect.poll(scrollY).toBe(0);
+});
+
 test("bez arkusza stylów logo ekranu startowego nie wypada na stronę", async ({
   page,
 }) => {
