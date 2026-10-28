@@ -130,6 +130,8 @@ test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
   page,
 }) => {
   const t = en.viewer;
+  // Model się nie wczytuje, więc na pełnym ekranie widać stan ładowania.
+  await page.route("**/*.glb", () => {});
   await page.goto("/");
   const viewer = page.locator("#top");
   const light = viewer.getByRole("button", { name: t.light, exact: true });
@@ -143,6 +145,7 @@ test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
     viewer.getByRole("button", { name: t.exitFullscreen }),
   ).toHaveAttribute("aria-pressed", "true");
   await expect(viewer.getByRole("button", { name: t.zoomIn })).toBeVisible();
+  await expect(viewer.getByRole("status")).toHaveText(t.loading);
   await page.keyboard.press("Escape");
   await expect(full).toHaveAttribute("aria-pressed", "false");
   await expect(viewer.getByRole("button", { name: t.zoomIn })).toHaveCount(0);

@@ -204,14 +204,10 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
         />
         {expanded && loading && (
           <div
-            role="status"
+            aria-hidden
             className="absolute inset-0 flex items-center justify-center [animation:appear_0.3s_ease_0.3s_backwards]"
           >
-            <LoaderCircleIcon
-              aria-hidden
-              className="size-8 text-muted-foreground motion-safe:animate-spin"
-            />
-            <span className="sr-only">{t.loading}</span>
+            <LoaderCircleIcon className="size-8 text-muted-foreground motion-safe:animate-spin" />
           </div>
         )}
         {mode === "3d" && (
@@ -232,6 +228,11 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           </div>
         )}
       </div>
+
+      {/* Komunikat dla czytników ekranu jest poza role="img", bo jej zawartość nie jest odczytywana. */}
+      <p role="status" className="sr-only">
+        {expanded && loading ? t.loading : ""}
+      </p>
 
       {mode === "fallback" && (
         <p className="px-5 pt-4 text-center text-sm text-muted-foreground">
