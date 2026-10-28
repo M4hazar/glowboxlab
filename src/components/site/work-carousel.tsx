@@ -50,7 +50,6 @@ export function WorkCarousel({
   const c = t.controls;
   const reduce = useReducedMotion();
   const scroller = useRef<HTMLDivElement>(null);
-  const headingBox = useRef<HTMLDivElement>(null);
   const realCards = useRef<(HTMLButtonElement | null)[]>([]);
   const [playing, setPlaying] = useState(true);
   const [open, setOpen] = useState(false);
@@ -101,11 +100,8 @@ export function WorkCarousel({
       const st = s.current;
       if (!st.set) {
         // Na start pierwsza karta stoi równo z nagłówkiem sekcji.
-        const inset =
-          (headingBox.current?.getBoundingClientRect().left ?? 0) -
-          el.getBoundingClientRect().left;
         st.set = set;
-        write(el, set * (REAL + 1) - inset);
+        write(el, set * REAL);
       } else {
         const phase = (el.scrollLeft - st.set) / st.set;
         st.set = set;
@@ -248,9 +244,9 @@ export function WorkCarousel({
   };
 
   return (
-    <>
-      <div className="section flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
-        <div ref={headingBox}>{heading}</div>
+    <div className="section">
+      <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+        {heading}
         <div className="flex gap-2">
           <button
             type="button"
@@ -307,7 +303,7 @@ export function WorkCarousel({
           }
         }}
         onClickCapture={onClickCapture}
-        className="mt-12 cursor-grab overflow-x-auto overscroll-x-contain py-2 select-none [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] [scrollbar-width:none] active:cursor-grabbing sm:mt-14 [&::-webkit-scrollbar]:hidden"
+        className="mt-12 cursor-grab overflow-x-auto overscroll-x-contain py-2 select-none [mask-image:linear-gradient(to_right,transparent,black_3%,black_97%,transparent)] [scrollbar-width:none] active:cursor-grabbing sm:mt-14 [&::-webkit-scrollbar]:hidden"
       >
         <ul className="flex w-max gap-4 sm:gap-6">
           {Array.from({ length: COPIES }, (_, copy) =>
@@ -362,10 +358,6 @@ export function WorkCarousel({
             }),
           )}
         </ul>
-      </div>
-
-      <div className="section">
-        <p className="mt-8 text-sm text-muted-foreground">{t.note}</p>
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -461,6 +453,6 @@ export function WorkCarousel({
           </DialogClose>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }

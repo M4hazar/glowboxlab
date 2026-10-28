@@ -48,7 +48,6 @@ export const en = {
   work: {
     title: "Our work",
     lead: "A few of the forms a lightbox can take.",
-    note: "Example visualisations.",
     controls: {
       roledescription: "carousel",
       scrollLeft: "Scroll left",

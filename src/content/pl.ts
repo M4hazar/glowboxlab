@@ -51,7 +51,6 @@ export const pl: Dictionary = {
   work: {
     title: "Realizacje",
     lead: "Kilka form, jakie może przybrać lightbox.",
-    note: "Przykładowe wizualizacje.",
     controls: {
       roledescription: "karuzela",
       scrollLeft: "Przewiń w lewo",
