@@ -27,7 +27,7 @@ export function MotionScript() {
   return <script dangerouslySetInnerHTML={{ __html: motionScript }} />;
 }
 
-// Ekran startowy: logo rysuje się i zapala, a potem przelatuje do nagłówka (animacje w globals.css).
+// Ekran startowy: logo rysuje się i wypełnia, a potem przelatuje do nagłówka (animacje w globals.css).
 // Nie blokuje kliknięć i znika sam po około dwóch sekundach.
 // Styl inline ukrywa go, gdyby arkusz stylów nie wczytał się w całości (np. stara wersja z pamięci
 // przeglądarki); wtedy duże logo nie wypadnie na stronę. Pokazuje go dopiero reguła z globals.css.
@@ -43,30 +43,13 @@ export function Intro() {
           width={MARK_WIDTH}
           height={LOGO_HEIGHT}
         >
-          <defs>
-            <filter
-              id="intro-glow"
-              x="-50%"
-              y="-50%"
-              width="200%"
-              height="200%"
-            >
-              <feGaussianBlur stdDeviation="10" />
-            </filter>
-          </defs>
           <path
-            className="intro-glow fill-brand"
-            d={markBlue}
-            fillRule="evenodd"
-            filter="url(#intro-glow)"
-          />
-          <path
-            className="intro-fill-white fill-white"
+            className="intro-fill fill-white"
             d={markWhite}
             fillRule="evenodd"
           />
           <path
-            className="intro-fill-blue fill-brand"
+            className="intro-fill fill-brand"
             d={markBlue}
             fillRule="evenodd"
           />

@@ -43,6 +43,7 @@ export const pl: Dictionary = {
     rotateRight: "Obróć w prawo",
     fullscreen: "Pełny ekran",
     exitFullscreen: "Zamknij pełny ekran",
+    loading: "Wczytywanie modelu 3D",
     fallback:
       "Podgląd 3D nie jest dostępny na tym urządzeniu, dlatego pokazujemy lightbox na zdjęciu.",
     canvasLabel:
