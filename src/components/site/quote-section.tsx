@@ -31,22 +31,20 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
                 {site.email}
               </a>
             </li>
-            <li>
+            <li className="flex items-center gap-3">
               <a href={site.phoneHref} className={contactLink}>
                 <PhoneIcon className="size-5 text-brand-soft" aria-hidden />
                 <span className="sr-only">{c.call}: </span>
                 {site.phone}
               </a>
-            </li>
-            <li>
               <a
                 href={site.whatsapp}
                 target="_blank"
                 rel="noopener"
-                className={contactLink}
+                aria-label={c.whatsapp}
+                className="inline-flex size-10 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-[#25d366]/60"
               >
                 <WhatsAppIcon className="size-5 text-[#25d366]" />
-                {c.whatsapp}
               </a>
             </li>
             <li className="flex gap-4">
