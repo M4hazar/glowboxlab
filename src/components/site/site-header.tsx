@@ -118,7 +118,7 @@ export function SiteHeader({
           <span
             aria-hidden
             className={cn(
-              "absolute top-0 left-0 h-full rounded-full bg-primary/20 ring-1 ring-brand/40 ring-inset",
+              "absolute top-0 left-0 h-full rounded-md bg-primary/20 ring-1 ring-brand/40 ring-inset",
               pill?.slide &&
                 "transition-[transform,width] duration-500 ease-glow",
               !pill && "opacity-0",
@@ -135,7 +135,7 @@ export function SiteHeader({
                 <a
                   href={anchor(item.href)}
                   aria-current={current === item.href ? "true" : undefined}
-                  className="block rounded-full px-4 py-2 transition-colors duration-300 hover:text-foreground aria-[current=true]:text-white"
+                  className="block rounded-md px-4 py-2 transition-colors duration-300 hover:text-foreground aria-[current=true]:text-white"
                 >
                   {item.label}
                 </a>
