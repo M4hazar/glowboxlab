@@ -7,7 +7,7 @@ export const pl: Dictionary = {
   meta: {
     title: "GlowBox Lab | LED boxy na zamówienie",
     description:
-      "Personalizowane lightboxy LED z druku 3D. Twoje logo, napis lub pomysł w formie podświetlanego boxa dla firmy, do pokoju gamingowego albo na prezent. Działamy w Walsall w Wielkiej Brytanii i wysyłamy w całej Europie.",
+      "Lightboxy LED z druku 3D na zamówienie: logo firmy, logo drużyny esportowej, nick gracza lub prezent. Wysyłka w całej Europie z Walsall w Wielkiej Brytanii.",
     ogImage: "/og/glowbox-lab-pl.jpg",
     ogAlt:
       "Lightbox LED GlowBox Lab z sześciokątnym logo podświetlonym na niebiesko",
@@ -31,7 +31,7 @@ export const pl: Dictionary = {
   hero: {
     eyebrow: "Lightboxy LED na zamówienie",
     title: ["Twoje pomysły.", "W nowym świetle."],
-    lead: "Każdy drukujemy w 3D od podstaw. Wystarczy logo, napis albo krótki opis.",
+    lead: "Podświetlane logo, napisy i grafiki drukowane w 3D na zamówienie. Dla firm, drużyn esportowych i graczy, a także na prezent.",
     primary: "Zamów wycenę",
     secondary: "Zobacz portfolio",
   },
@@ -50,7 +50,7 @@ export const pl: Dictionary = {
   },
   work: {
     title: "Portfolio",
-    lead: "Kilka form, jakie może przybrać lightbox.",
+    lead: "Przykładowe projekty lightboxów.",
     controls: {
       roledescription: "karuzela",
       scrollLeft: "Przewiń w lewo",
@@ -61,17 +61,17 @@ export const pl: Dictionary = {
       next: "Następny projekt",
       close: "Zamknij",
       counter: "{current} z {total}",
-      cta: "Chcę podobny lightbox",
+      cta: "Zapytaj o podobny projekt",
       all: "Zobacz wszystkie",
     },
     items: [
       {
         image: "/images/work-devils.webp",
         alt: "Czerwono-pomarańczowy lightbox z napisem Devil's, postacią z rogami i płomieniami",
-        title: "Wyrazisty charakter",
-        text: "Logo z pazurem dla baru, drużyny albo marki.",
+        title: "Logo po konturze",
+        text: "Dla baru, drużyny esportowej lub marki.",
         description:
-          "Wycięty dokładnie po konturze logo, z płomieniami i postacią. Najlepiej sprawdza się tam, gdzie ma przyciągać wzrok, na przykład za barem albo w pokoju gracza.",
+          "Obudowa wycięta dokładnie po konturze logo, z płomieniami i postacią. Sprawdza się tam, gdzie znak ma przyciągać wzrok: za barem, na scenie turnieju lub w pokoju gracza.",
         details: [
           { label: "Kształt", value: "Po konturze logo" },
           {
@@ -86,7 +86,7 @@ export const pl: Dictionary = {
         title: "Osobisty prezent",
         text: "Imiona i daty na ślub, rocznicę albo urodziny.",
         description:
-          "Serce z imionami i różami, zrobione na prezent. Możesz dodać datę, krótki napis albo własną grafikę.",
+          "Serce z imionami i różami, zaprojektowane jako prezent. Można dodać datę, dedykację lub własną grafikę.",
         details: [
           { label: "Kształt", value: "Serce" },
           { label: "Kolory na froncie", value: "Czerwony, żółty, kremowy" },
@@ -95,10 +95,10 @@ export const pl: Dictionary = {
       {
         image: "/images/work-logo.webp",
         alt: "Sześciokątny lightbox z logo GlowBox Lab widziany z boku",
-        title: "Twoje logo w świetle",
-        text: "Na biurko, do sklepu albo do studia.",
+        title: "Logo firmy lub kanału",
+        text: "Na biurko, ladę, setup lub do studia.",
         description:
-          "Logo zamknięte w prostej, sześciokątnej obudowie. Taki lightbox dobrze wygląda na ladzie, na półce albo w tle nagrań.",
+          "Logo w prostej, sześciokątnej obudowie. Dobrze prezentuje się na ladzie, na półce oraz w tle transmisji i nagrań.",
         details: [
           { label: "Kształt", value: "Sześciokąt" },
           { label: "Kolory na froncie", value: "Niebieski, biały" },
@@ -163,33 +163,37 @@ export const pl: Dictionary = {
     items: [
       {
         q: "Czy mogę przesłać własną grafikę?",
-        a: "Tak. Najlepiej plik wektorowy (SVG, PDF, AI lub EPS), ale PNG i JPG w dobrej jakości też się sprawdzą. Sprawdzimy plik i damy znać, jeśli coś trzeba poprawić.",
+        a: "Tak. Najlepiej sprawdzają się pliki wektorowe (SVG, PDF, AI, EPS), ale przyjmujemy też PNG i JPG w dobrej jakości. Każdy plik sprawdzamy i informujemy, jeśli wymaga poprawek.",
       },
       {
-        q: "Co, jeśli mam tylko pomysł?",
-        a: "To wystarczy. Opisz go albo dołącz szkic lub inspirację, a my zaprojektujemy lightbox.",
+        q: "Czy potrzebuję gotowego projektu?",
+        a: "Nie. Wystarczy opis, szkic lub inspiracja. Na tej podstawie przygotujemy projekt i prześlemy go do akceptacji.",
+      },
+      {
+        q: "Czy wykonujecie lightboxy z logo drużyny lub nickiem gracza?",
+        a: "Tak. Wykonujemy lightboxy z logo drużyn esportowych, nickami graczy i grafikami na setup, zarówno pojedyncze sztuki, jak i serie dla całej drużyny.",
       },
       {
         q: "Jak duży może być lightbox?",
-        a: "Maksymalnie 256 × 256 × 256 mm. Tyle nasza drukarka wykonuje w jednym kawałku.",
+        a: "Maksymalnie 256 × 256 × 256 mm. W tym rozmiarze obudowa powstaje w jednym elemencie.",
       },
       {
         q: "Od czego zależy cena?",
-        a: "Od rozmiaru, kształtu, liczby kolorów i liczby sztuk. Cenę podamy po otrzymaniu zapytania.",
+        a: "Od rozmiaru, kształtu, liczby kolorów i liczby sztuk. Dokładną cenę podajemy w bezpłatnej wycenie.",
       },
       {
         q: "Ile trwa realizacja?",
-        a: "Termin ustalamy razem z wyceną. Produkcję zaczynamy po akceptacji projektu.",
+        a: "Termin realizacji ustalamy indywidualnie, razem z wyceną. Produkcję rozpoczynamy po akceptacji projektu.",
       },
       {
         q: "Gdzie wysyłacie?",
-        a: "W całej Europie. Możesz też odebrać lightbox osobiście w Walsall.",
+        a: "Wysyłamy na terenie całej Europy. Możliwy jest też odbiór osobisty w Walsall.",
       },
     ],
   },
   quote: {
     title: "Zaprojektujmy Twój lightbox",
-    lead: "Opisz pomysł i dołącz grafikę, jeśli ją masz. Odpiszemy z ceną i kolejnymi krokami.",
+    lead: "Opisz projekt i dołącz grafikę, jeśli ją masz. W odpowiedzi otrzymasz wycenę i propozycję dalszych kroków.",
     form: {
       name: "Imię",
       email: "E-mail",
@@ -201,12 +205,12 @@ export const pl: Dictionary = {
       depth: "Głębokość",
       unit: "mm",
       sizeHint: "Maksymalny rozmiar: 256 × 256 × 256 mm.",
-      sizeUnsure: "Nie wiem jeszcze, pomóżcie dobrać",
+      sizeUnsure: "Nie znam wymiarów, proszę o pomoc w doborze",
       decrease: "Zmniejsz liczbę sztuk",
       increase: "Zwiększ liczbę sztuk",
       quantity: "Liczba sztuk",
       deadline: "Na kiedy",
-      description: "Co ma świecić?",
+      description: "Opis projektu",
       placeholders: {
         name: "Anna",
         email: "anna@example.com",
@@ -224,29 +228,29 @@ export const pl: Dictionary = {
       filesSelected: "Dołączone pliki",
       remove: "Usuń",
       consent:
-        "Zgadzam się na wykorzystanie moich danych przez GlowBox Lab w celu obsługi zapytania.",
+        "Wyrażam zgodę na przetwarzanie moich danych przez GlowBox Lab w celu obsługi zapytania.",
       privacy: "Polityka prywatności",
       submit: "Wyślij zapytanie o wycenę",
       sending: "Wysyłanie",
       successTitle: "Dziękujemy, {name}!",
       successText:
-        "Twoje zapytanie do nas dotarło. Odpiszemy e-mailem z wyceną i propozycją kolejnych kroków.",
+        "Otrzymaliśmy Twoje zapytanie. Odpowiemy e-mailem w ciągu 24 godzin.",
       another: "Wyślij kolejne zapytanie",
     },
     errors: {
       name: "Podaj swoje imię.",
       email: "Podaj poprawny adres e-mail.",
       phone: "Podaj poprawny numer telefonu.",
-      size: "Podaj wymiary do 256 × 256 × 256 mm albo zaznacz „Nie wiem jeszcze”.",
+      size: "Podaj wymiary do 256 × 256 × 256 mm albo zaznacz „Nie znam wymiarów”.",
       quantity: "Podaj liczbę sztuk od 1 do 500.",
-      description: "Napisz trochę więcej (co najmniej 20 znaków).",
+      description: "Opis powinien mieć co najmniej 20 znaków.",
       consent: "Potwierdź zgodę, aby wysłać zapytanie.",
       fileType: "Ten typ pliku nie jest obsługiwany: {file}",
       fileSize: "Pliki są za duże. Limit to łącznie 4 MB.",
       fileCount: "Możesz dołączyć maksymalnie 3 pliki.",
       summary: "Sprawdź zaznaczone pola.",
       generic:
-        "Coś poszło nie tak i zapytanie nie zostało wysłane. Spróbuj ponownie albo napisz do nas na WhatsApp.",
+        "Nie udało się wysłać zapytania. Spróbuj ponownie lub skontaktuj się z nami przez WhatsApp.",
     },
   },
   contact: {
@@ -254,8 +258,7 @@ export const pl: Dictionary = {
     call: "Zadzwoń",
     whatsapp: "Napisz na WhatsApp",
     location: "Walsall, Wielka Brytania",
-    delivery:
-      "Wysyłamy w całej Europie. Możesz też odebrać zamówienie osobiście.",
+    delivery: "Wysyłka na terenie całej Europy lub odbiór osobisty.",
     socials: "GlowBox Lab w mediach społecznościowych",
     promises: [
       "Odpowiadamy w ciągu 24 godzin",
@@ -272,9 +275,9 @@ export const pl: Dictionary = {
   },
   portfolio: {
     title: "Portfolio",
-    lead: "Wszystkie projekty w jednym miejscu. Kliknij, żeby zobaczyć szczegóły.",
+    lead: "Wszystkie projekty w jednym miejscu. Wybierz projekt, aby zobaczyć szczegóły.",
     description:
-      "Portfolio GlowBox Lab: lightboxy LED z druku 3D z logo, imionami albo własną grafiką.",
+      "Portfolio GlowBox Lab: lightboxy LED z druku 3D z logo firmy, logo drużyny, nickiem gracza, imionami lub własną grafiką.",
   },
   legal: {
     back: "Wróć na stronę główną",

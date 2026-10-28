@@ -5,7 +5,7 @@ export const en = {
   meta: {
     title: "GlowBox Lab | Custom LED Lightboxes",
     description:
-      "Custom LED lightboxes, 3D printed to order. Your logo, name or idea turned into a glowing sign for your brand, gaming setup or a personal gift. Based in Walsall, UK, shipping across Europe.",
+      "Custom 3D printed LED lightboxes: business logos, esports team logos, gamer tags and personal gifts. Based in Walsall, UK, shipping across Europe.",
     ogImage: "/og/glowbox-lab-en.jpg",
     ogAlt: "GlowBox Lab LED lightbox with the hexagon logo glowing blue",
   },
@@ -28,7 +28,7 @@ export const en = {
   hero: {
     eyebrow: "Custom LED lightboxes",
     title: ["Your idea.", "Made to glow."],
-    lead: "Each one is 3D printed from scratch. All we need is a logo, a name or a short description.",
+    lead: "Illuminated logos, names and artwork, 3D printed to order. For businesses, esports teams and gamers, and as gifts.",
     primary: "Get a quote",
     secondary: "View portfolio",
   },
@@ -47,7 +47,7 @@ export const en = {
   },
   work: {
     title: "Portfolio",
-    lead: "A few of the forms a lightbox can take.",
+    lead: "Sample lightbox designs.",
     controls: {
       roledescription: "carousel",
       scrollLeft: "Scroll left",
@@ -58,17 +58,17 @@ export const en = {
       next: "Next project",
       close: "Close",
       counter: "{current} of {total}",
-      cta: "I want one like this",
+      cta: "Ask about a similar project",
       all: "View all",
     },
     items: [
       {
         image: "/images/work-devils.webp",
         alt: "Red and orange Devil's sign lightbox with a horned character and flames",
-        title: "Bold character",
-        text: "A logo with attitude for a bar, a team or a brand.",
+        title: "Logo outline",
+        text: "For a bar, an esports team or a brand.",
         description:
-          "Cut to the exact outline of the logo, with flames and a character. It works best where it has to catch the eye, such as behind a bar or in a gaming room.",
+          "The housing follows the exact outline of the logo, with flames and a character. It works where a sign has to catch the eye: behind a bar, on a tournament stage or in a gaming room.",
         details: [
           { label: "Shape", value: "Follows the logo outline" },
           { label: "Front colours", value: "Red, orange, white" },
@@ -80,7 +80,7 @@ export const en = {
         title: "A personal gift",
         text: "Names and dates for a wedding, an anniversary or a birthday.",
         description:
-          "A heart with names and roses, made as a gift. You can add a date, a short message or your own artwork.",
+          "A heart with names and roses, designed as a gift. A date, a dedication or your own artwork can be added.",
         details: [
           { label: "Shape", value: "Heart" },
           { label: "Front colours", value: "Red, yellow, cream" },
@@ -89,10 +89,10 @@ export const en = {
       {
         image: "/images/work-logo.webp",
         alt: "Hexagon lightbox with the GlowBox Lab logo seen from the side",
-        title: "Your logo, in light",
-        text: "For a desk, a shop or a studio.",
+        title: "Brand or channel logo",
+        text: "For a desk, a counter, a gaming setup or a studio.",
         description:
-          "A logo set in a simple hexagonal housing. It looks good on a counter, on a shelf or in the background of your videos.",
+          "A logo set in a simple hexagonal housing. It looks good on a counter, on a shelf and in the background of streams and videos.",
         details: [
           { label: "Shape", value: "Hexagon" },
           { label: "Front colours", value: "Blue, white" },
@@ -157,33 +157,37 @@ export const en = {
     items: [
       {
         q: "Can I send my own graphic?",
-        a: "Yes. A vector file (SVG, PDF, AI or EPS) works best, but good quality PNG and JPG files are fine too. We check the file and let you know if anything needs adjusting.",
+        a: "Yes. Vector files (SVG, PDF, AI, EPS) work best, but high quality PNG and JPG files are also accepted. We check every file and let you know if anything needs adjusting.",
       },
       {
-        q: "What if I only have an idea?",
-        a: "That is enough. Describe it or add a sketch or inspiration, and we design the lightbox for you.",
+        q: "Do I need a finished design?",
+        a: "No. A description, a sketch or a reference is enough. We prepare the design from it and send it to you for approval.",
+      },
+      {
+        q: "Do you make lightboxes with team logos or gamer tags?",
+        a: "Yes. We make lightboxes with esports team logos, gamer tags and setup artwork, both single pieces and sets for a whole team.",
       },
       {
         q: "How big can a lightbox be?",
-        a: "Up to 256 × 256 × 256 mm. That is what our printer makes in one piece.",
+        a: "Up to 256 × 256 × 256 mm. At that size the housing is printed in one piece.",
       },
       {
         q: "What does the price depend on?",
-        a: "The size, the shape, the number of colours and the quantity. We send you a price once we have your inquiry.",
+        a: "The size, the shape, the number of colours and the quantity. You get the exact price in a free quote.",
       },
       {
         q: "How long does it take?",
-        a: "We agree the date together with the quote. Production starts once you approve the design.",
+        a: "The lead time is agreed individually, together with the quote. Production starts once you approve the design.",
       },
       {
         q: "Where do you deliver?",
-        a: "Across Europe. You can also collect your lightbox in person in Walsall.",
+        a: "We ship across Europe. Collection in person in Walsall is also available.",
       },
     ],
   },
   quote: {
     title: "Let's design your lightbox",
-    lead: "Describe your idea and attach a graphic if you have one. We will reply with a price and the next steps.",
+    lead: "Describe your project and attach artwork if you have it. We will reply with a quote and the next steps.",
     form: {
       name: "Name",
       email: "Email",
@@ -195,12 +199,12 @@ export const en = {
       depth: "Depth",
       unit: "mm",
       sizeHint: "Maximum size: 256 × 256 × 256 mm.",
-      sizeUnsure: "Not sure yet, please advise",
+      sizeUnsure: "Not sure about the size, please advise",
       decrease: "Decrease quantity",
       increase: "Increase quantity",
       quantity: "Quantity",
       deadline: "Needed by",
-      description: "What should glow?",
+      description: "Project description",
       placeholders: {
         name: "Emma",
         email: "emma@example.com",
@@ -218,29 +222,29 @@ export const en = {
       filesSelected: "Attached files",
       remove: "Remove",
       consent:
-        "I agree that GlowBox Lab may use my details to handle this inquiry.",
+        "I consent to GlowBox Lab processing my details to handle this inquiry.",
       privacy: "Privacy policy",
       submit: "Send quote request",
       sending: "Sending",
       successTitle: "Thank you, {name}!",
       successText:
-        "Your inquiry has reached us. We will reply by email with a quote and the next steps.",
+        "We have received your inquiry and will reply by email within 24 hours.",
       another: "Send another inquiry",
     },
     errors: {
       name: "Please enter your name.",
       email: "Please enter a valid email address.",
       phone: "Please enter a valid phone number.",
-      size: "Enter a size of up to 256 × 256 × 256 mm, or tick “Not sure yet”.",
+      size: "Enter a size of up to 256 × 256 × 256 mm, or tick “Not sure about the size”.",
       quantity: "Enter a quantity from 1 to 500.",
-      description: "Tell us a little more (at least 20 characters).",
+      description: "The description should be at least 20 characters long.",
       consent: "Please confirm to send the inquiry.",
       fileType: "This file type is not supported: {file}",
       fileSize: "The files are too large. The limit is 4 MB in total.",
       fileCount: "You can attach up to 3 files.",
       summary: "Please check the highlighted fields.",
       generic:
-        "Something went wrong and the inquiry was not sent. Please try again or message us on WhatsApp.",
+        "The inquiry could not be sent. Please try again or contact us on WhatsApp.",
     },
   },
   contact: {
@@ -248,7 +252,7 @@ export const en = {
     call: "Call",
     whatsapp: "Message us on WhatsApp",
     location: "Walsall, United Kingdom",
-    delivery: "We ship across Europe. You can also collect in person.",
+    delivery: "Shipping across Europe or collection in person.",
     socials: "GlowBox Lab on social media",
     promises: [
       "We reply within 24 hours",
@@ -265,9 +269,9 @@ export const en = {
   },
   portfolio: {
     title: "Portfolio",
-    lead: "All our projects in one place. Click one to see the details.",
+    lead: "All projects in one place. Select a project to see the details.",
     description:
-      "GlowBox Lab portfolio: 3D printed LED lightboxes with logos, names or your own artwork.",
+      "GlowBox Lab portfolio: 3D printed LED lightboxes with business logos, team logos, gamer tags, names or your own artwork.",
   },
   legal: {
     back: "Back to home page",

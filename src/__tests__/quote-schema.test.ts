@@ -44,7 +44,7 @@ describe("quoteSchema", () => {
     ).toEqual({});
   });
 
-  it("przy „Nie wiem jeszcze” przyjmuje te wymiary, które klient zna", () => {
+  it("przy „Nie znam wymiarów” przyjmuje te wymiary, które klient zna", () => {
     expect(errorsFor({ ...valid, depth: "", sizeUnsure: true })).toEqual({});
     expect(errorsFor({ ...valid, depth: "300", sizeUnsure: true })).toEqual({
       depth: "size",

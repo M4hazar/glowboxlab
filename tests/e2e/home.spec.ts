@@ -289,6 +289,15 @@ test.describe("przeglądarka po polsku", () => {
   });
 });
 
+test("strona wysyła nagłówki bezpieczeństwa", async ({ request }) => {
+  const response = await request.get("/pl");
+  const headers = response.headers();
+  expect(headers["x-content-type-options"]).toBe("nosniff");
+  expect(headers["x-frame-options"]).toBe("DENY");
+  expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
+  expect(headers["permissions-policy"]).toContain("camera=()");
+});
+
 test("strony prawne i 404", async ({ page }) => {
   await page.goto("/privacy");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
