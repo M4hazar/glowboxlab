@@ -62,6 +62,7 @@ export const pl: Dictionary = {
       close: "Zamknij",
       counter: "{current} z {total}",
       cta: "Chcę podobny lightbox",
+      all: "Zobacz wszystkie",
     },
     items: [
       {
@@ -233,6 +234,12 @@ export const pl: Dictionary = {
     cookies: "Cookies",
     terms: "Zasady wyceny",
     rights: "GlowBox Lab",
+  },
+  portfolio: {
+    title: "Portfolio",
+    lead: "Wszystkie projekty w jednym miejscu. Kliknij, żeby zobaczyć szczegóły.",
+    description:
+      "Portfolio GlowBox Lab: lightboxy LED z druku 3D z logo, imionami albo własną grafiką.",
   },
   legal: {
     back: "Wróć na stronę główną",

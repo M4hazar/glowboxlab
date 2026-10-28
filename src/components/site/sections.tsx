@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Dictionary } from "@/content/en";
+import { type Locale, routes } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./reveal";
 import { WorkCarousel } from "./work-carousel";
@@ -62,6 +63,7 @@ export function Work({ dict }: { dict: Dictionary }) {
     >
       <WorkCarousel
         t={t}
+        allHref={routes.portfolio[dict.locale as Locale]}
         heading={
           <SectionHeading id="work-title" title={t.title} lead={t.lead} />
         }

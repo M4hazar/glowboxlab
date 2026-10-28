@@ -187,6 +187,33 @@ test("portfolio: pasek się przewija, staje i pokazuje szczegóły projektu", as
   await expect(page.locator("#quote-title")).toBeInViewport();
 });
 
+test("podstrona portfolio pokazuje wszystkie projekty", async ({ page }) => {
+  const t = pl.work;
+  await page.route("**/*.glb", () => {});
+  await page.goto("/pl#work");
+  await page
+    .locator("#work")
+    .getByRole("link", { name: t.controls.all })
+    .click();
+  await expect(page).toHaveURL(/\/pl\/portfolio$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    pl.portfolio.title,
+  );
+  const main = page.getByRole("main");
+  for (const item of t.items) {
+    await expect(
+      main.getByRole("button", { name: new RegExp(item.title) }),
+    ).toBeVisible();
+  }
+  await main
+    .getByRole("button", { name: new RegExp(t.items[2].title) })
+    .click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toHaveAccessibleName(t.items[2].title);
+  await dialog.getByRole("link", { name: t.controls.cta }).click();
+  await expect(page).toHaveURL(/\/pl#quote$/);
+});
+
 test.describe("przeglądarka po polsku", () => {
   test.use({ locale: "pl-PL" });
 
@@ -234,7 +261,14 @@ async function expectNoAxeViolations(page: Page, path: string) {
   expect(results.violations).toEqual([]);
 }
 
-for (const path of ["/", "/pl", "/privacy", "/pl/polityka-prywatnosci"]) {
+for (const path of [
+  "/",
+  "/pl",
+  "/portfolio",
+  "/pl/portfolio",
+  "/privacy",
+  "/pl/polityka-prywatnosci",
+]) {
   test(`brak naruszeń WCAG 2.2 AA na ${path}`, async ({ page }) => {
     // Pełny audyt długiej strony przy równoległych testach WebGL trwa dłużej.
     test.slow();

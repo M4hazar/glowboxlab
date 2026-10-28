@@ -38,6 +38,7 @@ export type Locale = "en" | "pl";
 // Odpowiadające sobie strony w obu językach.
 export const routes = {
   home: { en: "/", pl: "/pl" },
+  portfolio: { en: "/portfolio", pl: "/pl/portfolio" },
   privacy: { en: "/privacy", pl: "/pl/polityka-prywatnosci" },
   terms: { en: "/quote-terms", pl: "/pl/zasady-wyceny" },
 } as const;

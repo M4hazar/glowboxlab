@@ -59,6 +59,7 @@ export const en = {
       close: "Close",
       counter: "{current} of {total}",
       cta: "I want one like this",
+      all: "View all",
     },
     items: [
       {
@@ -226,6 +227,12 @@ export const en = {
     cookies: "Cookies",
     terms: "Quote terms",
     rights: "GlowBox Lab",
+  },
+  portfolio: {
+    title: "Portfolio",
+    lead: "All our projects in one place. Click one to see the details.",
+    description:
+      "GlowBox Lab portfolio: 3D printed LED lightboxes with logos, names or your own artwork.",
   },
   legal: {
     back: "Back to home page",
