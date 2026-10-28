@@ -79,6 +79,8 @@ test("przełącznik języka prowadzi do polskiej wersji", async ({
   page,
   isMobile,
 }) => {
+  // Kliknięcie uruchamia scenę 3D, a programowy WebGL potrafi spowolnić przejście na /pl.
+  await page.route("**/*.glb", () => {});
   await page.goto("/");
   // Na telefonie przełącznik jest w menu, na komputerze w nagłówku.
   if (isMobile) await page.getByRole("button", { name: en.a11y.menu }).click();

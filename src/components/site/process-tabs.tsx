@@ -4,10 +4,10 @@ import {
   CheckIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  PackageIcon,
   PrinterIcon,
   ReceiptTextIcon,
   SendIcon,
+  TruckIcon,
 } from "lucide-react";
 import { Tabs } from "radix-ui";
 import { useState } from "react";
@@ -15,9 +15,9 @@ import type { Dictionary } from "@/content/en";
 import { cn } from "@/lib/utils";
 import { iconButton } from "./portfolio";
 
-const icons = [SendIcon, ReceiptTextIcon, PrinterIcon, PackageIcon];
+const icons = [SendIcon, ReceiptTextIcon, PrinterIcon, TruckIcon];
 
-// Kroki na poziomej osi; wybrany krok pokazuje opis i szczegóły w panelu pod spodem.
+// Etapy na poziomej osi; wybrany etap pokazuje opis i szczegóły w panelu pod spodem.
 export function ProcessTabs({
   t,
   cta,
