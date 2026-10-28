@@ -125,7 +125,7 @@
 /*
  * Ruch i efekty.
  * Skrypt w <head> (src/components/site/motion.tsx) ustawia data-motion na <html>, gdy system
- * nie prosi o ograniczenie ruchu, i data-intro przy pierwszym wejściu w karcie. Bez JavaScriptu
+ * nie prosi o ograniczenie ruchu, i data-intro przy każdym wczytaniu strony. Bez JavaScriptu
  * i przy prefers-reduced-motion strona jest od razu widoczna, bez animacji.
  * Animacje wejścia mają wypełnienie backwards: po zakończeniu nie zostawiają transformacji,
  * która zmieniłaby pozycjonowanie elementów fixed (pełny ekran modelu 3D).
@@ -326,7 +326,8 @@
     position: fixed;
     inset: 0;
     z-index: 100;
-    display: block;
+    /* biome-ignore lint/complexity/noImportantStyles: wygrywa ze stylem inline, który ukrywa ekran startowy bez tego arkusza */
+    display: block !important;
     pointer-events: none;
     animation: intro-done 0s 2.3s forwards;
   }

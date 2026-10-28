@@ -289,27 +289,42 @@ test.describe("przeglądarka po polsku", () => {
   });
 });
 
-test("animacje: ekran startowy raz na kartę, sekcje odsłaniają się przy przewijaniu", async ({
+test("animacje: ekran startowy przy każdym wczytaniu, sekcje odsłaniają się przy przewijaniu", async ({
   page,
 }) => {
   await page.route("**/*.glb", () => {});
   await page.goto("/pl");
   const html = page.locator("html");
+  const intro = page.locator(".intro");
   await expect(html).toHaveAttribute("data-motion", "");
   await expect(html).toHaveAttribute("data-intro", "");
   // Ekran startowy nie blokuje kliknięć i znika sam.
-  await expect(page.locator(".intro")).toHaveCSS("pointer-events", "none");
-  await expect(page.locator(".intro")).toBeHidden({ timeout: 5000 });
+  await expect(intro).toHaveCSS("pointer-events", "none");
+  await expect(intro).toHaveCSS("position", "fixed");
+  await expect(intro).toBeHidden({ timeout: 5000 });
+  await expect(html).not.toHaveAttribute("data-intro", { timeout: 5000 });
 
+  // Odświeżenie pokazuje go ponownie.
   await page.reload();
-  await expect(html).not.toHaveAttribute("data-intro");
-  await expect(page.locator(".intro")).toBeHidden();
+  await expect(html).toHaveAttribute("data-intro", "");
+  await expect(intro).toHaveCSS("position", "fixed");
+  await expect(intro).toBeHidden({ timeout: 5000 });
 
   const faq = page.locator("#faq [data-reveal]").first();
   await expect(faq).not.toHaveAttribute("data-revealed");
   await faq.scrollIntoViewIfNeeded();
   await expect(faq).toHaveAttribute("data-revealed", "");
   await expect(faq).toHaveCSS("opacity", "1");
+});
+
+test("bez arkusza stylów logo ekranu startowego nie wypada na stronę", async ({
+  page,
+}) => {
+  await page.route("**/*.glb", () => {});
+  await page.route("**/*.css*", (route) => route.abort());
+  await page.goto("/pl");
+  await expect(page.locator("html")).toHaveAttribute("data-intro", "");
+  await expect(page.locator(".intro")).toBeHidden();
 });
 
 test("nagłówek zostaje widoczny i wskazuje sekcję na ekranie", async ({
