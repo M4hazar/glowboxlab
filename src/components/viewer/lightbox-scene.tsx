@@ -58,14 +58,14 @@ function useLightboxMaterials() {
       blue: new THREE.MeshStandardMaterial({
         color: "#0a5fc4",
         roughness: 0.4,
-        emissive: new THREE.Color("#1f8fff"),
+        emissive: new THREE.Color(GLOW.blue),
         emissiveIntensity: 0,
         toneMapped: false,
       }),
       white: new THREE.MeshStandardMaterial({
         color: "#d9dadc",
         roughness: 0.4,
-        emissive: new THREE.Color("#ffffff"),
+        emissive: new THREE.Color(GLOW.white),
         emissiveIntensity: 0,
         toneMapped: false,
       }),
@@ -138,18 +138,10 @@ function Lightbox({
       delta,
     );
     const l = level.current;
-    mats.blue.emissive.set(GLOW.blue);
-    mats.white.emissive.set(GLOW.white);
     mats.blue.emissiveIntensity = l * 1.7;
     mats.white.emissiveIntensity = l * 1.25;
-    if (spill.current) {
-      spill.current.intensity = l * 6;
-      spill.current.color.set(GLOW.spill);
-    }
-    if (pool.current) {
-      pool.current.opacity = l * 0.55;
-      pool.current.color.set(GLOW.spill);
-    }
+    if (spill.current) spill.current.intensity = l * 6;
+    if (pool.current) pool.current.opacity = l * 0.55;
     if (group.current) {
       group.current.rotation.y = THREE.MathUtils.damp(
         group.current.rotation.y,
@@ -170,6 +162,7 @@ function Lightbox({
         <pointLight
           ref={spill}
           position={[0, -0.4, 1.4]}
+          color={GLOW.spill}
           distance={5}
           decay={2}
           intensity={0}
@@ -184,6 +177,7 @@ function Lightbox({
         <meshBasicMaterial
           ref={pool}
           map={poolTexture}
+          color={GLOW.spill}
           transparent
           depthWrite={false}
           blending={THREE.AdditiveBlending}

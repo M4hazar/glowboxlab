@@ -155,7 +155,6 @@ export const pl: Dictionary = {
       privacy: "Polityka prywatności",
       submit: "Wyślij zapytanie o wycenę",
       sending: "Wysyłanie",
-      required: "wymagane",
       successTitle: "Dziękujemy, {name}!",
       successText:
         "Twoje zapytanie do nas dotarło. Odpiszemy e-mailem z wyceną i propozycją kolejnych kroków.",

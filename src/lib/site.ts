@@ -30,8 +30,6 @@ export const site = {
 
 export type Locale = "en" | "pl";
 
-export const locales: Locale[] = ["en", "pl"];
-
 // Odpowiadające sobie strony w obu językach.
 export const routes = {
   home: { en: "/", pl: "/pl" },

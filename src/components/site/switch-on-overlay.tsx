@@ -25,7 +25,7 @@ export function SwitchOnOverlay({ src }: { src: string }) {
       aria-hidden
       fill
       loading="eager"
-      sizes="(min-width: 1024px) 52vw, 100vw"
+      sizes="(min-width: 1024px) 640px, 100vw"
       onLoad={() => setLoaded(true)}
       className="object-cover transition-opacity duration-[1600ms] ease-[cubic-bezier(.65,0,.25,1)] motion-reduce:transition-none"
       style={{ opacity: on ? 1 : 0 }}

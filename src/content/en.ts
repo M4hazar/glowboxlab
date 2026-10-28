@@ -152,7 +152,6 @@ export const en = {
       privacy: "Privacy policy",
       submit: "Send quote request",
       sending: "Sending",
-      required: "required",
       successTitle: "Thank you, {name}!",
       successText:
         "Your inquiry has reached us. We will reply by email with a quote and the next steps.",

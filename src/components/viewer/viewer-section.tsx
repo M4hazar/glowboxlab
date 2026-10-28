@@ -86,7 +86,7 @@ export function ViewerSection({ dict }: { dict: Dictionary }) {
         <div
           ref={frame}
           className={cn(
-            "relative mt-12 overflow-hidden border border-white/10 bg-[#05070a]",
+            "relative mt-12 overflow-hidden border border-white/10 bg-background",
             expanded
               ? "fixed inset-0 z-[60] mt-0 flex flex-col rounded-none border-0"
               : "rounded-2xl",

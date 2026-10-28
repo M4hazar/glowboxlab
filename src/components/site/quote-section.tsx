@@ -32,17 +32,17 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
 
           <ul className="mt-10 flex flex-col gap-5 text-lg">
             <li>
-              <a href={`mailto:${site.email}`} className={contactLink}>
-                <MailIcon className="size-5 text-brand-soft" aria-hidden />
-                <span className="sr-only">{c.email}: </span>
-                {site.email}
-              </a>
-            </li>
-            <li>
               <a href={site.phoneHref} className={contactLink}>
                 <PhoneIcon className="size-5 text-brand-soft" aria-hidden />
                 <span className="sr-only">{c.call}: </span>
                 {site.phone}
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${site.email}`} className={contactLink}>
+                <MailIcon className="size-5 text-brand-soft" aria-hidden />
+                <span className="sr-only">{c.email}: </span>
+                {site.email}
               </a>
             </li>
             <li className="flex gap-4">

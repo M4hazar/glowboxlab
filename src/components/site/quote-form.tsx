@@ -330,7 +330,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
                 setUnsure(ev.target.checked);
                 clearError("width");
               }}
-              className="size-4 accent-[#006fe0]"
+              className="size-4 accent-primary"
             />
             {t.sizeUnsure}
           </label>
@@ -401,7 +401,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium" id={id("files-label")}>
+        <p className="mb-2 text-sm font-medium">
           {t.files}{" "}
           <span className="font-normal text-muted-foreground">
             ({t.optional})
@@ -487,7 +487,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
           <input
             type="checkbox"
             name="consent"
-            className="mt-1 size-4 shrink-0 accent-[#006fe0]"
+            className="mt-1 size-4 shrink-0 accent-primary"
             aria-invalid={Boolean(err("consent"))}
             aria-describedby={err("consent") ? id("consent-error") : undefined}
             onChange={() => clearError("consent")}
@@ -508,7 +508,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
       <button
         type="submit"
         disabled={pending}
-        className="inline-flex h-14 items-center justify-center gap-3 rounded-lg bg-primary px-8 text-base font-semibold text-white shadow-[0_10px_50px_-12px_rgb(0_127_255/0.9)] transition-colors hover:bg-brand-strong disabled:cursor-wait disabled:opacity-80"
+        className="inline-flex h-14 items-center justify-center gap-3 rounded-lg bg-primary px-8 text-base font-semibold text-white shadow-glow transition-colors hover:bg-brand-strong disabled:cursor-wait disabled:opacity-80"
       >
         {pending && <Loader2Icon className="size-5 animate-spin" aria-hidden />}
         {pending ? t.sending : t.submit}
