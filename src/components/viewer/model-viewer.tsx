@@ -124,7 +124,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
 
   const loading = mode === "3d" && !ready;
   const iconButton =
-    "press inline-flex size-11 items-center justify-center rounded-lg border border-white/12 text-foreground/90 hover:border-white/30 hover:bg-white/[0.06] disabled:opacity-40";
+    "press inline-flex size-11 items-center justify-center rounded-lg border border-ink/12 text-foreground/90 hover:border-ink/30 hover:bg-ink/[0.06] disabled:opacity-40";
 
   return (
     <div ref={viewer}>
@@ -132,8 +132,10 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
         ref={frame}
         role="img"
         aria-label={t.canvasLabel}
-        className="relative aspect-square w-full [mask-image:radial-gradient(closest-side,black_72%,transparent)]"
+        className="relative aspect-square w-full [mask-image:radial-gradient(closest-side,black_72%,transparent)] light:overflow-hidden light:rounded-2xl light:bg-stage light:[mask-image:none]"
       >
+        {/* Na ciemnej stronie scena rozmywa się w tle. Na jasnej stoi w ciemnym kadrze jak zdjęcie
+            produktu, bo świecący lightbox wygląda prawdziwie tylko na ciemnym tle. */}
         {/* Plakat to render tej samej sceny w tym samym kadrze. Zostaje pod modelem 3D,
             który pojawia się nad nim, więc przejście jest niewidoczne. */}
         <Image
@@ -168,7 +170,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
         </p>
       )}
 
-      <div className="relative z-10 -mt-10 flex flex-wrap items-center justify-center gap-2">
+      <div className="relative z-10 -mt-10 flex flex-wrap light:mt-4 items-center justify-center gap-2">
         <button
           type="button"
           aria-label={t.light}

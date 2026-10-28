@@ -38,7 +38,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
     <section
       id="quote"
       aria-labelledby="quote-title"
-      className="border-t border-white/[0.07] py-20 sm:py-28"
+      className="border-t border-ink/[0.07] py-20 sm:py-28"
     >
       {/* Kolumny mają równą wysokość: zapewnienia lądują na dole, na wysokości końca formularza. */}
       <div className="section grid gap-12 lg:grid-cols-[1fr_1.25fr] lg:gap-16">
@@ -102,7 +102,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
                   rel="noopener"
                   className={cn(
                     socialLink,
-                    "border-white/15 hover:border-white/40 hover:text-brand-soft",
+                    "border-ink/15 hover:border-ink/40 hover:text-brand-soft",
                   )}
                 >
                   <Icon className="size-4" />
@@ -114,7 +114,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
 
           <ul
             data-reveal="3"
-            className="grid gap-3 border-t border-white/[0.07] pt-8 text-muted-foreground lg:mt-auto"
+            className="grid gap-3 border-t border-ink/[0.07] pt-8 text-muted-foreground lg:mt-auto"
           >
             {c.promises.map((text, i) => {
               const Icon = promiseIcons[i];
@@ -133,7 +133,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
 
         <div
           data-reveal="1"
-          className="rounded-2xl border border-white/10 bg-surface p-5 sm:p-8"
+          className="rounded-2xl border border-ink/10 bg-surface p-5 sm:p-8"
         >
           <QuoteForm dict={dict} />
         </div>

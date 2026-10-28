@@ -44,7 +44,7 @@ export function Intro() {
           height={LOGO_HEIGHT}
         >
           <path
-            className="intro-fill fill-white"
+            className="intro-fill fill-ink"
             d={markWhite}
             fillRule="evenodd"
           />
@@ -54,7 +54,7 @@ export function Intro() {
             fillRule="evenodd"
           />
           <path
-            className="intro-stroke stroke-white"
+            className="intro-stroke stroke-ink"
             d={markWhite}
             pathLength={1}
           />
@@ -74,7 +74,7 @@ export function Intro() {
           width={wordWidth}
           height={LOGO_HEIGHT}
         >
-          <path className="fill-white" d={wordWhite} fillRule="evenodd" />
+          <path className="fill-ink" d={wordWhite} fillRule="evenodd" />
           <path className="fill-brand" d={wordBlue} fillRule="evenodd" />
         </svg>
       </div>

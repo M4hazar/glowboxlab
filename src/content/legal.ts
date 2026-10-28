@@ -80,7 +80,7 @@ export const privacy: Record<Locale, LegalDoc> = {
         id: "cookies",
         heading: "Cookies",
         body: [
-          "The website uses one cookie, only after you choose a language yourself, and no analytics, advertising or tracking cookies. The details are in our cookie policy.",
+          "The website uses two cookies, only after you choose a language or a light or dark theme yourself, and no analytics, advertising or tracking cookies. The details are in our cookie policy.",
         ],
       },
       {
@@ -157,7 +157,7 @@ export const privacy: Record<Locale, LegalDoc> = {
         id: "cookies",
         heading: "Cookies",
         body: [
-          "Strona używa jednego pliku cookie, i to dopiero wtedy, gdy sam wybierzesz język. Nie używamy cookies analitycznych, reklamowych ani śledzących. Szczegóły znajdziesz w polityce cookies.",
+          "Strona używa dwóch plików cookie, i to dopiero wtedy, gdy sam wybierzesz język albo jasny lub ciemny motyw. Nie używamy cookies analitycznych, reklamowych ani śledzących. Szczegóły znajdziesz w polityce cookies.",
         ],
       },
       {
@@ -174,9 +174,9 @@ export const cookies: Record<Locale, LegalDoc> = {
   en: {
     title: "Cookie policy",
     description:
-      "Which cookies the GlowBox Lab website uses: one, to remember the language you choose.",
+      "Which cookies the GlowBox Lab website uses: two, to remember the language and the theme you choose.",
     intro:
-      "We keep cookies to a minimum: the website uses one cookie, and only after you choose a language yourself.",
+      "We keep cookies to a minimum: the website uses two cookies, and only after you choose a language or a theme yourself.",
     sections: [
       {
         heading: "What cookies are",
@@ -196,6 +196,12 @@ export const cookies: Record<Locale, LegalDoc> = {
               "12 months",
               "Cookie, functional",
             ],
+            [
+              "theme",
+              "Remembers the light or dark theme you chose with the theme switch. Without it the website follows the setting of your device.",
+              "12 months",
+              "Cookie, functional",
+            ],
           ],
         },
       },
@@ -208,13 +214,13 @@ export const cookies: Record<Locale, LegalDoc> = {
       {
         heading: "Consent",
         body: [
-          "This cookie is set only when you use the language switch, and without it the website could not keep the language you asked for, so the law does not require your consent and we do not show a cookie banner. If we ever add other cookies, we will ask for your consent first.",
+          "These cookies are set only when you use the language or theme switch, and without them the website could not keep the choice you asked for, so the law does not require your consent and we do not show a cookie banner. If we ever add other cookies, we will ask for your consent first.",
         ],
       },
       {
         heading: "Managing cookies",
         body: [
-          "You can delete or block cookies in your browser settings. Without the NEXT_LOCALE cookie the website simply chooses the language based on your browser settings.",
+          "You can delete or block cookies in your browser settings. Without these cookies the website simply chooses the language based on your browser settings and the theme based on your device settings.",
         ],
       },
     ],
@@ -222,9 +228,9 @@ export const cookies: Record<Locale, LegalDoc> = {
   pl: {
     title: "Polityka cookies",
     description:
-      "Jakich plików cookies używa strona GlowBox Lab: jednego, który zapamiętuje wybrany język.",
+      "Jakich plików cookies używa strona GlowBox Lab: dwóch, które zapamiętują wybrany język i motyw.",
     intro:
-      "Ograniczamy cookies do minimum: strona używa jednego pliku cookie, i to dopiero wtedy, gdy sam wybierzesz język.",
+      "Ograniczamy cookies do minimum: strona używa dwóch plików cookie, i to dopiero wtedy, gdy sam wybierzesz język albo motyw.",
     sections: [
       {
         heading: "Czym są cookies",
@@ -244,6 +250,12 @@ export const cookies: Record<Locale, LegalDoc> = {
               "12 miesięcy",
               "Cookie, funkcjonalne",
             ],
+            [
+              "theme",
+              "Zapamiętuje jasny lub ciemny motyw wybrany przełącznikiem motywu. Bez niego strona wygląda tak, jak ustawiono w urządzeniu.",
+              "12 miesięcy",
+              "Cookie, funkcjonalne",
+            ],
           ],
         },
       },
@@ -256,13 +268,13 @@ export const cookies: Record<Locale, LegalDoc> = {
       {
         heading: "Zgoda",
         body: [
-          "Ten plik zapisuje się tylko wtedy, gdy użyjesz przełącznika języka, a bez niego strona nie mogłaby zachować wybranego języka, dlatego przepisy nie wymagają zgody i nie wyświetlamy banera cookies. Jeśli kiedyś dodamy inne cookies, najpierw poprosimy o zgodę.",
+          "Te pliki zapisują się tylko wtedy, gdy użyjesz przełącznika języka lub motywu, a bez nich strona nie mogłaby zachować Twojego wyboru, dlatego przepisy nie wymagają zgody i nie wyświetlamy banera cookies. Jeśli kiedyś dodamy inne cookies, najpierw poprosimy o zgodę.",
         ],
       },
       {
         heading: "Zarządzanie cookies",
         body: [
-          "Cookies możesz usunąć lub zablokować w ustawieniach przeglądarki. Bez pliku NEXT_LOCALE strona po prostu wybiera język na podstawie ustawień przeglądarki.",
+          "Cookies możesz usunąć lub zablokować w ustawieniach przeglądarki. Bez tych plików strona po prostu wybiera język na podstawie ustawień przeglądarki, a motyw na podstawie ustawień urządzenia.",
         ],
       },
     ],

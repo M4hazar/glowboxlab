@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 type Work = Dictionary["work"];
 
 export const iconButton =
-  "press inline-flex size-11 items-center justify-center rounded-full border border-white/12 text-foreground/90 hover:border-white/30 hover:bg-white/[0.06]";
+  "press inline-flex size-11 items-center justify-center rounded-full border border-ink/12 text-foreground/90 hover:border-ink/30 hover:bg-ink/[0.06]";
 
 // Karta projektu: ta sama w przewijanym pasku i na podstronie portfolio.
 export function WorkCard({
@@ -45,7 +45,7 @@ export function WorkCard({
       className={cn("group block text-left outline-none", className)}
       {...props}
     >
-      <span className="relative block aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-surface transition-colors group-hover:border-white/25 group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background">
+      <span className="relative block aspect-[4/3] overflow-hidden rounded-2xl border border-ink/10 bg-surface transition-colors group-hover:border-ink/25 group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background">
         <Image
           src={work.image}
           alt=""
@@ -109,7 +109,7 @@ export function WorkDialog({
           }
           returnFocus(index);
         }}
-        className="max-h-[calc(100dvh-2rem)] gap-0 overflow-y-auto border-white/10 bg-surface p-0 sm:max-w-4xl md:grid-cols-[1.25fr_1fr]"
+        className="max-h-[calc(100dvh-2rem)] gap-0 overflow-y-auto border-ink/10 bg-surface p-0 sm:max-w-4xl md:grid-cols-[1.25fr_1fr]"
       >
         <div className="relative aspect-[4/3] bg-background md:aspect-auto md:min-h-[440px]">
           <Image
@@ -135,7 +135,7 @@ export function WorkDialog({
           <DialogDescription className="mt-3 text-base leading-relaxed text-muted-foreground">
             {item.description}
           </DialogDescription>
-          <dl className="mt-6 divide-y divide-white/[0.07] border-y border-white/[0.07] text-sm">
+          <dl className="mt-6 divide-y divide-ink/[0.07] border-y border-ink/[0.07] text-sm">
             {item.details.map((d) => (
               <div key={d.label} className="flex justify-between gap-6 py-3">
                 <dt className="text-muted-foreground">{d.label}</dt>

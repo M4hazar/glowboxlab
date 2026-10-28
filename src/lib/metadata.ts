@@ -1,10 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import type { Dictionary } from "@/content/en";
 import { alternates, type Locale, type RouteKey, site } from "@/lib/site";
+import { THEME_COLORS } from "@/lib/theme";
 
+// Bez JavaScriptu pasek przeglądarki idzie za ustawieniem urządzenia; skrypt motywu
+// nadpisuje oba kolory, gdy ktoś wybrał motyw ręcznie.
 export const viewport: Viewport = {
-  themeColor: "#05070a",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: THEME_COLORS.light },
+    { media: "(prefers-color-scheme: dark)", color: THEME_COLORS.dark },
+  ],
+  colorScheme: "light dark",
 };
 
 export function pageMetadata(

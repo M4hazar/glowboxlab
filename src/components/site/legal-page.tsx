@@ -75,7 +75,7 @@ function LegalTable({ head, rows }: { head: string[]; rows: string[][] }) {
     <>
       <table className="mt-4 hidden w-full text-left text-sm sm:table">
         <thead>
-          <tr className="border-b border-white/10 text-muted-foreground">
+          <tr className="border-b border-ink/10 text-muted-foreground">
             {head.map((cell) => (
               <th key={cell} scope="col" className="py-2 pr-4 font-medium">
                 {cell}
@@ -85,7 +85,7 @@ function LegalTable({ head, rows }: { head: string[]; rows: string[][] }) {
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row[0]} className="border-b border-white/[0.07]">
+            <tr key={row[0]} className="border-b border-ink/[0.07]">
               {row.map((cell, i) => (
                 <td
                   key={head[i]}
@@ -105,7 +105,7 @@ function LegalTable({ head, rows }: { head: string[]; rows: string[][] }) {
         {rows.map((row) => (
           <dl
             key={row[0]}
-            className="grid gap-2 rounded-lg border border-white/[0.07] p-4 text-sm"
+            className="grid gap-2 rounded-lg border border-ink/[0.07] p-4 text-sm"
           >
             {row.map((cell, i) => (
               <div key={head[i]}>

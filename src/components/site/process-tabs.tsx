@@ -60,7 +60,7 @@ export function ProcessTabs({
       >
         <span
           aria-hidden
-          className="absolute top-5 right-[12.5%] left-[12.5%] h-px bg-white/15"
+          className="absolute top-5 right-[12.5%] left-[12.5%] h-px bg-ink/15"
         >
           <span
             className="absolute inset-0 origin-left bg-brand transition-transform duration-500 ease-glow"
@@ -102,7 +102,7 @@ export function ProcessTabs({
 
       <div
         data-reveal="2"
-        className="relative mt-8 rounded-2xl border border-white/10 bg-surface sm:mt-10"
+        className="relative mt-8 rounded-2xl border border-ink/10 bg-surface sm:mt-10"
       >
         {t.steps.map((step, i) => {
           const Icon = icons[i];
@@ -129,7 +129,7 @@ export function ProcessTabs({
                   {step.description}
                 </p>
               </div>
-              <ul className="space-y-4 self-center rounded-xl border border-white/[0.07] bg-background/60 p-6 md:row-span-2 md:mt-14">
+              <ul className="space-y-4 self-center rounded-xl border border-ink/[0.07] bg-background/60 p-6 md:row-span-2 md:mt-14">
                 {step.details.map((d) => (
                   <li key={d} className="flex gap-3">
                     <CheckIcon

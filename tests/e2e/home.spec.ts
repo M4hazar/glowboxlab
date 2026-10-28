@@ -506,9 +506,13 @@ test("strony prawne i 404", async ({ page }) => {
   await expect(page.getByText(en.notFound.title)).toBeVisible();
 });
 
-async function expectNoAxeViolations(page: Page, path: string) {
+async function expectNoAxeViolations(
+  page: Page,
+  path: string,
+  colorScheme: "light" | "dark" = "dark",
+) {
   // Bez animacji wejścia axe mierzy kontrast w stanie końcowym.
-  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.emulateMedia({ reducedMotion: "reduce", colorScheme });
   // Model 3D zostaje w stanie ładowania: axe sprawdza DOM, a programowy
   // WebGL w CI potrafi zablokować wątek strony na wiele sekund.
   await page.route("**/*.glb", () => {});
@@ -535,6 +539,51 @@ for (const path of [
     await expectNoAxeViolations(page, path);
   });
 }
+
+for (const path of ["/", "/pl/portfolio", "/pl/polityka-cookies"]) {
+  test(`brak naruszeń WCAG 2.2 AA w jasnym motywie na ${path}`, async ({
+    page,
+  }) => {
+    test.slow();
+    await expectNoAxeViolations(page, path, "light");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  });
+}
+
+test("motyw idzie za urządzeniem, a ręczny wybór zapisuje się w ciasteczku", async ({
+  page,
+  context,
+}) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/pl");
+  const html = page.locator("html");
+  await expect(html).toHaveAttribute("data-theme", "light");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect(html).toHaveAttribute("data-theme", "dark");
+  await page.emulateMedia({ colorScheme: "light" });
+  await expect(html).toHaveAttribute("data-theme", "light");
+
+  // Na telefonie przełącznik jest w menu.
+  const menu = page.getByRole("button", { name: pl.a11y.menu });
+  if (await menu.isVisible()) await menu.click();
+  await page
+    .getByRole("button", { name: pl.a11y.toDark })
+    .filter({ visible: true })
+    .click();
+  await expect(html).toHaveAttribute("data-theme", "dark");
+  const saved = (await context.cookies()).find((c) => c.name === "theme");
+  expect(saved?.value).toBe("dark");
+
+  // Ręczny wybór wygrywa z ustawieniem urządzenia, także po odświeżeniu i na innej podstronie.
+  await page.reload();
+  await expect(html).toHaveAttribute("data-theme", "dark");
+  await page.goto("/cookies");
+  await expect(html).toHaveAttribute("data-theme", "dark");
+  // Na telefonie przycisk w nagłówku jest ukryty, więc szukamy go po etykiecie, nie po roli.
+  await expect(
+    page.locator(`button[aria-label="${en.a11y.toLight}"]`),
+  ).toHaveCount(1);
+});
 
 test("brak naruszeń WCAG 2.2 AA w oknie projektu", async ({ page }) => {
   test.slow();

@@ -19,6 +19,8 @@ export const pl: Dictionary = {
     home: "Strona główna GlowBox Lab",
     language: "Język",
     mainNav: "Główna nawigacja",
+    toLight: "Włącz jasny motyw",
+    toDark: "Włącz ciemny motyw",
   },
   nav: [
     { label: "Home", href: "#top" },
