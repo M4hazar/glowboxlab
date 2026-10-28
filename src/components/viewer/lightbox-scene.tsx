@@ -19,6 +19,7 @@ import {
 } from "react";
 import * as THREE from "three";
 import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { LIGHT_COLORS, type LightColor } from "./light-colors";
 
 export type SceneHandle = {
   rotateBy: (radians: number) => void;
@@ -26,6 +27,7 @@ export type SceneHandle = {
 
 export type LightboxSceneProps = {
   light: boolean;
+  color: LightColor;
   active: boolean;
   handle?: RefObject<SceneHandle | null>;
   onReady?: () => void;
@@ -38,8 +40,8 @@ const INITIAL_AZIMUTH = 0.26;
 const INITIAL_ELEVATION = 0.03;
 const BLOOM = 0.8;
 
-// Kolory światła: część niebieska, część biała i niebieska poświata przed frontem.
-const GLOW = { blue: "#0055ff", white: "#ffffff", spill: "#1a7cff" };
+// Biała część logo świeci zawsze na biało. Kolor reszty światła wybiera się przyciskiem (LIGHT_COLORS).
+const WHITE_GLOW = "#ffffff";
 
 function useLightboxMaterials() {
   return useMemo(
@@ -55,16 +57,16 @@ function useLightboxMaterials() {
         metalness: 0.0,
       }),
       blue: new THREE.MeshStandardMaterial({
-        color: "#0a5fc4",
+        color: LIGHT_COLORS.blue.base,
         roughness: 0.45,
-        emissive: new THREE.Color(GLOW.blue),
+        emissive: new THREE.Color(LIGHT_COLORS.blue.glow),
         emissiveIntensity: 0,
         toneMapped: false,
       }),
       white: new THREE.MeshStandardMaterial({
         color: "#e4e5e7",
         roughness: 0.45,
-        emissive: new THREE.Color(GLOW.white),
+        emissive: new THREE.Color(WHITE_GLOW),
         emissiveIntensity: 0,
         toneMapped: false,
       }),
@@ -75,10 +77,12 @@ function useLightboxMaterials() {
 
 function Lightbox({
   light,
+  color,
   level,
   rotation,
 }: {
   light: boolean;
+  color: LightColor;
   level: RefObject<number>;
   rotation: RefObject<number>;
 }) {
@@ -86,6 +90,15 @@ function Lightbox({
   const mats = useLightboxMaterials();
   const group = useRef<THREE.Group>(null);
   const spill = useRef<THREE.PointLight>(null);
+  const power = useRef<number>(LIGHT_COLORS[color].power);
+  const goal = useMemo(
+    () => ({
+      glow: new THREE.Color(),
+      base: new THREE.Color(),
+      spill: new THREE.Color(),
+    }),
+    [],
+  );
 
   const model = useMemo(() => {
     const root = scene.clone(true);
@@ -113,9 +126,18 @@ function Lightbox({
       delta,
     );
     const l = level.current;
-    mats.blue.emissiveIntensity = l * 1.7;
+    // Zmiana koloru przechodzi płynnie, tak jak włączanie światła.
+    const tint = LIGHT_COLORS[color];
+    const k = 1 - Math.exp(-8 * delta);
+    mats.blue.emissive.lerp(goal.glow.set(tint.glow), k);
+    mats.blue.color.lerp(goal.base.set(tint.base), k);
+    power.current = THREE.MathUtils.damp(power.current, tint.power, 8, delta);
+    mats.blue.emissiveIntensity = l * power.current;
     mats.white.emissiveIntensity = l * 1.05;
-    if (spill.current) spill.current.intensity = l * 6;
+    if (spill.current) {
+      spill.current.intensity = l * 6;
+      spill.current.color.lerp(goal.spill.set(tint.spill), k);
+    }
     if (group.current) {
       group.current.rotation.y = THREE.MathUtils.damp(
         group.current.rotation.y,
@@ -133,7 +155,7 @@ function Lightbox({
       <pointLight
         ref={spill}
         position={[0, -0.4, 1.4]}
-        color={GLOW.spill}
+        color={LIGHT_COLORS.blue.spill}
         distance={5}
         decay={2}
         intensity={0}
@@ -235,6 +257,7 @@ function ReadySignal({ onReady }: { onReady?: () => void }) {
 
 export default function LightboxScene({
   light,
+  color,
   active,
   handle,
   onReady,
@@ -267,7 +290,12 @@ export default function LightboxScene({
         color="#7fb8ff"
       />
       <Suspense fallback={null}>
-        <Lightbox light={light} level={level} rotation={rotation} />
+        <Lightbox
+          light={light}
+          color={color}
+          level={level}
+          rotation={rotation}
+        />
         <Environment resolution={128}>
           <Lightformer intensity={2} position={[0, 4, 2]} scale={[6, 1.5, 1]} />
           <Lightformer

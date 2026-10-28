@@ -126,7 +126,7 @@ test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("model 3D na górze strony: przycisk światła i obrót, bez pełnego ekranu", async ({
+test("model 3D na górze strony: światło, kolor i obrót, bez pełnego ekranu", async ({
   page,
 }) => {
   const t = en.viewer;
@@ -137,14 +137,58 @@ test("model 3D na górze strony: przycisk światła i obrót, bez pełnego ekran
   await expect(light).toHaveAttribute("aria-pressed", "true");
   await light.click();
   await expect(light).toHaveAttribute("aria-pressed", "false");
-  // Paweł zrezygnował z pełnego ekranu i przybliżania: zostają tylko światło i obrót.
-  await expect(viewer.getByRole("button")).toHaveCount(3);
+  // Paweł zrezygnował z pełnego ekranu i przybliżania: zostają światło, kolor i obrót.
+  await expect(viewer.getByRole("button")).toHaveCount(4);
   await expect(
     viewer.getByRole("button", { name: t.rotateLeft }),
   ).toBeVisible();
   await expect(
     viewer.getByRole("button", { name: t.rotateRight }),
   ).toBeVisible();
+});
+
+test("kolor światła: jeden przycisk rozwija panel kolorów", async ({
+  page,
+}) => {
+  const t = en.viewer;
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.route("**/*.glb", () => {});
+  await page.goto("/");
+  const viewer = page.locator("#top");
+  const light = viewer.getByRole("button", { name: t.light, exact: true });
+  await light.click();
+  await expect(light).toHaveAttribute("aria-pressed", "false");
+
+  const trigger = viewer.getByRole("button", { name: t.color });
+  await trigger.click();
+  const colors = page.getByRole("radiogroup", { name: t.color });
+  await expect(colors.getByRole("radio")).toHaveCount(6);
+  await expect(
+    colors.getByRole("radio", { name: t.colors.blue }),
+  ).toBeChecked();
+  const results = await new AxeBuilder({ page })
+    .include('[data-slot="popover-content"]')
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+    .analyze();
+  expect(results.violations).toEqual([]);
+
+  // Wybór koloru zamyka panel i włącza światło, bo kolor widać tylko przy świetle.
+  await colors.getByRole("radio", { name: t.colors.red }).click();
+  await expect(colors).toBeHidden();
+  await expect(light).toHaveAttribute("aria-pressed", "true");
+  await expect(trigger).toBeFocused();
+
+  // Z klawiatury strzałki zmieniają kolor, a panel zostaje otwarty do Escape.
+  await page.keyboard.press("Enter");
+  await expect(colors.getByRole("radio", { name: t.colors.red })).toBeFocused();
+  // Radix zaznacza pole po przeniesieniu fokusu, jeśli klawisz jest jeszcze wciśnięty,
+  // więc trzymamy go chwilę jak człowiek (bez opóźnienia keyup przychodzi przed fokusem).
+  await page.keyboard.press("ArrowRight", { delay: 80 });
+  await expect(
+    colors.getByRole("radio", { name: t.colors.green }),
+  ).toBeChecked();
+  await page.keyboard.press("Escape");
+  await expect(colors).toBeHidden();
 });
 
 test("portfolio: pasek się przewija, staje i pokazuje szczegóły projektu", async ({

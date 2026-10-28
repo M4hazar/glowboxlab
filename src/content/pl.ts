@@ -37,6 +37,15 @@ export const pl: Dictionary = {
   },
   viewer: {
     light: "Światło",
+    color: "Kolor światła",
+    colors: {
+      blue: "Niebieski",
+      red: "Czerwony",
+      green: "Zielony",
+      purple: "Fioletowy",
+      pink: "Różowy",
+      white: "Biały",
+    },
     rotateLeft: "Obróć w lewo",
     rotateRight: "Obróć w prawo",
     fallback:

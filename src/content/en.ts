@@ -34,6 +34,15 @@ export const en = {
   },
   viewer: {
     light: "Light",
+    color: "Light colour",
+    colors: {
+      blue: "Blue",
+      red: "Red",
+      green: "Green",
+      purple: "Purple",
+      pink: "Pink",
+      white: "White",
+    },
     rotateLeft: "Rotate left",
     rotateRight: "Rotate right",
     fallback:

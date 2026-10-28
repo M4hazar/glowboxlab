@@ -11,6 +11,8 @@ import Image from "next/image";
 import { type RefObject, useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/content/en";
 import { cn } from "@/lib/utils";
+import { ColorPicker } from "./color-picker";
+import type { LightColor } from "./light-colors";
 import type { SceneHandle } from "./lightbox-scene";
 
 const LightboxScene = dynamic(() => import("./lightbox-scene"), { ssr: false });
@@ -102,6 +104,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
   const [visible, setVisible] = useState(true);
   const start = useDeferredStart(viewer, visible);
   const [light, setLight] = useState(true);
+  const [color, setColor] = useState<LightColor>("blue");
   const [mode, setMode] = useState<"poster" | "3d" | "fallback">("poster");
   const [ready, setReady] = useState(false);
 
@@ -154,6 +157,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           >
             <LightboxScene
               light={light}
+              color={color}
               active={visible}
               handle={handle}
               onReady={() => setReady(true)}
@@ -187,6 +191,18 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
             <LightbulbOffIcon className="size-5" />
           )}
         </button>
+        {mode !== "fallback" && (
+          <ColorPicker
+            t={t}
+            value={color}
+            // Wybrany kolor widać tylko przy włączonym świetle.
+            onChange={(next) => {
+              setColor(next);
+              setLight(true);
+            }}
+            className={iconButton}
+          />
+        )}
         <button
           type="button"
           className={iconButton}
