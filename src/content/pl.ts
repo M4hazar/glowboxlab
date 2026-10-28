@@ -52,24 +52,57 @@ export const pl: Dictionary = {
     title: "Realizacje",
     lead: "Kilka form, jakie może przybrać lightbox.",
     note: "Przykładowe wizualizacje.",
+    controls: {
+      roledescription: "karuzela",
+      scrollLeft: "Przewiń w lewo",
+      scrollRight: "Przewiń w prawo",
+      pause: "Zatrzymaj przewijanie",
+      play: "Wznów przewijanie",
+      previous: "Poprzedni projekt",
+      next: "Następny projekt",
+      close: "Zamknij",
+      counter: "{current} z {total}",
+      cta: "Chcę podobny lightbox",
+    },
     items: [
       {
         image: "/images/work-devils.webp",
         alt: "Czerwono-pomarańczowy lightbox z napisem Devil's, postacią z rogami i płomieniami",
         title: "Wyrazisty charakter",
         text: "Logo z pazurem dla baru, drużyny albo marki.",
+        description:
+          "Wycięty dokładnie po konturze logo, z płomieniami i postacią. Najlepiej sprawdza się tam, gdzie ma przyciągać wzrok, na przykład za barem albo w pokoju gracza.",
+        details: [
+          { label: "Kształt", value: "Po konturze logo" },
+          {
+            label: "Kolory na froncie",
+            value: "Czerwony, pomarańczowy, biały",
+          },
+        ],
       },
       {
         image: "/images/work-heart.webp",
         alt: "Lightbox w kształcie czerwonego serca z imionami Agnieszka i Paweł oraz żółtymi różami",
         title: "Osobisty prezent",
         text: "Imiona i daty na ślub, rocznicę albo urodziny.",
+        description:
+          "Serce z imionami i różami, zrobione na prezent. Możesz dodać datę, krótki napis albo własną grafikę.",
+        details: [
+          { label: "Kształt", value: "Serce" },
+          { label: "Kolory na froncie", value: "Czerwony, żółty, kremowy" },
+        ],
       },
       {
         image: "/images/work-logo.webp",
         alt: "Sześciokątny lightbox z logo GlowBox Lab widziany z boku",
         title: "Twoje logo w świetle",
         text: "Na biurko, do sklepu albo do studia.",
+        description:
+          "Logo zamknięte w prostej, sześciokątnej obudowie. Taki lightbox dobrze wygląda na ladzie, na półce albo w tle nagrań.",
+        details: [
+          { label: "Kształt", value: "Sześciokąt" },
+          { label: "Kolory na froncie", value: "Niebieski, biały" },
+        ],
       },
     ],
   },

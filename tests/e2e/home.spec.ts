@@ -136,6 +136,47 @@ test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
   await expect(viewer.getByRole("button", { name: t.zoomIn })).toHaveCount(0);
 });
 
+test("realizacje: pasek się przewija, staje i pokazuje szczegóły projektu", async ({
+  page,
+}) => {
+  const t = en.work;
+  const c = t.controls;
+  await page.route("**/*.glb", () => {});
+  await page.goto("/#work");
+  const work = page.locator("#work");
+  const scroller = work.getByRole("list").locator("..");
+  const left = () => scroller.evaluate((el) => el.scrollLeft);
+
+  const start = await left();
+  await expect.poll(left).not.toBe(start);
+  await work.getByRole("button", { name: c.pause }).click();
+  await expect(work.getByRole("button", { name: c.play })).toBeVisible();
+  await page.waitForTimeout(1500);
+  const stopped = await left();
+  await page.waitForTimeout(500);
+  expect(await left()).toBe(stopped);
+
+  const card = (i: number) =>
+    work.getByRole("button", { name: new RegExp(t.items[i].title) });
+  await card(1).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toHaveAccessibleName(t.items[1].title);
+  await expect(dialog.getByText(t.items[1].description)).toBeVisible();
+  await dialog.getByRole("button", { name: c.next }).click();
+  await expect(dialog).toHaveAccessibleName(t.items[2].title);
+  await page.keyboard.press("ArrowRight");
+  await expect(dialog).toHaveAccessibleName(t.items[0].title);
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+  await expect(card(0)).toBeFocused();
+
+  await card(1).click();
+  await dialog.getByRole("link", { name: c.cta }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page).toHaveURL(/#quote$/);
+  await expect(page.locator("#quote form")).toBeInViewport();
+});
+
 test.describe("przeglądarka po polsku", () => {
   test.use({ locale: "pl-PL" });
 
@@ -190,3 +231,25 @@ for (const path of ["/", "/pl", "/privacy", "/pl/polityka-prywatnosci"]) {
     await expectNoAxeViolations(page, path);
   });
 }
+
+test("brak naruszeń WCAG 2.2 AA w oknie projektu", async ({ page }) => {
+  test.slow();
+  const t = pl.work;
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.route("**/*.glb", () => {});
+  await page.goto("/pl#work");
+  const work = page.locator("#work");
+  // Przy ograniczonym ruchu pasek startuje zatrzymany.
+  await expect(
+    work.getByRole("button", { name: t.controls.play }),
+  ).toBeVisible();
+  await work
+    .getByRole("button", { name: new RegExp(t.items[0].title) })
+    .click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  const results = await new AxeBuilder({ page })
+    .include('[role="dialog"]')
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+    .analyze();
+  expect(results.violations).toEqual([]);
+});

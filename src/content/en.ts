@@ -49,24 +49,54 @@ export const en = {
     title: "Our work",
     lead: "A few of the forms a lightbox can take.",
     note: "Example visualisations.",
+    controls: {
+      roledescription: "carousel",
+      scrollLeft: "Scroll left",
+      scrollRight: "Scroll right",
+      pause: "Pause scrolling",
+      play: "Resume scrolling",
+      previous: "Previous project",
+      next: "Next project",
+      close: "Close",
+      counter: "{current} of {total}",
+      cta: "I want one like this",
+    },
     items: [
       {
         image: "/images/work-devils.webp",
         alt: "Red and orange Devil's sign lightbox with a horned character and flames",
         title: "Bold character",
         text: "A logo with attitude for a bar, a team or a brand.",
+        description:
+          "Cut to the exact outline of the logo, with flames and a character. It works best where it has to catch the eye, such as behind a bar or in a gaming room.",
+        details: [
+          { label: "Shape", value: "Follows the logo outline" },
+          { label: "Front colours", value: "Red, orange, white" },
+        ],
       },
       {
         image: "/images/work-heart.webp",
         alt: "Red heart lightbox with the names Agnieszka and Paweł and yellow roses",
         title: "A personal gift",
         text: "Names and dates for a wedding, an anniversary or a birthday.",
+        description:
+          "A heart with names and roses, made as a gift. You can add a date, a short message or your own artwork.",
+        details: [
+          { label: "Shape", value: "Heart" },
+          { label: "Front colours", value: "Red, yellow, cream" },
+        ],
       },
       {
         image: "/images/work-logo.webp",
         alt: "Hexagon lightbox with the GlowBox Lab logo seen from the side",
         title: "Your logo, in light",
         text: "For a desk, a shop or a studio.",
+        description:
+          "A logo set in a simple hexagonal housing. It looks good on a counter, on a shelf or in the background of your videos.",
+        details: [
+          { label: "Shape", value: "Hexagon" },
+          { label: "Front colours", value: "Blue, white" },
+        ],
       },
     ],
   },
