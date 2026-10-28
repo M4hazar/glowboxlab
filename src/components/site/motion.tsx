@@ -1,3 +1,4 @@
+import { SKIP_INTRO_KEY } from "@/lib/locale";
 import {
   LOGO_HEIGHT,
   LOGO_WIDTH,
@@ -13,7 +14,10 @@ import {
 // data-motion włącza animacje (gdy system nie prosi o ograniczenie ruchu),
 // data-intro pokazuje ekran startowy przy każdym wczytaniu i odświeżeniu strony
 // (przejścia między podstronami nie wczytują strony od nowa, więc go nie powtarzają).
-const motionScript = `(function(){try{var d=document.documentElement;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.dataset.motion="";d.dataset.intro="";setTimeout(function(){delete d.dataset.intro},3500)}catch(e){}})()`;
+// Po zmianie języka ekran startowy się nie pokazuje, strony przenikają się płynnie.
+// Do wczytania strony przewijanie jest natychmiastowe, żeby adres z #sekcją od razu
+// otwierał się na niej, zamiast przewijać się od góry.
+const motionScript = `(function(){try{var d=document.documentElement,skip=null;d.style.scrollBehavior="auto";addEventListener("load",function(){setTimeout(function(){d.style.scrollBehavior=""})});try{skip=sessionStorage.getItem("${SKIP_INTRO_KEY}");sessionStorage.removeItem("${SKIP_INTRO_KEY}")}catch(e){}if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.dataset.motion="";if(skip){d.dataset.instant="";return}d.dataset.intro="";setTimeout(function(){delete d.dataset.intro},3500)}catch(e){}})()`;
 
 export function MotionScript() {
   // biome-ignore lint/security/noDangerouslySetInnerHtml: stały skrypt bez danych od użytkownika

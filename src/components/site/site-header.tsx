@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import type { Dictionary } from "@/content/en";
-import { LOCALE_COOKIE } from "@/lib/locale";
+import { LOCALE_COOKIE, SKIP_INTRO_KEY } from "@/lib/locale";
 import { type Locale, type RouteKey, routes, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -275,22 +275,46 @@ export function LanguageSwitch({
               {locale.toUpperCase()}
             </span>
           ) : (
-            <Link
+            // Zwykły link, nie <Link>: każda wersja językowa ma własny root layout, więc i tak
+            // wczytuje się od nowa, a bez prefetchu proxy od razu widzi ciasteczko z wyborem.
+            <a
               href={routes[routeKey][locale]}
               hrefLang={locale === "pl" ? "pl-PL" : "en-GB"}
               lang={locale}
-              onClick={() => {
-                // Ręczny wybór języka wygrywa z językiem przeglądarki przy kolejnych wejściach.
-                // biome-ignore lint/suspicious/noDocumentCookie: Cookie Store API jest w Safari dopiero od 18.4
-                document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
-              }}
+              onClick={(event) => switchLanguage(event, locale, dict, routeKey)}
               className="rounded px-1.5 py-1 tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground"
             >
               {locale.toUpperCase()}
-            </Link>
+            </a>
           )}
         </span>
       ))}
     </nav>
   );
+}
+
+function switchLanguage(
+  event: React.MouseEvent<HTMLAnchorElement>,
+  locale: Locale,
+  dict: Dictionary,
+  routeKey: RouteKey,
+) {
+  // Ręczny wybór języka wygrywa z językiem przeglądarki przy kolejnych wejściach.
+  // biome-ignore lint/suspicious/noDocumentCookie: Cookie Store API jest w Safari dopiero od 18.4
+  document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey)
+    return;
+  try {
+    sessionStorage.setItem(SKIP_INTRO_KEY, "1");
+  } catch {}
+  // Na stronie głównej druga wersja otwiera się na tej samej sekcji.
+  if (routeKey !== "home") return;
+  const middle = window.innerHeight / 2;
+  const section = dict.nav.slice(1).find((item) => {
+    const rect = document.querySelector(item.href)?.getBoundingClientRect();
+    return rect && rect.top <= middle && rect.bottom >= middle;
+  });
+  if (!section) return;
+  event.preventDefault();
+  window.location.assign(routes.home[locale] + section.href);
 }

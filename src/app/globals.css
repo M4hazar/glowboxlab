@@ -82,6 +82,8 @@
   body {
     @apply bg-background font-sans text-foreground antialiased;
     font-feature-settings: "ss01", "cv11";
+    /* Bez ligatur: w Plus Jakarta Sans „fi” i „fl” sklejają się w jeden, nienaturalny znak. */
+    font-variant-ligatures: no-common-ligatures;
     text-rendering: optimizeLegibility;
   }
   ::selection {
@@ -427,9 +429,26 @@
     opacity: 0;
     transform: translateY(32px);
   }
+  /* Po zmianie języka strona pojawia się od razu, bez animacji wejścia (data-instant ustawia
+     skrypt w <head>, a zdejmuje PageEffects po odsłonięciu tego, co widać na ekranie). */
+  [data-instant] .rise,
+  [data-instant] .line > span,
+  [data-instant] .settle {
+    animation: none;
+  }
+  [data-instant] [data-reveal]:not([data-revealed]) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
   /* Gdyby JavaScript się nie wczytał, treść i tak pokaże się po chwili. */
   [data-motion]:not([data-effects]) [data-reveal]:not([data-revealed]) {
     animation: reveal-failsafe 0s 4s forwards;
+  }
+
+  /* Zmiana języka wczytuje drugą wersję strony od nowa; przeglądarka przenika obie strony. */
+  @view-transition {
+    navigation: auto;
   }
 
   /* Przejście między podstronami (React ViewTransition). */
