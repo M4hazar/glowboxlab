@@ -224,6 +224,8 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
               ready && !settling ? "opacity-100" : "opacity-0",
             )}
             onTransitionEnd={() => setPosterDone(true)}
+            // Przejście przerwane pełnym ekranem: plakat i tak już nie wróci.
+            onTransitionCancel={() => setPosterDone(true)}
           >
             <LightboxScene
               light={light}
