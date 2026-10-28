@@ -3,6 +3,7 @@
 import {
   LightbulbIcon,
   LightbulbOffIcon,
+  LoaderCircleIcon,
   Maximize2Icon,
   Minimize2Icon,
   MinusIcon,
@@ -185,7 +186,9 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
         )}
       >
         {/* Plakat to render tej samej sceny w tym samym kadrze. Zostaje pod modelem 3D,
-            który pojawia się nad nim, więc przejście jest niewidoczne. */}
+            który pojawia się nad nim, więc przejście jest niewidoczne. Na pełnym ekranie kadr
+            modelu jest inny niż plakatu (zwłaszcza na telefonie), więc plakat się chowa,
+            a do wczytania modelu widać tylko wskaźnik ładowania. */}
         <Image
           src={`/images/lightbox-${light ? "on" : "off"}.webp`}
           alt=""
@@ -196,9 +199,21 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           className={cn(
             "object-cover",
             expanded && "object-contain",
-            expanded && ready && "invisible",
+            expanded && mode !== "fallback" && "invisible",
           )}
         />
+        {expanded && loading && (
+          <div
+            role="status"
+            className="absolute inset-0 flex items-center justify-center [animation:appear_0.3s_ease_0.3s_backwards]"
+          >
+            <LoaderCircleIcon
+              aria-hidden
+              className="size-8 text-muted-foreground motion-safe:animate-spin"
+            />
+            <span className="sr-only">{t.loading}</span>
+          </div>
+        )}
         {mode === "3d" && (
           <div
             className={cn(

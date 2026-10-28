@@ -323,11 +323,15 @@ test.describe("przeglądarka po polsku", () => {
     await switchTo(pl, "EN");
     await expect(page).toHaveURL(/\/$/);
 
+    // Przewijamy dopiero na gotowej stronie, inaczej układ może się jeszcze zmienić pod testem.
+    await expect(html).toHaveAttribute("data-effects", "");
+    await page.waitForLoadState("load");
     await page.evaluate(() =>
       document
         .querySelector("#faq")
         ?.scrollIntoView({ block: "center", behavior: "instant" }),
     );
+    await expect(page.locator("#faq")).toBeInViewport();
     await switchTo(en, "PL");
     await expect(page).toHaveURL(/\/pl#faq$/);
     await expect(page.locator("#faq")).toBeInViewport();
