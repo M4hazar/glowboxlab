@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 // Odsłanianie sekcji przy przewijaniu: elementy z [data-reveal] dostają data-revealed,
 // gdy pojawią się na ekranie (wygląd w globals.css).
+// Po zmianie języka (data-instant) to, co widać od razu, jest już odsłonięte bez animacji;
+// znacznik znika po pierwszym sprawdzeniu, więc dalsze sekcje odsłaniają się normalnie.
 export function PageEffects() {
   useEffect(() => {
     const root = document.documentElement;
@@ -16,6 +18,7 @@ export function PageEffects() {
           (entry.target as HTMLElement).dataset.revealed = "";
           io.unobserve(entry.target);
         }
+        delete root.dataset.instant;
       },
       { rootMargin: "0px 0px -8% 0px" },
     );

@@ -287,6 +287,65 @@ test.describe("przeglądarka po polsku", () => {
     await expect(page).toHaveURL(/\/$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "en-GB");
   });
+
+  test("przełącza język w obie strony, bez ekranu startowego i na tej samej sekcji", async ({
+    page,
+    isMobile,
+  }) => {
+    await page.route("**/*.glb", () => {});
+    const html = page.locator("html");
+    const switchTo = async (dict: typeof en | typeof pl, name: string) => {
+      if (isMobile) {
+        await page.getByRole("button", { name: dict.a11y.menu }).click();
+      }
+      const area = isMobile
+        ? page.getByRole("dialog")
+        : page.getByRole("banner");
+      await area
+        .getByRole("navigation", { name: dict.a11y.language })
+        .getByRole("link", { name, exact: true })
+        .click();
+    };
+    const introShown = () =>
+      page.evaluate(() => "intro" in document.documentElement.dataset);
+
+    await page.goto("/");
+    await expect(page).toHaveURL(/\/pl$/);
+    await switchTo(pl, "EN");
+    await expect(page).toHaveURL(/\/$/);
+    await expect(html).toHaveAttribute("lang", "en-GB");
+    expect(await introShown()).toBe(false);
+    await switchTo(en, "PL");
+    await expect(page).toHaveURL(/\/pl$/);
+    await expect(html).toHaveAttribute("lang", "pl-PL");
+    await switchTo(pl, "EN");
+    await expect(page).toHaveURL(/\/$/);
+
+    await page.evaluate(() =>
+      document
+        .querySelector("#faq")
+        ?.scrollIntoView({ block: "center", behavior: "instant" }),
+    );
+    await switchTo(en, "PL");
+    await expect(page).toHaveURL(/\/pl#faq$/);
+    await expect(page.locator("#faq")).toBeInViewport();
+    expect(await introShown()).toBe(false);
+  });
+});
+
+test("scena 3D nie startuje w trakcie przewijania, tylko po nim", async ({
+  page,
+}) => {
+  await page.route("**/*.glb", () => {});
+  await page.goto("/");
+  const canvas = page.locator("#top canvas");
+  // Przewijanie dłużej niż opóźnienie startu (3 s): w tym czasie widać plakat.
+  for (let i = 0; i < 25; i++) {
+    await page.evaluate((y) => window.scrollTo(0, y), i % 2 ? 40 : 0);
+    await page.waitForTimeout(200);
+  }
+  await expect(canvas).toHaveCount(0);
+  await expect(canvas).toHaveCount(1, { timeout: 5000 });
 });
 
 test("animacje: ekran startowy przy każdym wczytaniu, sekcje odsłaniają się przy przewijaniu", async ({

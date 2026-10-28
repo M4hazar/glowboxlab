@@ -12,7 +12,13 @@ import {
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  type RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import type { Dictionary } from "@/content/en";
 import { cn } from "@/lib/utils";
 import type { SceneHandle } from "./lightbox-scene";
@@ -28,48 +34,85 @@ function hasWebGL() {
   }
 }
 
-const START_EVENTS = [
-  "pointerdown",
-  "pointermove",
-  "touchstart",
-  "keydown",
-  "wheel",
-  "scroll",
-] as const;
-
-// Model 3D ładuje się chwilę po załadowaniu strony albo od razu przy pierwszym
-// ruchu użytkownika, żeby był gotowy, zanim ktoś zacznie nim obracać, a nie
-// blokował wczytywania strony. Do tego czasu widać plakat z tej samej sceny.
-function useDeferredStart(delay = 3000) {
+// Model 3D ładuje się chwilę po wczytaniu strony, gdy jest na ekranie i nikt nie przewija:
+// przygotowanie sceny na moment zajmuje przeglądarkę, a w trakcie przewijania strona by szarpnęła.
+// Od razu tylko wtedy, gdy ktoś sięga po sam model (klik, dotyk, fokus na przyciskach).
+// Do tego czasu widać plakat z tej samej sceny.
+function useDeferredStart(
+  viewer: RefObject<HTMLElement | null>,
+  visible: boolean,
+  delay = 3000,
+  quiet = 400,
+) {
   const [start, setStart] = useState(false);
+  const [armed, setArmed] = useState(false);
+  const lastScroll = useRef(0);
+
   useEffect(() => {
     let timer: number | undefined;
     const go = () => setStart(true);
     const arm = () => {
-      timer = window.setTimeout(go, delay);
+      timer = window.setTimeout(() => setArmed(true), delay);
     };
-    for (const name of START_EVENTS) {
-      window.addEventListener(name, go, { once: true, passive: true });
+    const onScroll = () => {
+      lastScroll.current = performance.now();
+    };
+    const scrollEvents = ["scroll", "wheel", "touchmove"] as const;
+    for (const name of scrollEvents) {
+      window.addEventListener(name, onScroll, { passive: true });
     }
+    const el = viewer.current;
+    el?.addEventListener("pointerdown", go);
+    el?.addEventListener("focusin", go);
     if (document.readyState === "complete") arm();
     else window.addEventListener("load", arm, { once: true });
     return () => {
       window.clearTimeout(timer);
       window.removeEventListener("load", arm);
-      for (const name of START_EVENTS) window.removeEventListener(name, go);
+      for (const name of scrollEvents) {
+        window.removeEventListener(name, onScroll);
+      }
+      el?.removeEventListener("pointerdown", go);
+      el?.removeEventListener("focusin", go);
     };
-  }, [delay]);
+  }, [viewer, delay]);
+
+  useEffect(() => {
+    if (!armed || !visible || start) return;
+    let timer: number | undefined;
+    let idle: number | undefined;
+    const scrolling = () => performance.now() - lastScroll.current < quiet;
+    const check = () => {
+      if (scrolling()) {
+        timer = window.setTimeout(check, quiet);
+      } else if ("requestIdleCallback" in window) {
+        idle = window.requestIdleCallback(
+          () => (scrolling() ? check() : setStart(true)),
+          { timeout: 1000 },
+        );
+      } else {
+        setStart(true);
+      }
+    };
+    check();
+    return () => {
+      window.clearTimeout(timer);
+      if (idle !== undefined) window.cancelIdleCallback(idle);
+    };
+  }, [armed, visible, start, quiet]);
+
   return start;
 }
 
 export function ModelViewer({ dict }: { dict: Dictionary }) {
   const t = dict.viewer;
+  const viewer = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLDivElement>(null);
   const handle = useRef<SceneHandle | null>(null);
-  const start = useDeferredStart();
+  const [visible, setVisible] = useState(true);
+  const start = useDeferredStart(viewer, visible);
   const [light, setLight] = useState(true);
   const [mode, setMode] = useState<"poster" | "3d" | "fallback">("poster");
-  const [visible, setVisible] = useState(true);
   const [ready, setReady] = useState(false);
   const [expanded, setExpanded] = useState(false);
   // Po przełączeniu pełnego ekranu model jest ukryty, dopóki nie narysuje się w nowym rozmiarze.
@@ -92,10 +135,10 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
   }, []);
 
   useEffect(() => {
-    if (start && visible && mode === "poster") {
+    if (start && mode === "poster") {
       setMode(hasWebGL() ? "3d" : "fallback");
     }
-  }, [start, visible, mode]);
+  }, [start, mode]);
 
   const close = useCallback(() => {
     setExpanded(false);
@@ -125,6 +168,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
 
   return (
     <div
+      ref={viewer}
       className={cn(
         expanded && "fixed inset-0 z-[60] flex flex-col bg-background",
       )}
