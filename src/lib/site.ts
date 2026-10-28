@@ -7,6 +7,14 @@ const facebook = {
   name: "Facebook",
   href: "https://www.facebook.com/glowboxlab",
 } as const;
+const tiktok = {
+  name: "TikTok",
+  href: "https://www.tiktok.com/@glowboxlab",
+} as const;
+const youtube = {
+  name: "YouTube",
+  href: "https://www.youtube.com/@glowboxlab",
+} as const;
 
 export const site = {
   name: "GlowBox Lab",
@@ -15,17 +23,14 @@ export const site = {
   email: "hello@glowboxlab.com",
   phone: "+44 7749 789776",
   phoneHref: "tel:+447749789776",
-  whatsapp: "https://wa.me/447749789776",
+  whatsapp: { name: "WhatsApp", href: "https://wa.me/447749789776" },
   handle: "@glowboxlab",
   city: "Walsall",
   instagram,
   facebook,
-  socials: [
-    instagram,
-    facebook,
-    { name: "TikTok", href: "https://www.tiktok.com/@glowboxlab" },
-    { name: "YouTube", href: "https://www.youtube.com/@glowboxlab" },
-  ],
+  tiktok,
+  youtube,
+  socials: [instagram, facebook, tiktok, youtube],
 } as const;
 
 export type Locale = "en" | "pl";

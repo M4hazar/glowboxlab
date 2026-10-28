@@ -38,16 +38,21 @@ test("sekcja kontaktu pokazuje e-mail, telefon, miasto i media społecznościowe
     site.phoneHref,
   );
   await expect(contact.getByText(en.contact.location)).toBeVisible();
-  const socials = contact.getByRole("list", { name: en.contact.socials });
-  await expect(
-    socials.getByRole("link", { name: site.instagram.name }),
-  ).toHaveAttribute("href", site.instagram.href);
-  await expect(
-    socials.getByRole("link", { name: site.facebook.name }),
-  ).toHaveAttribute("href", site.facebook.href);
-  await expect(
-    socials.getByRole("link", { name: en.contact.whatsapp }),
-  ).toHaveAttribute("href", site.whatsapp);
+  // Podpisane przyciski, WhatsApp jako pierwszy.
+  const socials = contact
+    .getByRole("list", { name: en.contact.socials })
+    .getByRole("link");
+  const expected = [
+    site.whatsapp,
+    site.instagram,
+    site.facebook,
+    site.tiktok,
+    site.youtube,
+  ];
+  await expect(socials).toHaveText(expected.map((s) => s.name));
+  for (const [i, s] of expected.entries()) {
+    await expect(socials.nth(i)).toHaveAttribute("href", s.href);
+  }
 });
 
 test("przycisk Start w menu wraca na stronę główną", async ({

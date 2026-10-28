@@ -150,7 +150,7 @@ export function SiteHeader({
                     </a>
                   </SheetClose>
                   <a
-                    href={site.whatsapp}
+                    href={site.whatsapp.href}
                     target="_blank"
                     rel="noopener"
                     className="inline-flex h-12 items-center justify-center rounded-lg border border-white/15 font-medium"

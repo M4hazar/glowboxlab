@@ -1,7 +1,13 @@
 import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import type { Dictionary } from "@/content/en";
 import { site } from "@/lib/site";
-import { FacebookIcon, InstagramIcon, WhatsAppIcon } from "./icons";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  TikTokIcon,
+  WhatsAppIcon,
+  YouTubeIcon,
+} from "./icons";
 import { QuoteForm } from "./quote-form";
 import { SectionHeading } from "./sections";
 
@@ -11,14 +17,13 @@ const contactLink =
 export function QuoteSection({ dict }: { dict: Dictionary }) {
   const t = dict.quote;
   const c = dict.contact;
+  // WhatsApp pierwszy, bo to najszybszy kontakt.
   const socials = [
-    {
-      label: site.instagram.name,
-      href: site.instagram.href,
-      Icon: InstagramIcon,
-    },
-    { label: site.facebook.name, href: site.facebook.href, Icon: FacebookIcon },
-    { label: c.whatsapp, href: site.whatsapp, Icon: WhatsAppIcon },
+    { ...site.whatsapp, Icon: WhatsAppIcon },
+    { ...site.instagram, Icon: InstagramIcon },
+    { ...site.facebook, Icon: FacebookIcon },
+    { ...site.tiktok, Icon: TikTokIcon },
+    { ...site.youtube, Icon: YouTubeIcon },
   ];
   return (
     <section
@@ -59,17 +64,17 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
             </li>
           </ul>
 
-          <ul aria-label={c.socials} className="mt-10 flex gap-3">
-            {socials.map(({ label, href, Icon }) => (
+          <ul aria-label={c.socials} className="mt-10 flex flex-wrap gap-2.5">
+            {socials.map(({ name, href, Icon }) => (
               <li key={href}>
                 <a
                   href={href}
                   target="_blank"
                   rel="noopener"
-                  aria-label={label}
-                  className="inline-flex size-12 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-white/40 hover:text-brand-soft"
+                  className="inline-flex h-11 items-center gap-2.5 rounded-full border border-white/15 px-4 text-sm font-medium transition-colors hover:border-white/40 hover:text-brand-soft"
                 >
-                  <Icon className="size-5" />
+                  <Icon className="size-4" />
+                  {name}
                 </a>
               </li>
             ))}
