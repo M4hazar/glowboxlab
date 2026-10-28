@@ -20,7 +20,7 @@ export const en = {
   nav: [
     { label: "Home", href: "#top" },
     { label: "Portfolio", href: "#work" },
-    { label: "How to order", href: "#process" },
+    { label: "Process", href: "#process" },
     { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#quote" },
   ],
@@ -101,19 +101,51 @@ export const en = {
     ],
   },
   process: {
-    title: "How to order",
+    title: "Process",
+    lead: "From idea to finished lightbox in four steps.",
+    counter: "Step {current} of {total}",
+    previous: "Previous step",
+    next: "Next step",
     steps: [
       {
-        title: "Send your idea",
-        text: "A logo, a graphic or just a description. Add the size and quantity.",
+        title: "You send your idea",
+        text: "A logo, a graphic or just a description.",
+        description:
+          "Tell us what should glow: your company logo, a sign for your gaming room or an idea for a gift. A sketch or some inspiration is enough, we will refine the design together.",
+        details: [
+          "Tell us the size (up to 256 × 256 × 256 mm) and quantity. Not sure about the size? We will help.",
+          "A vector file (SVG, PDF, AI, EPS) works best, but PNG and JPG are fine too.",
+          "Send it through the form, WhatsApp or email.",
+        ],
       },
       {
-        title: "Get a quote and a design",
-        text: "We send you the price and a visual. You can ask for changes.",
+        title: "You get a quote and a design",
+        text: "We reply within 24 hours.",
+        description:
+          "We check your files and prepare a quote with a visual. You see how your lightbox will look before anything is printed.",
+        details: [
+          "The quote is free and comes with no obligation.",
+          "The price depends on size, shape, number of colours and quantity.",
+          "You can ask for changes to the design.",
+        ],
       },
       {
-        title: "We make it",
-        text: "Once you approve the design, we 3D print and assemble your lightbox.",
+        title: "We print and assemble",
+        text: "Production starts once you approve.",
+        description:
+          "Every lightbox is made from scratch for your design. We 3D print the housing and fit the LED lighting inside.",
+        details: [
+          "We only start production once you approve the design.",
+          "We agree the lead time together with the quote.",
+          "Housings up to 256 mm are printed in one piece.",
+        ],
+      },
+      {
+        title: "You receive your lightbox",
+        text: "Shipping or pickup in Walsall.",
+        description:
+          "We pack your finished lightbox and send it to your address. If you are nearby, you can collect it in person.",
+        details: ["We ship across Europe.", "Pickup in person in Walsall."],
       },
     ],
   },

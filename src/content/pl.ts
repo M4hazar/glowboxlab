@@ -23,7 +23,7 @@ export const pl: Dictionary = {
   nav: [
     { label: "Home", href: "#top" },
     { label: "Portfolio", href: "#work" },
-    { label: "Jak zamówić", href: "#process" },
+    { label: "Proces", href: "#process" },
     { label: "FAQ", href: "#faq" },
     { label: "Kontakt", href: "#quote" },
   ],
@@ -107,19 +107,51 @@ export const pl: Dictionary = {
     ],
   },
   process: {
-    title: "Jak zamówić",
+    title: "Proces",
+    lead: "Od pomysłu do gotowego lightboxa w czterech krokach.",
+    counter: "Krok {current} z {total}",
+    previous: "Poprzedni krok",
+    next: "Następny krok",
     steps: [
       {
-        title: "Wyślij pomysł",
-        text: "Logo, grafikę albo sam opis. Dodaj wymiary i liczbę sztuk.",
+        title: "Wysyłasz pomysł",
+        text: "Logo, grafika albo sam opis.",
+        description:
+          "Opisz, co ma świecić: logo firmy, napis do pokoju gamingowego albo pomysł na prezent. Wystarczy szkic lub inspiracja, projekt dopracujemy razem.",
+        details: [
+          "Podaj wymiary (do 256 × 256 × 256 mm) i liczbę sztuk. Jeśli ich nie znasz, doradzimy.",
+          "Najlepiej plik wektorowy (SVG, PDF, AI, EPS), ale PNG i JPG też się nadają.",
+          "Wyślij przez formularz, WhatsApp albo e-mail.",
+        ],
       },
       {
-        title: "Dostań wycenę i projekt",
-        text: "Odeślemy cenę i wizualizację. Możesz poprosić o zmiany.",
+        title: "Dostajesz wycenę i projekt",
+        text: "Odpowiadamy w ciągu 24 godzin.",
+        description:
+          "Sprawdzamy pliki i przygotowujemy wycenę razem z wizualizacją. Widzisz, jak lightbox będzie wyglądał, zanim cokolwiek wydrukujemy.",
+        details: [
+          "Wycena jest bezpłatna i do niczego nie zobowiązuje.",
+          "Cena zależy od rozmiaru, kształtu, liczby kolorów i liczby sztuk.",
+          "Możesz poprosić o zmiany w projekcie.",
+        ],
       },
       {
-        title: "Robimy lightbox",
-        text: "Gdy zaakceptujesz projekt, drukujemy obudowę w 3D i montujemy LED.",
+        title: "Drukujemy i składamy",
+        text: "Po akceptacji ruszamy z produkcją.",
+        description:
+          "Każdy lightbox robimy od zera, pod Twój projekt. Obudowę drukujemy w 3D, a w środku montujemy podświetlenie LED.",
+        details: [
+          "Produkcję zaczynamy dopiero, gdy zaakceptujesz projekt.",
+          "Termin ustalamy razem z wyceną.",
+          "Obudowa do 256 mm powstaje w jednym kawałku.",
+        ],
+      },
+      {
+        title: "Odbierasz lightbox",
+        text: "Wysyłka albo odbiór w Walsall.",
+        description:
+          "Gotowy lightbox pakujemy i wysyłamy pod wskazany adres. Jeśli masz blisko, możesz odebrać go osobiście.",
+        details: ["Wysyłamy w całej Europie.", "Odbiór osobisty w Walsall."],
       },
     ],
   },

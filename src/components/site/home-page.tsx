@@ -2,8 +2,9 @@ import type { Dictionary } from "@/content/en";
 import { Faq } from "./faq";
 import { Hero } from "./hero";
 import { HomeJsonLd } from "./json-ld";
+import { Process } from "./process";
 import { QuoteSection } from "./quote-section";
-import { Process, Work } from "./sections";
+import { Work } from "./sections";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 

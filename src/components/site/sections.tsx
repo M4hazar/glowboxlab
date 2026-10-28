@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import type { Dictionary } from "@/content/en";
 import { type Locale, routes } from "@/lib/site";
 import { cn } from "@/lib/utils";
-import { Reveal } from "./reveal";
 import { WorkCarousel } from "./work-carousel";
 
 // Wspólny układ sekcji: ten sam rytm odstępów i jeden styl nagłówków.
@@ -69,28 +68,5 @@ export function Work({ dict }: { dict: Dictionary }) {
         }
       />
     </section>
-  );
-}
-
-export function Process({ dict }: { dict: Dictionary }) {
-  const t = dict.process;
-  return (
-    <Section id="process" title={t.title}>
-      <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-12">
-        {t.steps.map((step, i) => (
-          <li key={step.title} className="border-t border-white/10 pt-6">
-            <Reveal delay={i * 0.08}>
-              <span className="text-sm font-semibold text-brand-soft">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-3 text-xl font-semibold tracking-tight">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-muted-foreground">{step.text}</p>
-            </Reveal>
-          </li>
-        ))}
-      </ol>
-    </Section>
   );
 }

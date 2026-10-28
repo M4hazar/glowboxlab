@@ -222,6 +222,48 @@ test("powrót z podstrony prowadzi na górę strony głównej", async ({ page })
   await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
 });
 
+test("proces: kroki zmieniają się zakładkami, strzałkami i klawiaturą", async ({
+  page,
+}) => {
+  const t = pl.process;
+  await page.route("**/*.glb", () => {});
+  await page.goto("/pl#process");
+  const section = page.locator("#process");
+  const tabs = section.getByRole("tab");
+  const title = section.getByRole("tabpanel").getByRole("heading", {
+    level: 3,
+  });
+  await expect(tabs).toHaveCount(t.steps.length);
+  await expect(title).toHaveText(t.steps[0].title);
+
+  await section.getByRole("tab", { name: t.steps[2].title }).click();
+  await expect(tabs.nth(2)).toHaveAttribute("aria-selected", "true");
+  await expect(title).toHaveText(t.steps[2].title);
+  for (const detail of t.steps[2].details) {
+    await expect(section.getByText(detail)).toBeVisible();
+  }
+
+  const next = section.getByRole("button", { name: t.next });
+  await next.click();
+  await expect(title).toHaveText(t.steps[3].title);
+  // Za ostatnim krokiem strzałka wraca na początek.
+  await next.click();
+  await expect(title).toHaveText(t.steps[0].title);
+  await section.getByRole("button", { name: t.previous }).click();
+  await expect(title).toHaveText(t.steps[3].title);
+
+  await tabs.nth(0).focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(tabs.nth(1)).toBeFocused();
+  await expect(title).toHaveText(t.steps[1].title);
+
+  await section
+    .getByRole("tabpanel")
+    .getByRole("link", { name: pl.cta })
+    .click();
+  await expect(page).toHaveURL(/#quote$/);
+});
+
 test.describe("przeglądarka po polsku", () => {
   test.use({ locale: "pl-PL" });
 
