@@ -40,7 +40,7 @@ import { cn } from "@/lib/utils";
 const initial: QuoteState = { status: "idle" };
 
 const inputClass =
-  "h-12 w-full rounded-lg border border-input bg-white/[0.03] px-4 text-base text-foreground placeholder:text-muted-foreground/70 transition-colors outline-none hover:border-white/25 focus-visible:border-brand-soft focus-visible:ring-[3px] focus-visible:ring-brand/25 aria-invalid:border-destructive disabled:opacity-40";
+  "h-11 w-full rounded-lg border border-input bg-white/[0.03] px-3.5 text-base text-foreground sm:text-sm placeholder:text-muted-foreground/70 transition-colors outline-none hover:border-white/25 focus-visible:border-brand-soft focus-visible:ring-[3px] focus-visible:ring-brand/25 aria-invalid:border-destructive disabled:opacity-40";
 
 function formatSize(bytes: number) {
   return bytes < 1024 * 1024
@@ -148,15 +148,13 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
     return (
       <div
         role="status"
-        className="flex min-h-[520px] flex-col items-start justify-center gap-5 p-2 sm:p-6"
+        className="flex min-h-[360px] flex-col items-start justify-center gap-4 p-2"
       >
-        <CheckCircle2Icon className="size-12 text-brand" aria-hidden />
-        <h3 className="display text-3xl sm:text-4xl">
+        <CheckCircle2Icon className="size-10 text-brand" aria-hidden />
+        <h3 className="display text-2xl sm:text-3xl">
           {t.successTitle.replace("{name}", done)}
         </h3>
-        <p className="max-w-md text-lg text-muted-foreground">
-          {t.successText}
-        </p>
+        <p className="max-w-md text-muted-foreground">{t.successText}</p>
         <button
           type="button"
           onClick={() => {
@@ -166,7 +164,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             setUnsure(false);
             setErrors({});
           }}
-          className="link-underline mt-4"
+          className="link-underline mt-2"
         >
           {t.another}
         </button>
@@ -176,10 +174,10 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
 
   const id = (name: string) => `${uid}-${name}`;
   const err = (field: QuoteField) => errors[field];
-  const sizeError = err("width") ?? err("height");
+  const sizeError = err("width") ?? err("height") ?? err("depth");
   const errorText = (key?: QuoteErrorKey, field?: string) =>
     key ? (
-      <p id={id(`${field}-error`)} className="mt-2 text-sm text-destructive">
+      <p id={id(`${field}-error`)} className="mt-1.5 text-sm text-destructive">
         {e[key]}
       </p>
     ) : null;
@@ -189,7 +187,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
       ref={formRef}
       onSubmit={onSubmit}
       noValidate
-      className="grid gap-6"
+      className="grid gap-4"
       aria-describedby={id("summary")}
     >
       <input type="hidden" name="locale" value={locale} />
@@ -206,24 +204,25 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
 
       <div id={id("summary")} aria-live="assertive" className="empty:hidden">
         {showSummary && (Object.values(errors).some(Boolean) || fileError) ? (
-          <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-2.5 text-sm text-destructive">
             {e.summary}
           </p>
         ) : null}
         {failed ? (
-          <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-2.5 text-sm text-destructive">
             {e.generic}
           </p>
         ) : null}
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor={id("name")} text={t.name} />
           <input
             id={id("name")}
             name="name"
             autoComplete="name"
+            maxLength={80}
             required
             className={inputClass}
             aria-invalid={Boolean(err("name"))}
@@ -240,6 +239,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             type="email"
             autoComplete="email"
             inputMode="email"
+            maxLength={160}
             required
             className={inputClass}
             aria-invalid={Boolean(err("email"))}
@@ -250,7 +250,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
         </div>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor={id("phone")} text={t.phone} optional={t.optional} />
           <input
@@ -259,6 +259,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             type="tel"
             autoComplete="tel"
             inputMode="tel"
+            maxLength={30}
             className={inputClass}
             aria-invalid={Boolean(err("phone"))}
             aria-describedby={err("phone") ? id("phone-error") : undefined}
@@ -282,46 +283,48 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
         </div>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-[1fr_auto]">
-        <fieldset
-          aria-describedby={cn(id("size-hint"), sizeError && id("size-error"))}
-        >
-          <legend className="mb-2 text-sm font-medium">{t.size}</legend>
-          <div className="grid grid-cols-2 gap-3">
-            {(["width", "height"] as const).map((dim) => (
-              <div key={dim} className="relative">
-                <label htmlFor={id(dim)} className="sr-only">
-                  {t[dim]} ({t.unit})
-                </label>
-                <input
-                  id={id(dim)}
-                  name={dim}
-                  inputMode="decimal"
-                  placeholder={t[dim]}
-                  disabled={unsure}
-                  className={cn(inputClass, "pr-12")}
-                  aria-invalid={Boolean(sizeError)}
-                  onChange={() => {
-                    clearError("width");
-                    clearError("height");
-                  }}
-                />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm text-muted-foreground"
-                >
-                  {t.unit}
-                </span>
+      <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
+        {/* Każdy wymiar ma widoczną etykietę, bo podpowiedź w polu znika po wpisaniu liczby. */}
+        <fieldset>
+          <legend className="sr-only">{t.size}</legend>
+          <div className="grid grid-cols-3 gap-3">
+            {(["width", "height", "depth"] as const).map((dim) => (
+              <div key={dim}>
+                <Label htmlFor={id(dim)} text={t[dim]} />
+                <div className="relative">
+                  <input
+                    id={id(dim)}
+                    name={dim}
+                    inputMode="decimal"
+                    className={cn(inputClass, "pr-10")}
+                    aria-invalid={Boolean(sizeError)}
+                    aria-describedby={cn(
+                      id("size-hint"),
+                      sizeError && id("size-error"),
+                    )}
+                    onChange={() => {
+                      clearError("width");
+                      clearError("height");
+                      clearError("depth");
+                    }}
+                  />
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-muted-foreground"
+                  >
+                    {t.unit}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
           <p
             id={id("size-hint")}
-            className="mt-2 text-xs text-muted-foreground"
+            className="mt-1.5 text-xs text-muted-foreground"
           >
             {t.sizeHint}
           </p>
-          <label className="mt-3 flex cursor-pointer items-center gap-3 text-sm text-foreground/85">
+          <label className="mt-2.5 flex cursor-pointer items-center gap-3 text-sm text-foreground/85">
             <input
               type="checkbox"
               name="sizeUnsure"
@@ -339,12 +342,12 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
 
         <div>
           <Label htmlFor={id("quantity")} text={t.quantity} />
-          <div className="flex h-12 items-center rounded-lg border border-input bg-white/[0.03]">
+          <div className="flex h-11 w-fit items-center rounded-lg border border-input bg-white/[0.03] transition-colors has-[:focus-visible]:border-brand-soft has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-brand/25 has-[[aria-invalid=true]]:border-destructive">
             <button
               type="button"
               aria-label={t.decrease}
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="flex size-12 items-center justify-center text-muted-foreground hover:text-foreground"
+              className="flex size-11 items-center justify-center rounded-l-lg text-muted-foreground outline-none hover:text-foreground"
             >
               <MinusIcon className="size-4" />
             </button>
@@ -358,10 +361,10 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
                   ev.target.value.replace(/\D/g, ""),
                   10,
                 );
-                setQuantity(Number.isNaN(v) ? 0 : Math.min(v, 999));
+                setQuantity(Number.isNaN(v) ? 0 : Math.min(v, 500));
                 clearError("quantity");
               }}
-              className="h-full w-14 bg-transparent text-center text-base outline-none"
+              className="h-full w-12 bg-transparent text-center text-base outline-none sm:text-sm"
               aria-invalid={Boolean(err("quantity"))}
               aria-describedby={
                 err("quantity") ? id("quantity-error") : undefined
@@ -371,7 +374,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
               type="button"
               aria-label={t.increase}
               onClick={() => setQuantity((q) => Math.min(500, q + 1))}
-              className="flex size-12 items-center justify-center text-muted-foreground hover:text-foreground"
+              className="flex size-11 items-center justify-center rounded-r-lg text-muted-foreground outline-none hover:text-foreground"
             >
               <PlusIcon className="size-4" />
             </button>
@@ -385,11 +388,12 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
         <textarea
           id={id("description")}
           name="description"
-          rows={5}
+          rows={4}
+          maxLength={3000}
           placeholder={t.descriptionPlaceholder}
           className={cn(
             inputClass,
-            "h-auto min-h-36 resize-y py-3 leading-relaxed",
+            "h-auto min-h-28 resize-y py-2.5 leading-relaxed",
           )}
           aria-invalid={Boolean(err("description"))}
           aria-describedby={
@@ -401,7 +405,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium">
+        <p className="mb-1.5 text-sm font-medium">
           {t.files}{" "}
           <span className="font-normal text-muted-foreground">
             ({t.optional})
@@ -416,19 +420,19 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
           onDragLeave={() => setDragging(false)}
           onDrop={onDrop}
           className={cn(
-            "flex cursor-pointer items-center gap-4 rounded-lg border border-dashed p-5 transition-colors",
+            "flex cursor-pointer items-center gap-3 rounded-lg border border-dashed px-4 py-3 transition-colors has-[:focus-visible]:border-brand-soft has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-brand/25",
             dragging
               ? "border-brand-soft bg-brand/10"
               : "border-white/20 hover:border-white/35 hover:bg-white/[0.02]",
             fileError && "border-destructive",
           )}
         >
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white/[0.05]">
-            <PaperclipIcon className="size-5" aria-hidden />
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/[0.05]">
+            <PaperclipIcon className="size-4" aria-hidden />
           </span>
           <span>
-            <span className="block font-medium">{t.filesDrop}</span>
-            <span className="mt-0.5 block text-sm text-muted-foreground">
+            <span className="block text-sm font-medium">{t.filesDrop}</span>
+            <span className="mt-0.5 block text-xs text-muted-foreground">
               {t.filesHint}
             </span>
           </span>
@@ -446,11 +450,11 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
           />
         </label>
         {files.length > 0 && (
-          <ul aria-label={t.filesSelected} className="mt-3 grid gap-2">
+          <ul aria-label={t.filesSelected} className="mt-2 grid gap-2">
             {files.map((file, i) => (
               <li
                 key={`${file.name}-${file.size}-${file.lastModified}`}
-                className="flex items-center gap-3 rounded-lg bg-white/[0.04] px-4 py-2.5 text-sm"
+                className="flex items-center gap-3 rounded-lg bg-white/[0.04] px-4 py-2 text-sm"
               >
                 <FileIcon
                   className="size-4 shrink-0 text-brand-soft"
@@ -476,18 +480,18 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
           </ul>
         )}
         {fileError && (
-          <p id={id("files-error")} className="mt-2 text-sm text-destructive">
+          <p id={id("files-error")} className="mt-1.5 text-sm text-destructive">
             {fileError}
           </p>
         )}
       </div>
 
       <div>
-        <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-foreground/85">
+        <label className="flex cursor-pointer items-start gap-3 text-sm leading-snug text-foreground/85">
           <input
             type="checkbox"
             name="consent"
-            className="mt-1 size-4 shrink-0 accent-primary"
+            className="mt-0.5 size-4 shrink-0 accent-primary"
             aria-invalid={Boolean(err("consent"))}
             aria-describedby={err("consent") ? id("consent-error") : undefined}
             onChange={() => clearError("consent")}
@@ -508,7 +512,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
       <button
         type="submit"
         disabled={pending}
-        className="inline-flex h-14 items-center justify-center gap-3 rounded-lg bg-primary px-8 text-base font-semibold text-white shadow-glow transition-colors hover:bg-brand-strong disabled:cursor-wait disabled:opacity-80"
+        className="mt-1 inline-flex h-12 items-center justify-center gap-3 rounded-lg bg-primary px-8 text-base font-semibold text-white shadow-glow transition-colors hover:bg-brand-strong disabled:cursor-wait disabled:opacity-80"
       >
         {pending && <Loader2Icon className="size-5 animate-spin" aria-hidden />}
         {pending ? t.sending : t.submit}
@@ -527,7 +531,7 @@ function Label({
   optional?: string;
 }) {
   return (
-    <label htmlFor={htmlFor} className="mb-2 block text-sm font-medium">
+    <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-medium">
       {text}
       {optional && (
         <span className="font-normal text-muted-foreground"> ({optional})</span>

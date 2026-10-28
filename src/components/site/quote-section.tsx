@@ -76,7 +76,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
           </ul>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-surface p-6 sm:p-10">
+        <div className="rounded-2xl border border-white/10 bg-surface p-5 sm:p-8">
           <QuoteForm dict={dict} />
         </div>
       </div>
