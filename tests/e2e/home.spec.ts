@@ -566,11 +566,13 @@ test("motyw idzie za urządzeniem, a ręczny wybór zapisuje się w ciasteczku",
   // Na telefonie przełącznik jest w menu.
   const menu = page.getByRole("button", { name: pl.a11y.menu });
   if (await menu.isVisible()) await menu.click();
-  await page
-    .getByRole("button", { name: pl.a11y.toDark })
-    .filter({ visible: true })
-    .click();
+  const toggle = page
+    .getByRole("switch", { name: pl.a11y.darkMode })
+    .filter({ visible: true });
+  await expect(toggle).toHaveAttribute("aria-checked", "false");
+  await toggle.click();
   await expect(html).toHaveAttribute("data-theme", "dark");
+  await expect(toggle).toHaveAttribute("aria-checked", "true");
   const saved = (await context.cookies()).find((c) => c.name === "theme");
   expect(saved?.value).toBe("dark");
 
@@ -579,10 +581,10 @@ test("motyw idzie za urządzeniem, a ręczny wybór zapisuje się w ciasteczku",
   await expect(html).toHaveAttribute("data-theme", "dark");
   await page.goto("/cookies");
   await expect(html).toHaveAttribute("data-theme", "dark");
-  // Na telefonie przycisk w nagłówku jest ukryty, więc szukamy go po etykiecie, nie po roli.
+  // Na telefonie suwak w nagłówku jest ukryty, więc szukamy go po etykiecie, nie po roli.
   await expect(
-    page.locator(`button[aria-label="${en.a11y.toLight}"]`),
-  ).toHaveCount(1);
+    page.locator(`button[aria-label="${en.a11y.darkMode}"]`),
+  ).toHaveAttribute("aria-checked", "true");
 });
 
 test("brak naruszeń WCAG 2.2 AA w oknie projektu", async ({ page }) => {
