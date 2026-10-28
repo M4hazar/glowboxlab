@@ -14,10 +14,10 @@ export type QuoteErrorKey =
   | "fileCount";
 
 // Największy lightbox, jaki mieści drukarka: 256 × 256 × 256 mm.
-export const MAX_SIZE_MM = 256;
+const MAX_SIZE_MM = 256;
 export const MAX_FILES = 3;
 export const MAX_TOTAL_BYTES = 4 * 1024 * 1024;
-export const ACCEPTED_EXTENSIONS = [
+const ACCEPTED_EXTENSIONS = [
   "png",
   "jpg",
   "jpeg",

@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import type { Dictionary } from "@/content/en";
+import { LOCALE_COOKIE } from "@/lib/locale";
 import { type Locale, type RouteKey, routes, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -85,7 +86,7 @@ export function SiteHeader({
           />
           <a
             href={anchor("#quote")}
-            className="hidden h-10 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white shadow-[0_0_32px_-8px_rgb(0_127_255/0.8)] transition-colors hover:bg-brand-strong sm:inline-flex"
+            className="hidden h-10 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white shadow-glow-sm transition-colors hover:bg-brand-strong sm:inline-flex"
           >
             {dict.cta}
           </a>
@@ -154,7 +155,7 @@ export function SiteHeader({
                     rel="noopener"
                     className="inline-flex h-12 items-center justify-center rounded-lg border border-white/15 font-medium"
                   >
-                    {dict.quote.whatsapp}
+                    {dict.contact.whatsapp}
                   </a>
                   <LanguageSwitch
                     dict={dict}
@@ -203,6 +204,11 @@ export function LanguageSwitch({
               href={routes[routeKey][locale]}
               hrefLang={locale === "pl" ? "pl-PL" : "en-GB"}
               lang={locale}
+              onClick={() => {
+                // Ręczny wybór języka wygrywa z językiem przeglądarki przy kolejnych wejściach.
+                // biome-ignore lint/suspicious/noDocumentCookie: Cookie Store API jest w Safari dopiero od 18.4
+                document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
+              }}
               className="rounded px-1.5 py-1 tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground"
             >
               {locale.toUpperCase()}

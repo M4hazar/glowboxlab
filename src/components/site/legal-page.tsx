@@ -33,15 +33,8 @@ export function LegalPage({
         </p>
         <div className="mt-14 grid gap-12">
           {doc.sections.map((section) => (
-            <section
-              key={section.heading}
-              id={section.id}
-              aria-labelledby={`${section.id ?? section.heading}-h`}
-            >
-              <h2
-                id={`${section.id ?? section.heading}-h`}
-                className="text-xl font-bold tracking-tight"
-              >
+            <section key={section.heading} id={section.id}>
+              <h2 className="text-xl font-bold tracking-tight">
                 {section.heading}
               </h2>
               {section.body.map((p) => (

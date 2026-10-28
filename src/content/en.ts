@@ -5,7 +5,7 @@ export const en = {
   meta: {
     title: "GlowBox Lab | Custom LED Lightboxes",
     description:
-      "Custom LED lightboxes, 3D printed to order. Your logo, name or idea turned into a glowing sign for your brand, gaming setup or a personal gift. Based in the UK, working with clients in the UK and Poland.",
+      "Custom LED lightboxes, 3D printed to order. Your logo, name or idea turned into a glowing sign for your brand, gaming setup or a personal gift. Based in Walsall, UK, shipping across the UK and Europe.",
     ogImage: "/og/glowbox-lab-en.jpg",
     ogAlt: "GlowBox Lab LED lightbox with the hexagon logo glowing blue",
   },
@@ -19,61 +19,40 @@ export const en = {
   },
   nav: [
     { label: "Work", href: "#work" },
-    { label: "Personalisation", href: "#personalisation" },
     { label: "How it works", href: "#process" },
     { label: "FAQ", href: "#faq" },
+    { label: "Contact", href: "#quote" },
   ],
   cta: "Get a quote",
   hero: {
     eyebrow: "Custom LED lightboxes",
     title: ["Your idea.", "Made to glow."],
-    lead: "Personalised LED lightboxes, 3D printed to order. Your logo, name or idea, turned into a light that gets noticed.",
-    primary: "Design your lightbox",
+    lead: "LED lightboxes, 3D printed to order. Made from your logo, a name or just an idea.",
+    primary: "Get a quote",
     secondary: "See our work",
-    points: [
-      "Design proof before production",
-      "Up to 4 print colours",
-      "UK and Poland",
-    ],
     imageAlt:
       "GlowBox Lab hexagon lightbox with a white and blue glowing logo on a dark surface",
-    scroll: "Discover GlowBox Lab",
   },
   viewer: {
-    eyebrow: "3D preview",
-    title: ["Turn it. Zoom in.", "Switch it on."],
-    lead: "Explore a GlowBox Lab lightbox from every side. This is our own logo model, built from the same file we print.",
-    label: "GlowBox Lab / showcase model",
-    dragHint: "Drag to rotate",
+    title: "See it in 3D",
+    lead: "Turn it, zoom in and switch the light on.",
     light: "Light",
-    on: "ON",
-    off: "OFF",
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
     rotateLeft: "Rotate left",
     rotateRight: "Rotate right",
-    reset: "Reset view",
     fullscreen: "Full screen",
     exitFullscreen: "Exit full screen",
-    ledColour: "LED colour",
-    colours: { white: "White", blue: "Blue" },
-    note: "Showcase model, 16 × 17 cm, 3.2 cm deep. Light colour options depend on the model.",
     loading: "Loading 3D model",
     fallback:
       "The 3D preview is not available on this device, so here is the lightbox as a photo.",
     canvasLabel:
-      "Interactive 3D model of the GlowBox Lab lightbox. Use the buttons below to rotate, zoom and switch the light.",
+      "Interactive 3D model of the GlowBox Lab lightbox. Drag to rotate or use the buttons below.",
   },
   work: {
-    eyebrow: "Our work",
-    title: "Made to stand out.",
-    lead: "Every lightbox starts with someone's idea. Here are a few of the forms they have taken.",
+    title: "Our work",
+    lead: "A few of the forms a lightbox can take.",
     note: "Example visualisations.",
-    cta: {
-      title: "Your idea could be next.",
-      text: "Send a logo, a name or just a rough thought. We will turn it into light.",
-      link: "Start your project",
-    },
     items: [
       {
         image: "/images/work-devils.webp",
@@ -85,45 +64,26 @@ export const en = {
         image: "/images/work-heart.webp",
         alt: "Red heart lightbox with the names Agnieszka and Paweł and yellow roses",
         title: "A personal gift",
-        text: "Names, dates and details for weddings, anniversaries and birthdays.",
+        text: "Names and dates for a wedding, an anniversary or a birthday.",
       },
       {
         image: "/images/work-logo.webp",
         alt: "Hexagon lightbox with the GlowBox Lab logo seen from the side",
         title: "Your logo, in light",
-        text: "Clean geometry and an even glow for desks, shops and studios.",
+        text: "For a desk, a shop or a studio.",
       },
     ],
-  },
-  personalisation: {
-    eyebrow: "Personalisation",
-    title: ["Your idea.", "Our design."],
-    lead: "Whether you arrive with a finished file or a rough thought, we take it from there.",
-    imageAlt:
-      "Printed GlowBox Lab logo design next to the finished glowing lightbox",
-    paths: [
-      {
-        title: "Have a ready graphic?",
-        text: "Send your logo, artwork or lettering. We check the file and prepare it for 3D printing.",
-      },
-      {
-        title: "Only have an idea?",
-        text: "Describe it in a few words or add a sketch or inspiration. We design the lightbox for you.",
-      },
-    ],
-    link: "Tell us about your project",
   },
   process: {
-    eyebrow: "How it works",
-    title: "From idea to light.",
+    title: "How it works",
     steps: [
       {
-        title: "Describe your idea",
-        text: "Send your graphic or tell us what you have in mind, with the size and quantity.",
+        title: "Send your idea",
+        text: "A logo, a graphic or just a description. Add the size and quantity.",
       },
       {
         title: "Get a quote and a design",
-        text: "We prepare the price and a visual of your lightbox. You can ask for changes.",
+        text: "We send you the price and a visual. You can ask for changes.",
       },
       {
         title: "We make it",
@@ -131,93 +91,38 @@ export const en = {
       },
     ],
   },
-  technology: {
-    eyebrow: "Technology and quality",
-    title: ["Considered form.", "Light with character."],
-    imageAlt:
-      "Close up of a lightbox edge with a textured 3D printed black frame and blue light",
-    features: [
-      {
-        title: "3D printed housing",
-        text: "The housing and details are shaped to your design, not to a template.",
-      },
-      {
-        title: "LED backlight",
-        text: "The light brings out the shape and colours of the front.",
-      },
-      {
-        title: "Up to 4 colours",
-        text: "The front is printed in up to four colours, chosen together with you.",
-      },
-      {
-        title: "Made to measure",
-        text: "Size and proportions follow your project, up to 256 × 256 mm.",
-      },
-    ],
-  },
-  inspiration: {
-    eyebrow: "Inspiration",
-    title: "Find its place.",
-    lead: "At home, in the office, by your gaming setup or in your shop.",
-    note: "Example arrangements.",
-    items: [
-      {
-        image: "/images/inspiration-office.webp",
-        alt: "Glowing hexagon lightbox on a desk next to a monitor and a plant",
-        title: "Office and gaming",
-      },
-      {
-        image: "/images/inspiration-home.webp",
-        alt: "Glowing hexagon lightbox on a wooden shelf with books and a plant",
-        title: "Home and retail spaces",
-      },
-    ],
-  },
   faq: {
-    eyebrow: "Good to know",
-    title: "Questions?",
+    title: "Common questions",
     items: [
       {
         q: "Can I send my own graphic?",
-        a: "Yes. Send a logo, lettering or inspiration. We check how to prepare it for 3D printing and let you know if anything needs adjusting.",
+        a: "Yes. A vector file (SVG, PDF, AI or EPS) works best, but good quality PNG and JPG files are fine too. We check the file and let you know if anything needs adjusting.",
       },
       {
         q: "What if I only have an idea?",
-        a: "That is enough to start. Describe it, add a sketch or reference photos, and we design the lightbox for you.",
-      },
-      {
-        q: "What does the price depend on?",
-        a: "Mainly on the size, the complexity of the shape, the number of print colours and the quantity. You get an individual quote after sending your inquiry.",
+        a: "That is enough. Describe it or add a sketch or inspiration, and we design the lightbox for you.",
       },
       {
         q: "How big can a lightbox be?",
-        a: "Up to 256 × 256 mm at the front and up to 256 mm deep, which is what our printer can make in one piece. Tell us the size you have in mind and we will suggest the best proportions.",
+        a: "Up to 256 × 256 mm at the front and 256 mm deep. That is what our printer makes in one piece.",
       },
       {
-        q: "Which file formats work best?",
-        a: "Vector files (SVG, PDF, AI or EPS) give the cleanest result. High resolution PNG and JPG files work too.",
+        q: "What does the price depend on?",
+        a: "The size, the shape, the number of colours and the quantity. We send you a price once we have your inquiry.",
       },
       {
-        q: "Can the light colour be changed?",
-        a: "It depends on the model. Some lightboxes can be made with adjustable LED colour, so mention it in your inquiry.",
-      },
-      {
-        q: "How is the lead time agreed?",
+        q: "How long does it take?",
         a: "We agree the date together with the quote. Production starts once you approve the design.",
       },
       {
-        q: "Do you work with clients in Poland?",
-        a: "Yes. We are based in the UK and work with clients in the UK and Poland, in English and in Polish.",
+        q: "Where do you deliver?",
+        a: "Across the UK and the rest of Europe, Poland included. You can also collect your lightbox in person in Walsall. We speak English and Polish.",
       },
     ],
   },
   quote: {
-    eyebrow: "Let's start with your idea",
-    title: ["Let's design", "your lightbox."],
-    lead: "Describe what you would like to create and attach your graphic. We will reply with a quote and the next steps.",
-    chat: "Prefer to chat?",
-    whatsapp: "Message us on WhatsApp",
-    call: "Call",
+    title: "Let's design your lightbox",
+    lead: "Describe your idea and attach a graphic if you have one. We will reply with a price and the next steps.",
     form: {
       name: "Name",
       email: "Email",
@@ -247,7 +152,6 @@ export const en = {
       privacy: "Privacy policy",
       submit: "Send quote request",
       sending: "Sending",
-      required: "required",
       successTitle: "Thank you, {name}!",
       successText:
         "Your inquiry has reached us. We will reply by email with a quote and the next steps.",
@@ -269,10 +173,17 @@ export const en = {
         "Something went wrong and the inquiry was not sent. Please try again or message us on WhatsApp.",
     },
   },
+  contact: {
+    email: "Email",
+    call: "Call",
+    whatsapp: "Message us on WhatsApp",
+    location: "Walsall, United Kingdom",
+    delivery:
+      "We ship across the UK and Europe. You can also collect in person in Walsall.",
+    socials: "GlowBox Lab on social media",
+  },
   footer: {
     tagline: "Custom LED lightboxes, 3D printed to order.",
-    explore: "Explore",
-    findUs: "Find us",
     privacy: "Privacy",
     cookies: "Cookies",
     terms: "Quote terms",

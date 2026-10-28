@@ -1,4 +1,4 @@
-import type { Locale } from "@/lib/site";
+import { type Locale, site } from "@/lib/site";
 
 // Treści prawne napisane prosto. Przed startem warto, by sprawdził je prawnik lub księgowy.
 export type LegalDoc = {
@@ -19,13 +19,13 @@ export const privacy: Record<Locale, LegalDoc> = {
       {
         heading: "Who we are",
         body: [
-          "GlowBox Lab makes custom LED lightboxes and is based in the United Kingdom. You can contact us through the quote form, by phone or on WhatsApp at +44 7749 789776.",
+          `GlowBox Lab makes custom LED lightboxes and is based in ${site.city}, United Kingdom. You can contact us through the quote form, by email at ${site.email}, or by phone and WhatsApp at ${site.phone}.`,
         ],
       },
       {
         heading: "What we collect",
         body: [
-          "When you send a quote request we receive your name, email address, optional phone number, the details of your project (type, size, quantity, deadline and description) and any files you attach.",
+          "When you send a quote request we receive your name, email address, optional phone number, the details of your project (size, quantity, deadline and description) and any files you attach.",
         ],
       },
       {
@@ -72,13 +72,13 @@ export const privacy: Record<Locale, LegalDoc> = {
       {
         heading: "Kim jesteśmy",
         body: [
-          "GlowBox Lab wykonuje lightboxy LED na zamówienie i działa w Wielkiej Brytanii. Możesz skontaktować się z nami przez formularz wyceny, telefonicznie lub na WhatsApp pod numerem +44 7749 789776.",
+          `GlowBox Lab wykonuje lightboxy LED na zamówienie i działa w ${site.city} w Wielkiej Brytanii. Możesz skontaktować się z nami przez formularz wyceny, e-mailem pod adresem ${site.email} albo telefonicznie i na WhatsApp pod numerem ${site.phone}.`,
         ],
       },
       {
         heading: "Jakie dane zbieramy",
         body: [
-          "Wysyłając zapytanie, przekazujesz nam imię, adres e-mail, opcjonalnie numer telefonu, szczegóły projektu (rodzaj, wymiary, liczbę sztuk, termin i opis) oraz dołączone pliki.",
+          "Wysyłając zapytanie, przekazujesz nam imię, adres e-mail, opcjonalnie numer telefonu, szczegóły projektu (wymiary, liczbę sztuk, termin i opis) oraz dołączone pliki.",
         ],
       },
       {
@@ -151,7 +151,7 @@ export const terms: Record<Locale, LegalDoc> = {
       {
         heading: "Lead time and delivery",
         body: [
-          "We agree the production time and the delivery method together with the quote, because they depend on the project and on where you are.",
+          `We ship across the UK and Europe, or you can collect your order in person in ${site.city}. We agree the production time and the delivery method together with the quote, because they depend on the project and on where you are.`,
         ],
       },
     ],
@@ -189,7 +189,7 @@ export const terms: Record<Locale, LegalDoc> = {
       {
         heading: "Termin i dostawa",
         body: [
-          "Czas realizacji i sposób dostawy ustalamy razem z wyceną, bo zależą od projektu i od tego, gdzie jesteś.",
+          `Wysyłamy do Polski, Wielkiej Brytanii i reszty Europy, a zamówienie możesz też odebrać osobiście w ${site.city}. Czas realizacji i sposób dostawy ustalamy razem z wyceną, bo zależą od projektu i od tego, gdzie jesteś.`,
         ],
       },
     ],

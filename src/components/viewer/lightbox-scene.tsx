@@ -11,7 +11,6 @@ import {
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import {
-  type ComponentRef,
   type RefObject,
   Suspense,
   useEffect,
@@ -22,23 +21,17 @@ import {
 import * as THREE from "three";
 import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
-export type LedColour = "white" | "blue";
-
 export type SceneHandle = {
   rotateBy: (radians: number) => void;
   zoomBy: (factor: number) => void;
-  reset: () => void;
 };
 
 export type LightboxSceneProps = {
   light: boolean;
-  led: LedColour;
   active: boolean;
   handle?: RefObject<SceneHandle | null>;
   onReady?: () => void;
 };
-
-type OrbitControlsImpl = ComponentRef<typeof OrbitControls>;
 
 const MODEL_URL = "/models/glowbox-lightbox.glb";
 const SCALE = 10; // model jest w metrach, scena w decymetrach
@@ -47,13 +40,7 @@ const INITIAL_AZIMUTH = -0.62;
 const INITIAL_ELEVATION = 0.06;
 
 // Kolory światła: część niebieska, część biała, poświata na podłodze.
-const PALETTE: Record<
-  LedColour,
-  { blue: string; white: string; spill: string }
-> = {
-  white: { blue: "#0066ff", white: "#ffffff", spill: "#1a7cff" },
-  blue: { blue: "#0060ff", white: "#2f86ff", spill: "#0a6cff" },
-};
+const GLOW = { blue: "#0066ff", white: "#ffffff", spill: "#1a7cff" };
 
 function useLightboxMaterials() {
   return useMemo(
@@ -71,14 +58,14 @@ function useLightboxMaterials() {
       blue: new THREE.MeshStandardMaterial({
         color: "#0a5fc4",
         roughness: 0.4,
-        emissive: new THREE.Color("#1f8fff"),
+        emissive: new THREE.Color(GLOW.blue),
         emissiveIntensity: 0,
         toneMapped: false,
       }),
       white: new THREE.MeshStandardMaterial({
         color: "#d9dadc",
         roughness: 0.4,
-        emissive: new THREE.Color("#ffffff"),
+        emissive: new THREE.Color(GLOW.white),
         emissiveIntensity: 0,
         toneMapped: false,
       }),
@@ -89,11 +76,9 @@ function useLightboxMaterials() {
 
 function Lightbox({
   light,
-  led,
   rotation,
 }: {
   light: boolean;
-  led: LedColour;
   rotation: RefObject<number>;
 }) {
   const { scene } = useGLTF(MODEL_URL);
@@ -153,19 +138,10 @@ function Lightbox({
       delta,
     );
     const l = level.current;
-    const palette = PALETTE[led];
-    mats.blue.emissive.set(palette.blue);
-    mats.white.emissive.set(palette.white);
     mats.blue.emissiveIntensity = l * 1.7;
-    mats.white.emissiveIntensity = l * (led === "white" ? 1.25 : 1.6);
-    if (spill.current) {
-      spill.current.intensity = l * 6;
-      spill.current.color.set(palette.spill);
-    }
-    if (pool.current) {
-      pool.current.opacity = l * 0.55;
-      pool.current.color.set(palette.spill);
-    }
+    mats.white.emissiveIntensity = l * 1.25;
+    if (spill.current) spill.current.intensity = l * 6;
+    if (pool.current) pool.current.opacity = l * 0.55;
     if (group.current) {
       group.current.rotation.y = THREE.MathUtils.damp(
         group.current.rotation.y,
@@ -186,6 +162,7 @@ function Lightbox({
         <pointLight
           ref={spill}
           position={[0, -0.4, 1.4]}
+          color={GLOW.spill}
           distance={5}
           decay={2}
           intensity={0}
@@ -200,6 +177,7 @@ function Lightbox({
         <meshBasicMaterial
           ref={pool}
           map={poolTexture}
+          color={GLOW.spill}
           transparent
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -239,11 +217,9 @@ function Floor() {
 function CameraRig({
   handle,
   rotation,
-  controls,
 }: {
   handle?: RefObject<SceneHandle | null>;
   rotation: RefObject<number>;
-  controls: RefObject<OrbitControlsImpl | null>;
 }) {
   const { camera } = useThree();
   const zoom = useRef(1);
@@ -257,8 +233,7 @@ function CameraRig({
       Math.cos(az) * Math.cos(el) * d,
     );
     camera.lookAt(target);
-    controls.current?.saveState();
-  }, [camera, target, controls]);
+  }, [camera, target]);
 
   useImperativeHandle(handle, () => ({
     rotateBy: (radians) => {
@@ -266,11 +241,6 @@ function CameraRig({
     },
     zoomBy: (factor) => {
       zoom.current = THREE.MathUtils.clamp(zoom.current * factor, 0.7, 1.9);
-    },
-    reset: () => {
-      rotation.current = 0;
-      zoom.current = 1;
-      controls.current?.reset();
     },
   }));
 
@@ -299,13 +269,11 @@ function ReadySignal({ onReady }: { onReady?: () => void }) {
 
 export default function LightboxScene({
   light,
-  led,
   active,
   handle,
   onReady,
 }: LightboxSceneProps) {
   const rotation = useRef(0);
-  const controls = useRef<OrbitControlsImpl | null>(null);
 
   return (
     <Canvas
@@ -332,7 +300,7 @@ export default function LightboxScene({
         color="#7fb8ff"
       />
       <Suspense fallback={null}>
-        <Lightbox light={light} led={led} rotation={rotation} />
+        <Lightbox light={light} rotation={rotation} />
         <Floor />
         <ContactShadows
           position={[0, -1.015, 0]}
@@ -368,9 +336,8 @@ export default function LightboxScene({
         </EffectComposer>
         <ReadySignal onReady={onReady} />
       </Suspense>
-      <CameraRig handle={handle} rotation={rotation} controls={controls} />
+      <CameraRig handle={handle} rotation={rotation} />
       <OrbitControls
-        ref={controls}
         makeDefault
         enablePan={false}
         enableZoom={false}

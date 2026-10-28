@@ -2,6 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 import { en } from "../../src/content/en";
 import { pl } from "../../src/content/pl";
+import { site } from "../../src/lib/site";
 
 const pages = [
   { path: "/", dict: en },
@@ -23,6 +24,32 @@ for (const { path, dict } of pages) {
   });
 }
 
+test("sekcja kontaktu pokazuje e-mail, telefon, miasto i media społecznościowe", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const contact = page.locator("#quote");
+  await expect(contact.getByRole("link", { name: site.email })).toHaveAttribute(
+    "href",
+    `mailto:${site.email}`,
+  );
+  await expect(contact.getByRole("link", { name: site.phone })).toHaveAttribute(
+    "href",
+    site.phoneHref,
+  );
+  await expect(contact.getByText(en.contact.location)).toBeVisible();
+  const socials = contact.getByRole("list", { name: en.contact.socials });
+  await expect(
+    socials.getByRole("link", { name: site.instagram.name }),
+  ).toHaveAttribute("href", site.instagram.href);
+  await expect(
+    socials.getByRole("link", { name: site.facebook.name }),
+  ).toHaveAttribute("href", site.facebook.href);
+  await expect(
+    socials.getByRole("link", { name: en.contact.whatsapp }),
+  ).toHaveAttribute("href", site.whatsapp);
+});
+
 test("przełącznik języka prowadzi do polskiej wersji", async ({
   page,
   isMobile,
@@ -37,6 +64,8 @@ test("przełącznik języka prowadzi do polskiej wersji", async ({
     .click();
   await expect(page).toHaveURL(/\/pl$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "pl-PL");
+  const cookies = await page.context().cookies();
+  expect(cookies.find((c) => c.name === "NEXT_LOCALE")?.value).toBe("pl");
 });
 
 test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
@@ -68,13 +97,14 @@ test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("podgląd 3D: przełącznik światła i pełny ekran", async ({ page }) => {
+test("podgląd 3D: przycisk światła i pełny ekran", async ({ page }) => {
   const t = en.viewer;
   await page.goto("/#preview");
   const viewer = page.locator("#preview");
-  const off = viewer.getByRole("button", { name: t.off, exact: true });
-  await off.click();
-  await expect(off).toHaveAttribute("aria-pressed", "true");
+  const light = viewer.getByRole("button", { name: t.light, exact: true });
+  await expect(light).toHaveAttribute("aria-pressed", "true");
+  await light.click();
+  await expect(light).toHaveAttribute("aria-pressed", "false");
 
   const full = viewer.getByRole("button", { name: t.fullscreen });
   await full.click();
@@ -83,6 +113,29 @@ test("podgląd 3D: przełącznik światła i pełny ekran", async ({ page }) => 
   ).toHaveAttribute("aria-pressed", "true");
   await page.keyboard.press("Escape");
   await expect(full).toHaveAttribute("aria-pressed", "false");
+});
+
+test.describe("przeglądarka po polsku", () => {
+  test.use({ locale: "pl-PL" });
+
+  test("trafia z / na /pl", async ({ page }) => {
+    await page.goto("/");
+    await expect(page).toHaveURL(/\/pl$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "pl-PL");
+  });
+
+  test("zostaje po angielsku po ręcznym wyborze EN", async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await context.addCookies([
+      { name: "NEXT_LOCALE", value: "en", url: baseURL ?? "" },
+    ]);
+    await page.goto("/");
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "en-GB");
+  });
 });
 
 test("strony prawne i 404", async ({ page }) => {
