@@ -328,6 +328,12 @@ export const terms: Record<Locale, LegalDoc> = {
         ],
       },
       {
+        heading: "Look and finish",
+        body: [
+          "Lightboxes are made by 3D printing, layer by layer. Fine layer lines, small surface irregularities and slight differences in shade between material batches, or compared with colours on screen, are a natural feature of this technology and not a defect. We make every lightbox according to the approved design: its size, shape, colours and graphic.",
+        ],
+      },
+      {
         heading: "Damaged or faulty lightbox",
         body: [
           "If your lightbox arrives damaged, does not work or is not as agreed, contact us as soon as possible, ideally with photos. You keep all your statutory rights as a consumer, including repair, replacement or a refund under the Consumer Rights Act 2015 in the UK or the consumer law of your EU country. These terms do not limit them.",
@@ -390,6 +396,12 @@ export const terms: Record<Locale, LegalDoc> = {
         heading: "Odstąpienie od umowy",
         body: [
           "Każdy lightbox jest wykonywany według Twojej specyfikacji, dlatego 14-dniowe prawo odstąpienia od umowy zawartej na odległość nie przysługuje (w Polsce na podstawie art. 38 ust. 1 pkt 3 ustawy o prawach konsumenta, w Wielkiej Brytanii na podstawie regulation 28(1)(b) Consumer Contracts Regulations 2013). Do czasu akceptacji projektu i wyceny możesz zrezygnować w każdej chwili, bez kosztów.",
+        ],
+      },
+      {
+        heading: "Wygląd i wykończenie",
+        body: [
+          "Lightboxy powstają w technologii druku 3D, warstwa po warstwie. Delikatne linie warstw, drobne nierówności powierzchni i niewielkie różnice odcienia między partiami materiału lub w porównaniu z kolorami na ekranie są naturalną cechą tej technologii, a nie wadą. Każdy lightbox wykonujemy zgodnie z zatwierdzonym projektem: jego wymiarami, kształtem, kolorami i grafiką.",
         ],
       },
       {

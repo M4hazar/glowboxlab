@@ -176,6 +176,10 @@ export const en = {
         a: "The size, the shape, the number of colours and the quantity. You get the exact price in a free quote.",
       },
       {
+        q: "Is every lightbox identical?",
+        a: "Each lightbox is printed layer by layer, so fine print lines may be visible and the shade can vary slightly between material batches or from colours on screen. This is a natural feature of 3D printing that gives every piece its own character and does not affect how it works.",
+      },
+      {
         q: "How long does it take?",
         a: "The lead time is agreed individually, together with the quote. Production starts once you approve the design.",
       },

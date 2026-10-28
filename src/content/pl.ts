@@ -182,6 +182,10 @@ export const pl: Dictionary = {
         a: "Od rozmiaru, kształtu, liczby kolorów i liczby sztuk. Dokładną cenę podajemy w bezpłatnej wycenie.",
       },
       {
+        q: "Czy każdy lightbox wygląda identycznie?",
+        a: "Każdy lightbox drukujemy warstwa po warstwie, dlatego mogą być widoczne delikatne linie druku, a odcień może się nieznacznie różnić między partiami materiału lub od kolorów na ekranie. To naturalna cecha druku 3D, która nadaje każdemu egzemplarzowi indywidualny charakter i nie wpływa na jego działanie.",
+      },
+      {
         q: "Ile trwa realizacja?",
         a: "Termin realizacji ustalamy indywidualnie, razem z wyceną. Produkcję rozpoczynamy po akceptacji projektu.",
       },
