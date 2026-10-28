@@ -32,7 +32,8 @@ Menedżer pakietów: **pnpm** (Node 24 LTS).
 - Komponenty UI dodawaj przez `pnpm dlx shadcn@latest add <nazwa>` do `src/components/ui`;
   nie edytuj ich bez potrzeby, kompozycje twórz w `src/components/site`.
 - Kolory tylko przez tokeny motywu (`bg-background`, `text-brand`, `text-muted-foreground` itd.)
-  z `src/app/globals.css`. Strona jest tylko w ciemnym motywie.
+  z `src/app/globals.css` (także `ink` zamiast `white/...` dla linii i delikatnych teł).
+  Strona ma motyw ciemny i jasny (wybór z urządzenia albo przełącznika); sprawdzaj oba.
 - Domyślnie Server Components; `"use client"` tylko tam, gdzie potrzebna interaktywność.
 - Formularze: schemat Zod w `src/lib`, obsługa przez Server Action.
 - Każda nowa strona ma `metadata` (przez `pageMetadata` z `src/lib/metadata.ts`) i trasę
