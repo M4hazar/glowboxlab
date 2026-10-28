@@ -29,6 +29,8 @@ export function ProcessTabs({
 }) {
   const total = t.steps.length;
   const [active, setActive] = useState(0);
+  // Kierunek zmiany: nowy etap wjeżdża z prawej przy przejściu dalej i z lewej przy powrocie.
+  const [forward, setForward] = useState(true);
   const [announcement, setAnnouncement] = useState("");
   const counter = (i: number) =>
     t.counter
@@ -38,6 +40,7 @@ export function ProcessTabs({
   // Strzałki zostają na miejscu, więc zmianę kroku ogłaszamy czytnikom ekranu osobno.
   const go = (dir: 1 | -1) => {
     const next = (active + dir + total) % total;
+    setForward(dir === 1);
     setActive(next);
     setAnnouncement(`${counter(next)}: ${t.steps[next].title}`);
   };
@@ -45,10 +48,16 @@ export function ProcessTabs({
   return (
     <Tabs.Root
       value={String(active)}
-      onValueChange={(value) => setActive(Number(value))}
+      onValueChange={(value) => {
+        setForward(Number(value) > active);
+        setActive(Number(value));
+      }}
       className="mt-12 sm:mt-14"
     >
-      <Tabs.List className="relative grid grid-cols-4 gap-2 sm:gap-6">
+      <Tabs.List
+        data-reveal="1"
+        className="relative grid grid-cols-4 gap-2 sm:gap-6"
+      >
         <span
           aria-hidden
           className="absolute top-5 right-[12.5%] left-[12.5%] h-px bg-white/15"
@@ -68,7 +77,7 @@ export function ProcessTabs({
               aria-hidden
               className={cn(
                 // Radix ustawia fokus zakładki także po kliknięciu, więc obwódka jest na kółku i wygląda jak zaznaczenie.
-                "relative z-10 flex size-10 items-center justify-center rounded-full border bg-background text-sm font-semibold transition-colors group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background",
+                "relative z-10 flex size-10 items-center justify-center rounded-full border bg-background text-sm font-semibold transition-[color,background-color,border-color,scale] duration-300 ease-glow group-active:scale-95 group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background",
                 i === active
                   ? "border-primary bg-primary text-white"
                   : i < active
@@ -91,14 +100,21 @@ export function ProcessTabs({
         ))}
       </Tabs.List>
 
-      <div className="relative mt-8 rounded-2xl border border-white/10 bg-surface sm:mt-10">
+      <div
+        data-reveal="2"
+        data-spotlight
+        className="relative mt-8 rounded-2xl border border-white/10 bg-surface sm:mt-10"
+      >
         {t.steps.map((step, i) => {
           const Icon = icons[i];
           return (
             <Tabs.Content
               key={step.title}
               value={String(i)}
-              className="grid gap-x-12 gap-y-8 rounded-2xl p-6 outline-none animate-in fade-in-0 duration-300 focus-visible:ring-2 focus-visible:ring-ring sm:p-8 md:grid-cols-2 lg:p-10"
+              className={cn(
+                "grid gap-x-12 gap-y-8 rounded-2xl p-6 outline-none animate-in fade-in-0 duration-500 ease-glow focus-visible:ring-2 focus-visible:ring-ring motion-reduce:animate-none sm:p-8 md:grid-cols-2 lg:p-10",
+                forward ? "slide-in-from-right-6" : "slide-in-from-left-6",
+              )}
             >
               <div>
                 <span className="flex size-12 items-center justify-center rounded-xl bg-primary/15 text-brand-soft">
@@ -127,7 +143,7 @@ export function ProcessTabs({
               </ul>
               <a
                 href={quoteHref}
-                className="inline-flex h-11 items-center justify-center self-end justify-self-start rounded-lg bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-strong max-md:w-full"
+                className="press inline-flex h-11 items-center justify-center self-end justify-self-start rounded-lg bg-primary px-5 text-sm font-semibold text-white hover:bg-brand-strong max-md:w-full"
               >
                 {cta}
               </a>

@@ -121,7 +121,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
 
   const loading = mode === "3d" && !ready;
   const iconButton =
-    "inline-flex size-11 items-center justify-center rounded-lg border border-white/12 text-foreground/90 transition-colors hover:border-white/30 hover:bg-white/[0.06] disabled:opacity-40";
+    "press inline-flex size-11 items-center justify-center rounded-lg border border-white/12 text-foreground/90 hover:border-white/30 hover:bg-white/[0.06] disabled:opacity-40";
 
   return (
     <div

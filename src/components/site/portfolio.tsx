@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 type Work = Dictionary["work"];
 
 export const iconButton =
-  "inline-flex size-11 items-center justify-center rounded-full border border-white/12 text-foreground/90 transition-colors hover:border-white/30 hover:bg-white/[0.06]";
+  "press inline-flex size-11 items-center justify-center rounded-full border border-white/12 text-foreground/90 hover:border-white/30 hover:bg-white/[0.06]";
 
 // Karta projektu: ta sama w przewijanym pasku i na podstronie portfolio.
 export function WorkCard({
@@ -45,17 +45,20 @@ export function WorkCard({
       className={cn("group block text-left outline-none", className)}
       {...props}
     >
-      <span className="relative block aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-surface transition-colors group-hover:border-white/25 group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background">
-        <Image
-          src={work.image}
-          alt=""
-          fill
-          draggable={false}
-          sizes={sizes}
-          className="object-cover transition-transform duration-700 ease-glow group-hover:scale-[1.04]"
-        />
-        <span className="absolute right-3 bottom-3 inline-flex size-9 items-center justify-center rounded-full bg-background/70 text-foreground opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-          <PlusIcon className="size-4" aria-hidden />
+      {/* Zewnętrzna ramka niesie światło przy kursorze, wewnętrzna przycina zdjęcie. */}
+      <span data-spotlight className="relative block rounded-2xl">
+        <span className="relative block aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-surface transition-colors group-hover:border-white/25 group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background">
+          <Image
+            src={work.image}
+            alt=""
+            fill
+            draggable={false}
+            sizes={sizes}
+            className="object-cover transition-transform duration-700 ease-glow group-hover:scale-[1.04]"
+          />
+          <span className="absolute right-3 bottom-3 inline-flex size-9 translate-y-1 items-center justify-center rounded-full bg-background/70 text-foreground opacity-0 backdrop-blur transition-[opacity,translate] duration-300 ease-glow group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+            <PlusIcon className="size-4" aria-hidden />
+          </span>
         </span>
       </span>
       <span className="mt-5 block text-xl font-semibold tracking-tight">
@@ -152,7 +155,7 @@ export function WorkDialog({
             >
               <a
                 href={quoteHref}
-                className="inline-flex h-11 flex-1 items-center justify-center rounded-lg bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-strong"
+                className="press inline-flex h-11 flex-1 items-center justify-center rounded-lg bg-primary px-5 text-sm font-semibold text-white hover:bg-brand-strong"
               >
                 {c.cta}
               </a>
@@ -207,7 +210,7 @@ export function PortfolioGrid({
     <>
       <ul className="mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
         {t.items.map((work, i) => (
-          <li key={work.title}>
+          <li key={work.title} data-reveal={i % 3}>
             <WorkCard
               ref={(node) => {
                 cards.current[i] = node;

@@ -45,7 +45,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
         <div className="flex flex-col">
           <SectionHeading id="quote-title" title={t.title} lead={t.lead} />
 
-          <ul className="mt-10 flex flex-col gap-5 text-lg">
+          <ul className="mt-10 flex flex-col gap-5 text-lg" data-reveal="1">
             <li>
               <a href={site.phoneHref} className={contactLink}>
                 <PhoneIcon className="size-5 text-brand-soft" aria-hidden />
@@ -77,6 +77,7 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
           {/* WhatsApp na całą szerokość, bo to najszybszy kontakt, pod nim reszta po dwa. */}
           <ul
             aria-label={c.socials}
+            data-reveal="2"
             className="mt-10 mb-10 grid max-w-sm grid-cols-2 gap-2.5"
           >
             <li className="col-span-2">
@@ -111,7 +112,10 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
             ))}
           </ul>
 
-          <ul className="grid gap-3 border-t border-white/[0.07] pt-8 text-muted-foreground lg:mt-auto">
+          <ul
+            data-reveal="3"
+            className="grid gap-3 border-t border-white/[0.07] pt-8 text-muted-foreground lg:mt-auto"
+          >
             {c.promises.map((text, i) => {
               const Icon = promiseIcons[i];
               return (
@@ -127,7 +131,11 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
           </ul>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-surface p-5 sm:p-8">
+        <div
+          data-reveal="1"
+          data-spotlight
+          className="relative rounded-2xl border border-white/10 bg-surface p-5 sm:p-8"
+        >
           <QuoteForm dict={dict} />
         </div>
       </div>

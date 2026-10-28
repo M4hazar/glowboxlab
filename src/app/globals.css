@@ -121,3 +121,230 @@
     transform: scaleX(0.6);
   }
 }
+
+/*
+ * Ruch i efekty.
+ * Skrypt w <head> (src/components/site/motion.tsx) ustawia data-motion na <html>, gdy system
+ * nie prosi o ograniczenie ruchu, i data-intro przy pierwszym wejściu w sesji. Bez JavaScriptu
+ * i przy prefers-reduced-motion strona jest od razu widoczna, bez animacji.
+ * Animacje wejścia mają wypełnienie backwards: po zakończeniu nie zostawiają transformacji,
+ * która zmieniłaby pozycjonowanie elementów fixed (pełny ekran modelu 3D).
+ * Reguły są poza warstwami Tailwinda, więc działają też na elementach z klasami narzędziowymi.
+ */
+@utility press {
+  transition-property: color, background-color, border-color, opacity, scale;
+  transition-duration: 200ms;
+  transition-timing-function: var(--ease-glow);
+  &:active:not(:disabled) {
+    scale: 0.97;
+  }
+}
+
+.intro {
+  display: none;
+}
+.intro-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--brand);
+  transform-origin: left;
+}
+
+@keyframes intro-logo {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(0.94);
+  }
+}
+@keyframes intro-logo-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(1.02);
+  }
+}
+@keyframes intro-bar {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes intro-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise, 24px));
+  }
+}
+@keyframes line-up {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes settle {
+  from {
+    opacity: 0.4;
+    transform: scale(1.06);
+  }
+}
+@keyframes reveal-failsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    --intro: 0s;
+  }
+  [data-intro] {
+    --intro: 0.95s;
+  }
+
+  /* Ekran startowy: logo i cienka linia ładowania, potem całość płynnie znika. */
+  [data-intro] .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+    background: var(--background);
+    pointer-events: none;
+    animation: intro-out 0.6s var(--ease-glow) 0.95s forwards;
+  }
+  [data-intro] .intro-logo {
+    animation:
+      intro-logo 0.8s var(--ease-glow) backwards,
+      intro-logo-out 0.6s var(--ease-glow) 0.95s forwards;
+  }
+  [data-intro] .intro-bar {
+    animation: intro-logo-out 0.6s var(--ease-glow) 0.95s forwards;
+  }
+  [data-intro] .intro-bar::after {
+    animation: intro-bar 0.9s cubic-bezier(0.65, 0, 0.35, 1) backwards;
+  }
+
+  /* Wejście górnej części strony. Opóźnienie ustawia się zmienną --delay.
+     Linie nagłówka są w kolumnie flex, więc ujemne marginesy linii nie zapadają się. */
+  [data-motion] .rise {
+    animation: rise 1s var(--ease-glow) backwards;
+    animation-delay: calc(var(--intro) + var(--delay, 0s));
+  }
+  [data-motion] .line {
+    overflow: hidden;
+    padding-block: 0.12em;
+    margin-block: -0.12em;
+  }
+  [data-motion] .line > span {
+    display: block;
+    animation: line-up 1.1s var(--ease-glow) backwards;
+    animation-delay: calc(var(--intro) + var(--delay, 0s));
+  }
+  [data-motion] .settle {
+    animation: settle 1.6s var(--ease-glow) backwards;
+    animation-delay: var(--intro);
+  }
+
+  /* Sekcje pojawiają się przy przewijaniu; data-revealed dodaje PageEffects. */
+  [data-motion] [data-reveal] {
+    transition:
+      opacity 0.9s var(--ease-glow),
+      transform 0.9s var(--ease-glow);
+  }
+  [data-motion] [data-reveal="1"] {
+    transition-delay: 0.1s;
+  }
+  [data-motion] [data-reveal="2"] {
+    transition-delay: 0.2s;
+  }
+  [data-motion] [data-reveal="3"] {
+    transition-delay: 0.3s;
+  }
+  [data-motion] [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  /* Gdyby JavaScript się nie wczytał, treść i tak pokaże się po chwili. */
+  [data-motion]:not([data-effects]) [data-reveal]:not([data-revealed]) {
+    animation: reveal-failsafe 0s 4s forwards;
+  }
+
+  /* Przejście między podstronami (React ViewTransition). */
+  ::view-transition-old(.page-out) {
+    animation: page-out 0.2s ease-out both;
+  }
+  ::view-transition-new(.page-in) {
+    animation: page-in 0.6s var(--ease-glow) 0.1s both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}
+
+/* Światło przy kursorze: krawędź karty podświetla się tam, gdzie jest wskaźnik. */
+@media (hover: hover) and (pointer: fine) {
+  [data-spotlight] {
+    isolation: isolate;
+  }
+  [data-spotlight]::before,
+  [data-spotlight]::after {
+    content: "";
+    position: absolute;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-glow);
+  }
+  [data-spotlight]::before {
+    inset: -1px;
+    z-index: 1;
+    padding: 1px;
+    background: radial-gradient(
+      260px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--brand-soft) 75%, transparent),
+      transparent 70%
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+  [data-spotlight]::after {
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(
+      520px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--brand) 7%, transparent),
+      transparent 65%
+    );
+  }
+  [data-spotlight]:hover::before,
+  [data-spotlight]:hover::after {
+    opacity: 1;
+  }
+}

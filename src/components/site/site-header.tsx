@@ -2,7 +2,7 @@
 
 import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Sheet,
   SheetClose,
@@ -24,25 +24,64 @@ export function SiteHeader({
 }) {
   const locale = dict.locale as Locale;
   const home = routes.home[locale];
+  const header = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [current, setCurrent] = useState<string | null>(null);
 
+  // Nagłówek chowa się przy przewijaniu w dół i wraca przy ruchu w górę.
+  // Zostaje widoczny przy samej górze strony i gdy jest w nim fokus klawiatury.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 12);
+      if (Math.abs(y - last) < 8) return;
+      const focused = header.current?.contains(document.activeElement);
+      setHidden(y > last && y > 320 && !focused);
+      last = y;
+    };
+    const show = () => setHidden(false);
+    const el = header.current;
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    el?.addEventListener("focusin", show);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      el?.removeEventListener("focusin", show);
+    };
   }, []);
+
+  // Podświetla w menu sekcję, która jest na środku ekranu.
+  useEffect(() => {
+    if (routeKey !== "home") return;
+    const sections = dict.nav
+      .map((item) => document.querySelector<HTMLElement>(item.href))
+      .filter((el) => el !== null);
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setCurrent(`#${entry.target.id}`);
+        }
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    for (const el of sections) io.observe(el);
+    return () => io.disconnect();
+  }, [dict.nav, routeKey]);
 
   const anchor = (href: string) =>
     routeKey === "home" ? href : `${home}${href}`;
 
   return (
     <header
+      ref={header}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500",
+        "rise fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter,translate] duration-500 ease-glow [--rise:-16px]",
         scrolled
           ? "border-b border-white/[0.07] bg-background/75 backdrop-blur-xl"
           : "border-b border-transparent",
+        hidden && "-translate-y-full",
       )}
     >
       <a
@@ -69,7 +108,8 @@ export function SiteHeader({
               <li key={item.href}>
                 <a
                   href={anchor(item.href)}
-                  className="transition-colors duration-300 hover:text-foreground"
+                  aria-current={current === item.href ? "true" : undefined}
+                  className="relative py-2 transition-colors duration-300 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:bg-brand after:transition-transform after:duration-500 after:ease-glow hover:text-foreground aria-[current=true]:text-foreground aria-[current=true]:after:scale-x-100"
                 >
                   {item.label}
                 </a>
@@ -86,7 +126,7 @@ export function SiteHeader({
           />
           <a
             href={anchor("#quote")}
-            className="hidden h-10 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-strong sm:inline-flex"
+            className="press hidden h-10 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white hover:bg-brand-strong sm:inline-flex"
           >
             {dict.cta}
           </a>
@@ -144,7 +184,7 @@ export function SiteHeader({
                   <SheetClose asChild>
                     <a
                       href={anchor("#quote")}
-                      className="inline-flex h-12 items-center justify-center rounded-lg bg-primary font-semibold text-white"
+                      className="press inline-flex h-12 items-center justify-center rounded-lg bg-primary font-semibold text-white hover:bg-brand-strong"
                     >
                       {dict.cta}
                     </a>

@@ -42,7 +42,7 @@ export function SectionHeading({
   lead?: string;
 }) {
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-2xl" data-reveal>
       <h2 id={id} className="display text-4xl sm:text-5xl">
         {title}
       </h2>

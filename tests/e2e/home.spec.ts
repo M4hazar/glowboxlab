@@ -289,6 +289,43 @@ test.describe("przeglądarka po polsku", () => {
   });
 });
 
+test("animacje: ekran startowy raz na kartę, sekcje odsłaniają się przy przewijaniu", async ({
+  page,
+}) => {
+  await page.route("**/*.glb", () => {});
+  await page.goto("/pl");
+  const html = page.locator("html");
+  await expect(html).toHaveAttribute("data-motion", "");
+  await expect(html).toHaveAttribute("data-intro", "");
+  // Ekran startowy nie blokuje kliknięć i znika sam.
+  await expect(page.locator(".intro")).toHaveCSS("pointer-events", "none");
+  await expect(page.locator(".intro")).toBeHidden({ timeout: 5000 });
+
+  await page.reload();
+  await expect(html).not.toHaveAttribute("data-intro");
+  await expect(page.locator(".intro")).toBeHidden();
+
+  const faq = page.locator("#faq [data-reveal]").first();
+  await expect(faq).not.toHaveAttribute("data-revealed");
+  await faq.scrollIntoViewIfNeeded();
+  await expect(faq).toHaveAttribute("data-revealed", "");
+  await expect(faq).toHaveCSS("opacity", "1");
+});
+
+test("przy ograniczonym ruchu strona nie ma animacji", async ({ browser }) => {
+  const context = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await context.newPage();
+  await page.route("**/*.glb", () => {});
+  await page.goto("/pl");
+  await expect(page.locator("html")).not.toHaveAttribute("data-motion");
+  await expect(page.locator(".intro")).toBeHidden();
+  await expect(page.locator("#faq [data-reveal]").first()).toHaveCSS(
+    "opacity",
+    "1",
+  );
+  await context.close();
+});
+
 test("strona wysyła nagłówki bezpieczeństwa", async ({ request }) => {
   const response = await request.get("/pl");
   const headers = response.headers();

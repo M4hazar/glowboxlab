@@ -227,7 +227,7 @@ export function WorkCarousel({
     <div className="section">
       <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
         {heading}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" data-reveal="1">
           <Link href={allHref} className="link-underline mr-3 text-sm">
             {c.all}
             <ArrowRightIcon className="size-4" aria-hidden />
@@ -287,6 +287,7 @@ export function WorkCarousel({
           }
         }}
         onClickCapture={onClickCapture}
+        data-reveal="2"
         className="mt-12 cursor-grab overflow-x-auto overscroll-x-contain py-2 select-none [mask-image:linear-gradient(to_right,transparent,black_3%,black_97%,transparent)] [scrollbar-width:none] active:cursor-grabbing sm:mt-14 [&::-webkit-scrollbar]:hidden"
       >
         <ul className="flex w-max gap-4 sm:gap-6">
