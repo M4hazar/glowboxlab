@@ -82,6 +82,8 @@
   body {
     @apply bg-background font-sans text-foreground antialiased;
     font-feature-settings: "ss01", "cv11";
+    /* Bez ligatur: w Plus Jakarta Sans „fi” i „fl” sklejają się w jeden, nienaturalny znak. */
+    font-variant-ligatures: no-common-ligatures;
     text-rendering: optimizeLegibility;
   }
   ::selection {
