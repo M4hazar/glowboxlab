@@ -27,6 +27,9 @@ const nextConfig: NextConfig = {
   experimental: {
     // Dwie wersje językowe mają osobne root layouty, więc 404 jest globalne.
     globalNotFound: true,
+    // Bez pamięci podręcznej Turbopacka między buildami. Vercel ją przywraca i raz złożył z niej
+    // nowy kod ze starym arkuszem stylów (bez jasnego motywu). Zysk to tylko ok. 2 s na build.
+    turbopackFileSystemCacheForBuild: false,
     serverActions: {
       // Formularz wyceny przyjmuje załączniki do 4 MB (limit funkcji Vercel to 4,5 MB).
       bodySizeLimit: "5mb",
