@@ -41,7 +41,7 @@ export const privacy: Record<Locale, LegalDoc> = {
           "To answer your inquiry, prepare a quote and design and, if you order, to make and deliver your lightbox. The legal basis is taking steps at your request before entering into a contract, and performing that contract (Article 6(1)(b) of the UK GDPR and the EU GDPR).",
           "To keep order and accounting records. The legal basis is our legal obligation under tax law (Article 6(1)(c)).",
           "To run the website securely and protect the quote form from spam and abuse. The legal basis is our legitimate interest in a safe, working website (Article 6(1)(f)).",
-          "We need your name and email address to reply to you; without them we cannot prepare a quote. Everything else is optional. We do not sell your data, use it for marketing without asking you first, or make automated decisions about you.",
+          "To prepare a quote we need your name, email address, the quantity, a description of the project and its dimensions (or a tick saying you are not sure about the size). The form cannot be sent without them. Your phone number, deadline and files are optional. We do not sell your data, use it for marketing without asking you first, or make automated decisions about you.",
         ],
       },
       {
@@ -54,7 +54,7 @@ export const privacy: Record<Locale, LegalDoc> = {
       {
         heading: "Transfers outside the UK and the EEA",
         body: [
-          "Vercel and Resend are based in the United States. Transfers to them are protected by the safeguards required by law, such as the EU Standard Contractual Clauses with the UK Addendum, or the Data Privacy Framework and its UK Extension where the provider is certified.",
+          "Vercel and Resend are based in the United States. Both are certified under the EU-US Data Privacy Framework, which the European Commission recognises as providing adequate protection, and the UK recognises it through its UK Extension. Their data processing terms with us also include the EU Standard Contractual Clauses with the UK Addendum. You can check the certifications at dataprivacyframework.gov, and we will send you a copy of the contractual safeguards if you ask.",
         ],
       },
       {
@@ -118,7 +118,7 @@ export const privacy: Record<Locale, LegalDoc> = {
           "Odpowiedź na zapytanie, przygotowanie wyceny i projektu oraz, jeśli złożysz zamówienie, wykonanie i dostarczenie lightboxa. Podstawą jest podjęcie działań na Twoje żądanie przed zawarciem umowy oraz wykonanie umowy (art. 6 ust. 1 lit. b RODO i UK GDPR).",
           "Prowadzenie dokumentacji zamówień i rozliczeń. Podstawą jest obowiązek prawny wynikający z przepisów podatkowych (art. 6 ust. 1 lit. c).",
           "Bezpieczne działanie strony i ochrona formularza przed spamem i nadużyciami. Podstawą jest nasz prawnie uzasadniony interes, czyli bezpieczna i sprawna strona (art. 6 ust. 1 lit. f).",
-          "Imię i adres e-mail są potrzebne, żeby Ci odpowiedzieć; bez nich nie przygotujemy wyceny. Pozostałe dane są dobrowolne. Nie sprzedajemy danych, nie wykorzystujemy ich do marketingu bez Twojej zgody i nie podejmujemy wobec Ciebie zautomatyzowanych decyzji.",
+          "Do przygotowania wyceny potrzebujemy imienia, adresu e-mail, liczby sztuk, opisu projektu i wymiarów (albo zaznaczenia, że ich nie znasz). Bez tych danych formularza nie da się wysłać. Numer telefonu, termin i pliki są dobrowolne. Nie sprzedajemy danych, nie wykorzystujemy ich do marketingu bez Twojej zgody i nie podejmujemy wobec Ciebie zautomatyzowanych decyzji.",
         ],
       },
       {
@@ -131,7 +131,7 @@ export const privacy: Record<Locale, LegalDoc> = {
       {
         heading: "Przekazywanie danych poza Wielką Brytanię i EOG",
         body: [
-          "Vercel i Resend mają siedzibę w Stanach Zjednoczonych. Przekazywanie im danych jest zabezpieczone w sposób wymagany przez prawo, na przykład standardowymi klauzulami umownymi UE z brytyjskim aneksem albo w ramach Data Privacy Framework i jego brytyjskiego rozszerzenia, jeśli dostawca ma certyfikat.",
+          "Vercel i Resend mają siedzibę w Stanach Zjednoczonych. Obie firmy mają certyfikat EU-US Data Privacy Framework, który Komisja Europejska uznaje za zapewniający odpowiedni poziom ochrony, a Wielka Brytania uznaje go w ramach brytyjskiego rozszerzenia. Umowy powierzenia danych z tymi firmami zawierają też standardowe klauzule umowne UE z brytyjskim aneksem. Certyfikaty sprawdzisz na dataprivacyframework.gov, a kopię zabezpieczeń umownych wyślemy Ci na prośbę.",
         ],
       },
       {
@@ -196,12 +196,6 @@ export const cookies: Record<Locale, LegalDoc> = {
               "12 months",
               "Cookie, functional",
             ],
-            [
-              "gbl-skip-intro",
-              "Skips the opening animation once, right after you switch language.",
-              "Until the next page loads",
-              "Browser session storage",
-            ],
           ],
         },
       },
@@ -214,7 +208,7 @@ export const cookies: Record<Locale, LegalDoc> = {
       {
         heading: "Consent",
         body: [
-          "Both items above only support features you ask for, so the law does not require your consent and we do not show a cookie banner. If we ever add other cookies, we will ask for your consent first.",
+          "This cookie is set only when you use the language switch, and without it the website could not keep the language you asked for, so the law does not require your consent and we do not show a cookie banner. If we ever add other cookies, we will ask for your consent first.",
         ],
       },
       {
@@ -250,12 +244,6 @@ export const cookies: Record<Locale, LegalDoc> = {
               "12 miesięcy",
               "Cookie, funkcjonalne",
             ],
-            [
-              "gbl-skip-intro",
-              "Jednorazowo pomija animację powitalną zaraz po zmianie języka.",
-              "Do wczytania kolejnej strony",
-              "Pamięć sesji przeglądarki",
-            ],
           ],
         },
       },
@@ -268,7 +256,7 @@ export const cookies: Record<Locale, LegalDoc> = {
       {
         heading: "Zgoda",
         body: [
-          "Oba wpisy powyżej służą wyłącznie funkcjom, o które sam prosisz, dlatego przepisy nie wymagają zgody i nie wyświetlamy banera cookies. Jeśli kiedyś dodamy inne cookies, najpierw poprosimy o zgodę.",
+          "Ten plik zapisuje się tylko wtedy, gdy użyjesz przełącznika języka, a bez niego strona nie mogłaby zachować wybranego języka, dlatego przepisy nie wymagają zgody i nie wyświetlamy banera cookies. Jeśli kiedyś dodamy inne cookies, najpierw poprosimy o zgodę.",
         ],
       },
       {

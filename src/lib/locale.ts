@@ -3,10 +3,6 @@ import type { Locale } from "./site";
 // Ciasteczko z językiem wybranym ręcznie w przełączniku. Ma pierwszeństwo przed przeglądarką.
 export const LOCALE_COOKIE = "NEXT_LOCALE";
 
-// Zmiana języka wczytuje drugą wersję strony od nowa. Ten znacznik w sessionStorage mówi
-// skryptowi w <head>, żeby po takim przejściu nie pokazywał ekranu startowego.
-export const SKIP_INTRO_KEY = "gbl-skip-intro";
-
 /**
  * Wybiera język strony z nagłówka Accept-Language.
  * Polski tylko wtedy, gdy jest najwyżej ocenionym z obsługiwanych języków, w każdym innym przypadku angielski.

@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import type { Dictionary } from "@/content/en";
-import { LOCALE_COOKIE, SKIP_INTRO_KEY } from "@/lib/locale";
+import { LOCALE_COOKIE } from "@/lib/locale";
 import { type Locale, type RouteKey, routes, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -304,9 +304,6 @@ function switchLanguage(
   document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
   if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey)
     return;
-  try {
-    sessionStorage.setItem(SKIP_INTRO_KEY, "1");
-  } catch {}
   // Na stronie głównej druga wersja otwiera się na tej samej sekcji.
   if (routeKey !== "home") return;
   const middle = window.innerHeight / 2;
