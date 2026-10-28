@@ -34,13 +34,8 @@ export const en = {
   },
   viewer: {
     light: "Light",
-    zoomIn: "Zoom in",
-    zoomOut: "Zoom out",
     rotateLeft: "Rotate left",
     rotateRight: "Rotate right",
-    fullscreen: "Full screen",
-    exitFullscreen: "Exit full screen",
-    loading: "Loading the 3D model",
     fallback:
       "The 3D preview is not available on this device, so here is the lightbox as a photo.",
     canvasLabel:
