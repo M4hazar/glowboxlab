@@ -50,7 +50,6 @@
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
   --color-ink: var(--ink);
-  --color-stage: var(--stage);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -64,8 +63,6 @@
  * Niebieski #007FFF to kolor logo (poświata, akcenty, ikony).
  * Przyciski mają ciemniejszy odcień, żeby biały tekst spełniał WCAG AA.
  * --ink to kolor cienkich linii i delikatnych teł (biały na ciemnym, grafitowy na jasnym).
- * --stage to tło sceny z modelem 3D: zostaje ciemne w obu motywach, bo świecący lightbox
- * wygląda prawdziwie tylko na ciemnym tle (scena i plakaty są renderowane na tym kolorze).
  *
  * Motyw ustawia skrypt w <head> (src/components/site/theme-script.tsx) w atrybucie data-theme na <html>:
  * ręczny wybór z ciasteczka albo ustawienie urządzenia. Bez JavaScriptu decyduje samo
@@ -73,7 +70,6 @@
  */
 :root {
   --ink: #ffffff;
-  --stage: #05070a;
   --radius: 0.75rem;
   --background: #05070a;
   --foreground: #f5f7fa;

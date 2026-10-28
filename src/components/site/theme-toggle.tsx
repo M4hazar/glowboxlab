@@ -1,15 +1,10 @@
 "use client";
 
 import { MoonIcon, SunIcon } from "lucide-react";
-import { useEffect, useState } from "react";
 import type { Dictionary } from "@/content/en";
-import { isTheme, THEME_COLORS, THEME_COOKIE, type Theme } from "@/lib/theme";
+import { THEME_COLORS, THEME_COOKIE } from "@/lib/theme";
 import { cn } from "@/lib/utils";
-
-function currentTheme(): Theme {
-  const value = document.documentElement.dataset.theme;
-  return isTheme(value) ? value : "dark";
-}
+import { currentTheme, useTheme } from "./use-theme";
 
 // Przełącznik jasny/ciemny. Wybór zapisuje się w ciasteczku i wygrywa z ustawieniem urządzenia.
 export function ThemeToggle({
@@ -19,18 +14,7 @@ export function ThemeToggle({
   dict: Dictionary;
   className?: string;
 }) {
-  const [theme, setTheme] = useState<Theme>();
-
-  // Przełączniki w nagłówku i w menu mobilnym, a także zmiana ustawień urządzenia,
-  // zmieniają ten sam atrybut na <html>, więc każdy przełącznik go obserwuje.
-  useEffect(() => {
-    const html = document.documentElement;
-    const read = () => setTheme(currentTheme());
-    read();
-    const mo = new MutationObserver(read);
-    mo.observe(html, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
+  const theme = useTheme();
 
   const toggle = () => {
     const next = currentTheme() === "light" ? "dark" : "light";

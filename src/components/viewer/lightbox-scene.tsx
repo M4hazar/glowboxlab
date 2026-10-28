@@ -19,6 +19,7 @@ import {
 } from "react";
 import * as THREE from "three";
 import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { THEME_COLORS, type Theme } from "@/lib/theme";
 
 export type SceneHandle = {
   rotateBy: (radians: number) => void;
@@ -26,6 +27,8 @@ export type SceneHandle = {
 
 export type LightboxSceneProps = {
   light: boolean;
+  /** Motyw strony: tło sceny ma kolor strony, żeby kadr zlewał się z tłem. */
+  theme: Theme;
   active: boolean;
   handle?: RefObject<SceneHandle | null>;
   onReady?: () => void;
@@ -155,10 +158,19 @@ function StudioLights({ level }: { level: RefObject<number> }) {
 }
 
 // Poświata (bloom) rośnie razem ze światłem, więc zgaszony lightbox nie świeci.
-function LightBloom({ level }: { level: RefObject<number> }) {
+// Na jasnym tle jej nie ma: jasne tło samo przekracza próg i całe by się prześwietliło.
+function LightBloom({
+  level,
+  enabled,
+}: {
+  level: RefObject<number>;
+  enabled: boolean;
+}) {
   const bloom = useRef<BloomEffect>(null);
   useFrame(() => {
-    if (bloom.current) bloom.current.intensity = level.current * BLOOM;
+    if (bloom.current) {
+      bloom.current.intensity = enabled ? level.current * BLOOM : 0;
+    }
   });
   return (
     <EffectComposer multisampling={4}>
@@ -235,6 +247,7 @@ function ReadySignal({ onReady }: { onReady?: () => void }) {
 
 export default function LightboxScene({
   light,
+  theme,
   active,
   handle,
   onReady,
@@ -255,8 +268,8 @@ export default function LightboxScene({
         gl.domElement.style.touchAction = "pan-y";
       }}
     >
-      <color attach="background" args={["#05070a"]} />
-      <fog attach="fog" args={["#05070a", 7, 16]} />
+      <color attach="background" args={[THEME_COLORS[theme]]} />
+      <fog attach="fog" args={[THEME_COLORS[theme], 7, 16]} />
       <ambientLight intensity={0.12} />
       <StudioLights level={level} />
       <spotLight
@@ -284,7 +297,7 @@ export default function LightboxScene({
             scale={[4, 2, 1]}
           />
         </Environment>
-        <LightBloom level={level} />
+        <LightBloom level={level} enabled={theme === "dark"} />
         <ReadySignal onReady={onReady} />
       </Suspense>
       <CameraRig handle={handle} rotation={rotation} />
