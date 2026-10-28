@@ -30,6 +30,7 @@ export type LightboxSceneProps = {
   active: boolean;
   handle?: RefObject<SceneHandle | null>;
   onReady?: () => void;
+  onResize?: () => void;
 };
 
 const MODEL_URL = "/models/glowbox-lightbox.glb";
@@ -215,6 +216,24 @@ function CameraRig({
   return null;
 }
 
+// Po zmianie rozmiaru (np. pełny ekran) zgłasza, że obraz w nowym rozmiarze jest już narysowany.
+function ResizeSignal({ onResize }: { onResize?: () => void }) {
+  const size = useThree((state) => state.size);
+  const frames = useRef(0);
+  useEffect(() => {
+    frames.current = size.width > 0 && size.height > 0 ? 0 : -1;
+  }, [size.width, size.height]);
+  useFrame(() => {
+    if (frames.current < 0) return;
+    frames.current += 1;
+    if (frames.current > 2) {
+      frames.current = -1;
+      onResize?.();
+    }
+  });
+  return null;
+}
+
 // Model pokazujemy dopiero po skompilowaniu shaderów i kilku klatkach,
 // żeby przejście z plakatu było płynne i bez przycięć.
 function ReadySignal({ onReady }: { onReady?: () => void }) {
@@ -250,6 +269,7 @@ export default function LightboxScene({
   active,
   handle,
   onReady,
+  onResize,
 }: LightboxSceneProps) {
   const rotation = useRef(0);
   const level = useRef(light ? 1 : 0);
@@ -299,6 +319,7 @@ export default function LightboxScene({
         <LightBloom level={level} />
         <ReadySignal onReady={onReady} />
       </Suspense>
+      <ResizeSignal onResize={onResize} />
       <CameraRig handle={handle} rotation={rotation} />
       <OrbitControls
         makeDefault

@@ -72,6 +72,13 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
   const [visible, setVisible] = useState(true);
   const [ready, setReady] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  // Po przełączeniu pełnego ekranu model jest ukryty, dopóki nie narysuje się w nowym rozmiarze.
+  const [settling, setSettling] = useState(false);
+  const settled = useCallback(() => setSettling(false), []);
+  const toggleExpanded = (value: boolean) => {
+    setExpanded(value);
+    if (mode === "3d") setSettling(true);
+  };
 
   // Model ładuje się i renderuje tylko wtedy, gdy jest na ekranie.
   useEffect(() => {
@@ -90,7 +97,17 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
     }
   }, [start, visible, mode]);
 
-  const close = useCallback(() => setExpanded(false), []);
+  const close = useCallback(() => {
+    setExpanded(false);
+    setSettling(true);
+  }, []);
+
+  // Zabezpieczenie, gdyby rozmiar się nie zmienił i model nie dał znaku.
+  useEffect(() => {
+    if (!settling) return;
+    const timer = window.setTimeout(settled, 800);
+    return () => window.clearTimeout(timer);
+  }, [settling, settled]);
   useEffect(() => {
     if (!expanded) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
@@ -132,13 +149,18 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           loading="eager"
           fetchPriority="high"
           sizes="(min-width: 1024px) 640px, 100vw"
-          className={cn("object-cover", expanded && "object-contain")}
+          className={cn(
+            "object-cover",
+            expanded && "object-contain",
+            expanded && ready && "invisible",
+          )}
         />
         {mode === "3d" && (
           <div
             className={cn(
-              "absolute inset-0 transition-opacity duration-700",
-              ready ? "opacity-100" : "opacity-0",
+              "absolute inset-0 transition-opacity",
+              settling ? "duration-0" : "duration-300",
+              ready && !settling ? "opacity-100" : "opacity-0",
             )}
           >
             <LightboxScene
@@ -146,6 +168,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
               active={visible}
               handle={handle}
               onReady={() => setReady(true)}
+              onResize={settled}
             />
           </div>
         )}
@@ -233,7 +256,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           aria-label={expanded ? t.exitFullscreen : t.fullscreen}
           title={expanded ? t.exitFullscreen : t.fullscreen}
           aria-pressed={expanded}
-          onClick={() => setExpanded((v) => !v)}
+          onClick={() => toggleExpanded(!expanded)}
         >
           {expanded ? (
             <Minimize2Icon className="size-4" />
