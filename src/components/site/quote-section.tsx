@@ -26,59 +26,57 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
       aria-labelledby="quote-title"
       className="border-t border-white/[0.07] py-20 sm:py-28"
     >
-      <div className="section">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
+      <div className="section grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+        <div>
           <SectionHeading id="quote-title" title={t.title} lead={t.lead} />
 
-          <div className="flex flex-col gap-8 lg:pt-2">
-            <ul className="grid gap-5 text-lg sm:grid-cols-2">
-              <li>
-                <a href={site.phoneHref} className={contactLink}>
-                  <PhoneIcon className="size-5 text-brand-soft" aria-hidden />
-                  <span className="sr-only">{c.call}: </span>
-                  {site.phone}
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${site.email}`} className={contactLink}>
-                  <MailIcon className="size-5 text-brand-soft" aria-hidden />
-                  <span className="sr-only">{c.email}: </span>
-                  {site.email}
-                </a>
-              </li>
-              <li className="flex gap-4 sm:col-span-2">
-                <MapPinIcon
-                  className="mt-0.5 size-5 shrink-0 text-brand-soft"
-                  aria-hidden
-                />
-                <div>
-                  <p className="font-medium">{c.location}</p>
-                  <p className="mt-1 text-base text-muted-foreground">
-                    {c.delivery}
-                  </p>
-                </div>
-              </li>
-            </ul>
+          <ul className="mt-10 flex flex-col gap-5 text-lg">
+            <li>
+              <a href={site.phoneHref} className={contactLink}>
+                <PhoneIcon className="size-5 text-brand-soft" aria-hidden />
+                <span className="sr-only">{c.call}: </span>
+                {site.phone}
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${site.email}`} className={contactLink}>
+                <MailIcon className="size-5 text-brand-soft" aria-hidden />
+                <span className="sr-only">{c.email}: </span>
+                {site.email}
+              </a>
+            </li>
+            <li className="flex gap-4">
+              <MapPinIcon
+                className="mt-1 size-5 shrink-0 text-brand-soft"
+                aria-hidden
+              />
+              <div>
+                <p className="font-medium">{c.location}</p>
+                <p className="mt-1 text-base text-muted-foreground">
+                  {c.delivery}
+                </p>
+              </div>
+            </li>
+          </ul>
 
-            <ul aria-label={c.socials} className="flex gap-3">
-              {socials.map(({ label, href, Icon }) => (
-                <li key={href}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener"
-                    aria-label={label}
-                    className="inline-flex size-12 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-white/40 hover:text-brand-soft"
-                  >
-                    <Icon className="size-5" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul aria-label={c.socials} className="mt-10 flex gap-3">
+            {socials.map(({ label, href, Icon }) => (
+              <li key={href}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={label}
+                  className="inline-flex size-12 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-white/40 hover:text-brand-soft"
+                >
+                  <Icon className="size-5" />
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div className="mt-12 rounded-2xl border border-white/10 bg-surface p-6 sm:p-10 lg:mt-16">
+        <div className="rounded-2xl border border-white/10 bg-surface p-6 sm:p-10">
           <QuoteForm dict={dict} />
         </div>
       </div>

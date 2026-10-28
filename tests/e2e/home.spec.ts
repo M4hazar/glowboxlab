@@ -121,9 +121,9 @@ test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
   await page.goto("/");
   const viewer = page.locator("#top");
   const light = viewer.getByRole("button", { name: t.light, exact: true });
-  await expect(light).toHaveAttribute("aria-pressed", "false");
-  await light.click();
   await expect(light).toHaveAttribute("aria-pressed", "true");
+  await light.click();
+  await expect(light).toHaveAttribute("aria-pressed", "false");
 
   const full = viewer.getByRole("button", { name: t.fullscreen });
   await full.click();
