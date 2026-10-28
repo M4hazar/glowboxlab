@@ -21,6 +21,7 @@ export const pl: Dictionary = {
     mainNav: "Główna nawigacja",
   },
   nav: [
+    { label: "Start", href: "#top" },
     { label: "Realizacje", href: "#work" },
     { label: "Jak to działa", href: "#process" },
     { label: "FAQ", href: "#faq" },
@@ -34,7 +35,7 @@ export const pl: Dictionary = {
     primary: "Zamów wycenę",
     secondary: "Zobacz realizacje",
     imageAlt:
-      "Sześciokątny lightbox GlowBox Lab z białym i niebieskim podświetlonym logo na ciemnym tle",
+      "Sześciokątny lightbox GlowBox Lab z białym i niebieskim logo na ciemnym tle",
   },
   viewer: {
     title: "Zobacz w 3D",

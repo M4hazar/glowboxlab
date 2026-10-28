@@ -18,6 +18,7 @@ export const en = {
     mainNav: "Main navigation",
   },
   nav: [
+    { label: "Home", href: "#top" },
     { label: "Work", href: "#work" },
     { label: "How it works", href: "#process" },
     { label: "FAQ", href: "#faq" },
@@ -31,7 +32,7 @@ export const en = {
     primary: "Get a quote",
     secondary: "See our work",
     imageAlt:
-      "GlowBox Lab hexagon lightbox with a white and blue glowing logo on a dark surface",
+      "GlowBox Lab hexagon lightbox with a white and blue logo on a dark surface",
   },
   viewer: {
     title: "See it in 3D",

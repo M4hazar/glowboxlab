@@ -111,14 +111,6 @@
   .section {
     @apply relative mx-auto w-full max-w-7xl px-5 sm:px-8;
   }
-  .glow-blue {
-    background: radial-gradient(
-      closest-side,
-      rgb(0 127 255 / 0.35),
-      rgb(0 127 255 / 0.08) 55%,
-      transparent
-    );
-  }
   .link-underline {
     @apply relative inline-flex items-center gap-2 pb-1 font-medium text-foreground;
   }

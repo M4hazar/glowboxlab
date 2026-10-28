@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 import { en } from "../../src/content/en";
 import { pl } from "../../src/content/pl";
-import { site } from "../../src/lib/site";
+import { routes, site } from "../../src/lib/site";
 
 const pages = [
   { path: "/", dict: en },
@@ -48,6 +48,23 @@ test("sekcja kontaktu pokazuje e-mail, telefon, miasto i media społecznościowe
   await expect(
     socials.getByRole("link", { name: en.contact.whatsapp }),
   ).toHaveAttribute("href", site.whatsapp);
+});
+
+test("przycisk Start w menu wraca na stronę główną", async ({
+  page,
+  isMobile,
+}) => {
+  await page.goto(routes.privacy.pl);
+  if (isMobile) await page.getByRole("button", { name: pl.a11y.menu }).click();
+  const area = isMobile ? page.getByRole("dialog") : page.getByRole("banner");
+  await area
+    .getByRole("navigation", { name: pl.a11y.mainNav })
+    .getByRole("link", { name: pl.nav[0].label, exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/pl#top$/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    pl.hero.title[0],
+  );
 });
 
 test("przełącznik języka prowadzi do polskiej wersji", async ({
