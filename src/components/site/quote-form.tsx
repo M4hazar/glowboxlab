@@ -490,28 +490,17 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
         )}
       </div>
 
-      <div>
-        <label className="flex cursor-pointer items-start gap-3 text-sm leading-snug text-foreground/85">
-          <input
-            type="checkbox"
-            name="consent"
-            className="mt-0.5 size-4 shrink-0 accent-primary"
-            aria-invalid={Boolean(err("consent"))}
-            aria-describedby={err("consent") ? id("consent-error") : undefined}
-            onChange={() => clearError("consent")}
-          />
-          <span>
-            {t.consent}{" "}
-            <Link
-              href={routes.privacy[locale]}
-              className="text-brand-soft underline underline-offset-4"
-            >
-              {t.privacy}
-            </Link>
-          </span>
-        </label>
-        {errorText(err("consent"), "consent")}
-      </div>
+      {/* Dane są potrzebne do przygotowania wyceny (art. 6 ust. 1 lit. b RODO), więc zamiast
+          zgody jako warunku wysłania wystarczy informacja z linkiem do polityki prywatności. */}
+      <p className="text-sm leading-snug text-muted-foreground">
+        {t.notice}{" "}
+        <Link
+          href={routes.privacy[locale]}
+          className="text-brand-soft underline underline-offset-4"
+        >
+          {t.privacy}
+        </Link>
+      </p>
 
       <button
         type="submit"

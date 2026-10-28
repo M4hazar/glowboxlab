@@ -227,8 +227,7 @@ export const pl: Dictionary = {
       filesDrop: "Upuść pliki tutaj lub kliknij, aby wybrać",
       filesSelected: "Dołączone pliki",
       remove: "Usuń",
-      consent:
-        "Wyrażam zgodę na przetwarzanie moich danych przez GlowBox Lab w celu obsługi zapytania.",
+      notice: "Dane z formularza wykorzystujemy tylko do przygotowania wyceny.",
       privacy: "Polityka prywatności",
       submit: "Wyślij zapytanie o wycenę",
       sending: "Wysyłanie",
@@ -244,7 +243,6 @@ export const pl: Dictionary = {
       size: "Podaj wymiary do 256 × 256 × 256 mm albo zaznacz „Nie znam wymiarów”.",
       quantity: "Podaj liczbę sztuk od 1 do 500.",
       description: "Opis powinien mieć co najmniej 20 znaków.",
-      consent: "Potwierdź zgodę, aby wysłać zapytanie.",
       fileType: "Ten typ pliku nie jest obsługiwany: {file}",
       fileSize: "Pliki są za duże. Limit to łącznie 4 MB.",
       fileCount: "Możesz dołączyć maksymalnie 3 pliki.",
@@ -270,7 +268,7 @@ export const pl: Dictionary = {
     tagline: "Personalizowane lightboxy LED z druku 3D.",
     privacy: "Prywatność",
     cookies: "Cookies",
-    terms: "Zasady wyceny",
+    terms: "Zasady wyceny i zamówień",
     rights: "GlowBox Lab",
   },
   portfolio: {
@@ -281,7 +279,7 @@ export const pl: Dictionary = {
   },
   legal: {
     back: "Wróć na stronę główną",
-    updated: "Ostatnia aktualizacja: 27 października 2026",
+    updated: "Ostatnia aktualizacja: 28 października 2026",
   },
   notFound: {
     title: "Ta strona nie istnieje.",

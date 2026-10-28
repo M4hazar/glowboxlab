@@ -4,6 +4,7 @@ import { ViewTransition } from "react";
 import type { Dictionary } from "@/content/en";
 import type { LegalDoc } from "@/content/legal";
 import { type Locale, type RouteKey, routes } from "@/lib/site";
+import { cn } from "@/lib/utils";
 import { PageEffects } from "./page-effects";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
@@ -53,6 +54,7 @@ export function LegalPage({
                     {p}
                   </p>
                 ))}
+                {section.table && <LegalTable {...section.table} />}
               </section>
             ))}
           </div>
@@ -63,6 +65,64 @@ export function LegalPage({
       </ViewTransition>
       <SiteFooter dict={dict} routeKey={routeKey} />
       <PageEffects />
+    </>
+  );
+}
+
+// Na szerszym ekranie zwykła tabela, na telefonie każdy wiersz to osobna lista z podpisanymi polami.
+function LegalTable({ head, rows }: { head: string[]; rows: string[][] }) {
+  return (
+    <>
+      <table className="mt-4 hidden w-full text-left text-sm sm:table">
+        <thead>
+          <tr className="border-b border-white/10 text-muted-foreground">
+            {head.map((cell) => (
+              <th key={cell} scope="col" className="py-2 pr-4 font-medium">
+                {cell}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row[0]} className="border-b border-white/[0.07]">
+              {row.map((cell, i) => (
+                <td
+                  key={head[i]}
+                  className={cn(
+                    "py-3 pr-4 align-top text-foreground/80",
+                    i === 0 && "font-mono whitespace-nowrap text-foreground",
+                  )}
+                >
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="mt-4 grid gap-3 sm:hidden">
+        {rows.map((row) => (
+          <dl
+            key={row[0]}
+            className="grid gap-2 rounded-lg border border-white/[0.07] p-4 text-sm"
+          >
+            {row.map((cell, i) => (
+              <div key={head[i]}>
+                <dt className="text-muted-foreground">{head[i]}</dt>
+                <dd
+                  className={cn(
+                    "text-foreground/80",
+                    i === 0 && "font-mono text-foreground",
+                  )}
+                >
+                  {cell}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        ))}
+      </div>
     </>
   );
 }

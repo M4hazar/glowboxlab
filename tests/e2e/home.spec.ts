@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 import { en } from "../../src/content/en";
+import { cookies } from "../../src/content/legal";
 import { pl } from "../../src/content/pl";
 import { routes, site } from "../../src/lib/site";
 
@@ -118,7 +119,6 @@ test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
     buffer: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>'),
   });
   await expect(form.getByText("logo.svg")).toBeVisible();
-  await form.getByLabel(f.consent).check();
   await form.getByRole("button", { name: f.submit }).click();
 
   await expect(
@@ -295,6 +295,8 @@ test.describe("przeglądarka po polsku", () => {
     await page.route("**/*.glb", () => {});
     const html = page.locator("html");
     const switchTo = async (dict: typeof en | typeof pl, name: string) => {
+      // Klik przed hydratacją to zwykły link bez sekcji; czekamy na skrypty strony.
+      await expect(html).toHaveAttribute("data-effects", "");
       if (isMobile) {
         await page.getByRole("button", { name: dict.a11y.menu }).click();
       }
@@ -431,6 +433,33 @@ test("strona wysyła nagłówki bezpieczeństwa", async ({ request }) => {
   expect(headers["x-frame-options"]).toBe("DENY");
   expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
   expect(headers["permissions-policy"]).toContain("camera=()");
+  expect(headers["content-security-policy"]).toContain(
+    "frame-ancestors 'none'",
+  );
+  expect(headers["strict-transport-security"]).toContain("max-age=");
+});
+
+test("polityka bezpieczeństwa treści nie blokuje niczego na stronie", async ({
+  page,
+}) => {
+  test.slow();
+  await page.addInitScript(() => {
+    const w = window as unknown as { cspViolations: string[] };
+    w.cspViolations = [];
+    document.addEventListener("securitypolicyviolation", (e) =>
+      w.cspViolations.push(`${e.violatedDirective} ${e.blockedURI}`),
+    );
+  });
+  await page.goto("/");
+  // Scena 3D z modelem, teksturami i dekoderem też musi się zmieścić w polityce.
+  await expect(page.locator("#top canvas")).toHaveCount(1, { timeout: 15000 });
+  await page.waitForTimeout(3000);
+  await page.goto("/pl/polityka-cookies");
+  await page.waitForTimeout(500);
+  const violations = await page.evaluate(
+    () => (window as unknown as { cspViolations: string[] }).cspViolations,
+  );
+  expect(violations).toEqual([]);
 });
 
 test("strony prawne i 404", async ({ page }) => {
@@ -438,6 +467,18 @@ test("strony prawne i 404", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await page.goto("/pl/zasady-wyceny");
   await expect(page.locator("html")).toHaveAttribute("lang", "pl-PL");
+  await page
+    .getByRole("contentinfo")
+    .getByRole("link", { name: pl.footer.cookies })
+    .click();
+  await expect(page).toHaveURL(/\/pl\/polityka-cookies$/);
+  await expect(
+    page.getByRole("heading", { level: 1, name: cookies.pl.title }),
+  ).toBeVisible();
+  // Na telefonie tabela zamienia się w listę, więc szukamy widocznej wersji.
+  await expect(
+    page.getByText("NEXT_LOCALE").filter({ visible: true }).first(),
+  ).toBeVisible();
 
   const response = await page.goto("/nie-ma-takiej-strony");
   expect(response?.status()).toBe(404);
@@ -464,6 +505,8 @@ for (const path of [
   "/pl/portfolio",
   "/privacy",
   "/pl/polityka-prywatnosci",
+  "/cookies",
+  "/pl/polityka-cookies",
 ]) {
   test(`brak naruszeń WCAG 2.2 AA na ${path}`, async ({ page }) => {
     // Pełny audyt długiej strony przy równoległych testach WebGL trwa dłużej.
@@ -487,6 +530,12 @@ test("brak naruszeń WCAG 2.2 AA w oknie projektu", async ({ page }) => {
     .getByRole("button", { name: new RegExp(t.items[0].title) })
     .click();
   await expect(page.getByRole("dialog")).toBeVisible();
+  // Kontrast mierzymy dopiero po animacji otwarcia, bo w jej trakcie tekst jest półprzezroczysty.
+  await page
+    .getByRole("dialog")
+    .evaluate((el) =>
+      Promise.all(el.getAnimations({ subtree: true }).map((a) => a.finished)),
+    );
   const results = await new AxeBuilder({ page })
     .include('[role="dialog"]')
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
