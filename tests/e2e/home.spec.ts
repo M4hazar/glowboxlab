@@ -37,9 +37,6 @@ test("sekcja kontaktu pokazuje e-mail, telefon, miasto i media społecznościowe
     "href",
     site.phoneHref,
   );
-  await expect(
-    contact.getByRole("link", { name: en.contact.whatsapp }),
-  ).toHaveAttribute("href", site.whatsapp);
   await expect(contact.getByText(en.contact.location)).toBeVisible();
   const socials = contact.getByRole("list", { name: en.contact.socials });
   await expect(
@@ -48,6 +45,9 @@ test("sekcja kontaktu pokazuje e-mail, telefon, miasto i media społecznościowe
   await expect(
     socials.getByRole("link", { name: site.facebook.name }),
   ).toHaveAttribute("href", site.facebook.href);
+  await expect(
+    socials.getByRole("link", { name: en.contact.whatsapp }),
+  ).toHaveAttribute("href", site.whatsapp);
 });
 
 test("przełącznik języka prowadzi do polskiej wersji", async ({

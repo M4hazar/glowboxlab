@@ -7,12 +7,19 @@ import { SectionHeading } from "./sections";
 
 const contactLink =
   "inline-flex items-center gap-4 font-medium transition-colors hover:text-brand-soft";
-const socialButton =
-  "inline-flex h-12 items-center gap-3 rounded-lg border border-white/15 px-5 font-medium transition-colors hover:border-white/30";
 
 export function QuoteSection({ dict }: { dict: Dictionary }) {
   const t = dict.quote;
   const c = dict.contact;
+  const socials = [
+    {
+      label: site.instagram.name,
+      href: site.instagram.href,
+      Icon: InstagramIcon,
+    },
+    { label: site.facebook.name, href: site.facebook.href, Icon: FacebookIcon },
+    { label: c.whatsapp, href: site.whatsapp, Icon: WhatsAppIcon },
+  ];
   return (
     <section
       id="quote"
@@ -31,20 +38,11 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
                 {site.email}
               </a>
             </li>
-            <li className="flex items-center gap-3">
+            <li>
               <a href={site.phoneHref} className={contactLink}>
                 <PhoneIcon className="size-5 text-brand-soft" aria-hidden />
                 <span className="sr-only">{c.call}: </span>
                 {site.phone}
-              </a>
-              <a
-                href={site.whatsapp}
-                target="_blank"
-                rel="noopener"
-                aria-label={c.whatsapp}
-                className="inline-flex size-10 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-[#25d366]/60"
-              >
-                <WhatsAppIcon className="size-5 text-[#25d366]" />
               </a>
             </li>
             <li className="flex gap-4">
@@ -61,29 +59,20 @@ export function QuoteSection({ dict }: { dict: Dictionary }) {
             </li>
           </ul>
 
-          <ul aria-label={c.socials} className="mt-10 flex flex-wrap gap-3">
-            <li>
-              <a
-                href={site.instagram.href}
-                target="_blank"
-                rel="noopener"
-                className={socialButton}
-              >
-                <InstagramIcon className="size-5" />
-                {site.instagram.name}
-              </a>
-            </li>
-            <li>
-              <a
-                href={site.facebook.href}
-                target="_blank"
-                rel="noopener"
-                className={socialButton}
-              >
-                <FacebookIcon className="size-5" />
-                {site.facebook.name}
-              </a>
-            </li>
+          <ul aria-label={c.socials} className="mt-10 flex gap-3">
+            {socials.map(({ label, href, Icon }) => (
+              <li key={href}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={label}
+                  className="inline-flex size-12 items-center justify-center rounded-full border border-white/15 transition-colors hover:border-white/40 hover:text-brand-soft"
+                >
+                  <Icon className="size-5" />
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
