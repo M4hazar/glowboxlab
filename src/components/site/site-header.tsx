@@ -86,7 +86,7 @@ export function SiteHeader({
           />
           <a
             href={anchor("#quote")}
-            className="hidden h-10 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white shadow-glow-sm transition-colors hover:bg-brand-strong sm:inline-flex"
+            className="hidden h-10 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-strong sm:inline-flex"
           >
             {dict.cta}
           </a>
@@ -150,7 +150,7 @@ export function SiteHeader({
                     </a>
                   </SheetClose>
                   <a
-                    href={site.whatsapp}
+                    href={site.whatsapp.href}
                     target="_blank"
                     rel="noopener"
                     className="inline-flex h-12 items-center justify-center rounded-lg border border-white/15 font-medium"

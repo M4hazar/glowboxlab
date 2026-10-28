@@ -31,9 +31,13 @@ function escapeHtml(value: string) {
 }
 
 function summary(data: QuoteInput) {
-  const size = data.sizeUnsure
-    ? "Not sure, wants advice"
-    : `${data.width} × ${data.height} mm`;
+  const dims = [data.width, data.height, data.depth];
+  const given = `${dims.map((v) => v || "?").join(" × ")} mm (W × H × D)`;
+  const size = !data.sizeUnsure
+    ? given
+    : dims.some(Boolean)
+      ? `${given}, not sure, wants advice`
+      : "Not sure, wants advice";
   return [
     ["Name", data.name],
     ["Email", data.email],

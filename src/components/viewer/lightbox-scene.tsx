@@ -34,9 +34,9 @@ export type LightboxSceneProps = {
 
 const MODEL_URL = "/models/glowbox-lightbox.glb";
 const SCALE = 10; // model jest w metrach, scena w decymetrach
-const BASE_DISTANCE = 5.5;
-const INITIAL_AZIMUTH = -0.62;
-const INITIAL_ELEVATION = 0.1;
+const BASE_DISTANCE = 5.2;
+const INITIAL_AZIMUTH = 0.26;
+const INITIAL_ELEVATION = 0.03;
 const BLOOM = 0.8;
 
 // Kolory światła: część niebieska, część biała i niebieska poświata przed frontem.
@@ -149,10 +149,10 @@ function StudioLights({ level }: { level: RefObject<number> }) {
   const key = useRef<THREE.DirectionalLight>(null);
   useFrame(() => {
     if (key.current) {
-      key.current.intensity = THREE.MathUtils.lerp(3.8, 1.1, level.current);
+      key.current.intensity = THREE.MathUtils.lerp(5.5, 1.1, level.current);
     }
   });
-  return <directionalLight ref={key} position={[-3.5, 4.5, 4]} />;
+  return <directionalLight ref={key} position={[-4, 5, 2.5]} />;
 }
 
 // Poświata (bloom) rośnie razem ze światłem, więc zgaszony lightbox nie świeci.

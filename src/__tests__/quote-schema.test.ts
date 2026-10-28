@@ -13,6 +13,7 @@ const valid = {
   phone: "+44 7749 789776",
   width: "40",
   height: "30,5",
+  depth: "6",
   sizeUnsure: false,
   quantity: "2",
   deadline: "",
@@ -33,18 +34,29 @@ describe("quoteSchema", () => {
     expect(parsed.height).toBe("30.5");
   });
 
-  it("wymaga wymiarów, chyba że klient zaznaczy, że ich nie zna", () => {
+  it("wymaga wszystkich trzech wymiarów, chyba że klient zaznaczy, że ich nie zna", () => {
     expect(errorsFor({ ...valid, width: "", height: "" })).toEqual({
       width: "size",
     });
+    expect(errorsFor({ ...valid, depth: "" })).toEqual({ width: "size" });
     expect(
       errorsFor({ ...valid, width: "", height: "", sizeUnsure: true }),
     ).toEqual({});
   });
 
+  it("przy „Nie wiem jeszcze” przyjmuje te wymiary, które klient zna", () => {
+    expect(errorsFor({ ...valid, depth: "", sizeUnsure: true })).toEqual({});
+    expect(errorsFor({ ...valid, depth: "300", sizeUnsure: true })).toEqual({
+      depth: "size",
+    });
+  });
+
   it("dopuszcza wymiary do 256 mm, czyli maksimum drukarki", () => {
-    expect(errorsFor({ ...valid, width: "256", height: "256" })).toEqual({});
+    expect(
+      errorsFor({ ...valid, width: "256", height: "256", depth: "256" }),
+    ).toEqual({});
     expect(errorsFor({ ...valid, width: "257" })).toEqual({ width: "size" });
+    expect(errorsFor({ ...valid, depth: "257" })).toEqual({ depth: "size" });
   });
 
   it("odrzuca wymiary spoza zakresu", () => {
@@ -84,6 +96,13 @@ describe("quoteSchema", () => {
       phone: "phone",
       description: "description",
       consent: "consent",
+    });
+  });
+
+  it("pokazuje brak wymiarów razem z innymi błędami", () => {
+    expect(errorsFor({ ...valid, name: "", width: "" })).toEqual({
+      name: "name",
+      width: "size",
     });
   });
 

@@ -51,6 +51,7 @@ export const quoteSchema = z
       .refine((v) => v === "" || /^[+()\d\s-]{7,}$/.test(v), "phone"),
     width: dimension,
     height: dimension,
+    depth: dimension,
     sizeUnsure: z.boolean(),
     quantity: z.coerce
       .number({ error: "quantity" })
@@ -66,11 +67,13 @@ export const quoteSchema = z
     consent: z.literal(true, { error: "consent" }),
     locale: z.enum(["en", "pl"]),
   })
-  .superRefine((data, ctx) => {
-    if (!data.sizeUnsure && (data.width === "" || data.height === "")) {
-      ctx.addIssue({ code: "custom", path: ["width"], message: "size" });
-    }
-  });
+  // Brak wymiarów sprawdzamy także wtedy, gdy inne pola mają błędy,
+  // żeby klient zobaczył wszystkie błędy od razu, a nie w dwóch rundach.
+  .refine(
+    (data) =>
+      data.sizeUnsure || ![data.width, data.height, data.depth].includes(""),
+    { path: ["width"], message: "size", when: () => true },
+  );
 
 export type QuoteInput = z.infer<typeof quoteSchema>;
 export type QuoteField = keyof QuoteInput | "files";
@@ -87,6 +90,7 @@ export function readQuoteForm(formData: FormData) {
     phone: text("phone"),
     width: text("width"),
     height: text("height"),
+    depth: text("depth"),
     sizeUnsure: formData.get("sizeUnsure") === "on",
     quantity: text("quantity"),
     deadline: text("deadline"),

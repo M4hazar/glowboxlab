@@ -40,7 +40,7 @@ import { cn } from "@/lib/utils";
 const initial: QuoteState = { status: "idle" };
 
 const inputClass =
-  "h-12 w-full rounded-lg border border-input bg-white/[0.03] px-4 text-base text-foreground placeholder:text-muted-foreground/70 transition-colors outline-none hover:border-white/25 focus-visible:border-brand-soft focus-visible:ring-[3px] focus-visible:ring-brand/25 aria-invalid:border-destructive disabled:opacity-40";
+  "h-11 w-full rounded-lg border border-input bg-white/[0.03] px-3.5 text-base text-foreground sm:text-sm placeholder:text-muted-foreground/70 transition-colors outline-none hover:border-white/25 focus-visible:border-brand-soft focus-visible:ring-[3px] focus-visible:ring-brand/25 aria-invalid:border-destructive disabled:opacity-40";
 
 function formatSize(bytes: number) {
   return bytes < 1024 * 1024
@@ -148,15 +148,13 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
     return (
       <div
         role="status"
-        className="flex min-h-[520px] flex-col items-start justify-center gap-5 p-2 sm:p-6"
+        className="flex min-h-[360px] flex-col items-start justify-center gap-4 p-2"
       >
-        <CheckCircle2Icon className="size-12 text-brand" aria-hidden />
-        <h3 className="display text-3xl sm:text-4xl">
+        <CheckCircle2Icon className="size-10 text-brand" aria-hidden />
+        <h3 className="display text-2xl sm:text-3xl">
           {t.successTitle.replace("{name}", done)}
         </h3>
-        <p className="max-w-md text-lg text-muted-foreground">
-          {t.successText}
-        </p>
+        <p className="max-w-md text-muted-foreground">{t.successText}</p>
         <button
           type="button"
           onClick={() => {
@@ -166,7 +164,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
             setUnsure(false);
             setErrors({});
           }}
-          className="link-underline mt-4"
+          className="link-underline mt-2"
         >
           {t.another}
         </button>
@@ -176,10 +174,10 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
 
   const id = (name: string) => `${uid}-${name}`;
   const err = (field: QuoteField) => errors[field];
-  const sizeError = err("width") ?? err("height");
+  const sizeError = err("width") ?? err("height") ?? err("depth");
   const errorText = (key?: QuoteErrorKey, field?: string) =>
     key ? (
-      <p id={id(`${field}-error`)} className="mt-2 text-sm text-destructive">
+      <p id={id(`${field}-error`)} className="mt-1.5 text-sm text-destructive">
         {e[key]}
       </p>
     ) : null;
@@ -189,7 +187,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
       ref={formRef}
       onSubmit={onSubmit}
       noValidate
-      className="grid gap-6"
+      className="grid gap-4"
       aria-describedby={id("summary")}
     >
       <input type="hidden" name="locale" value={locale} />
@@ -206,335 +204,323 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
 
       <div id={id("summary")} aria-live="assertive" className="empty:hidden">
         {showSummary && (Object.values(errors).some(Boolean) || fileError) ? (
-          <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-2.5 text-sm text-destructive">
             {e.summary}
           </p>
         ) : null}
         {failed ? (
-          <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-2.5 text-sm text-destructive">
             {e.generic}
           </p>
         ) : null}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2 lg:gap-10">
-        <div className="grid content-start gap-6">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div>
-              <Label htmlFor={id("name")} text={t.name} />
-              <input
-                id={id("name")}
-                name="name"
-                autoComplete="name"
-                required
-                className={inputClass}
-                aria-invalid={Boolean(err("name"))}
-                aria-describedby={err("name") ? id("name-error") : undefined}
-                onChange={() => clearError("name")}
-              />
-              {errorText(err("name"), "name")}
-            </div>
-            <div>
-              <Label htmlFor={id("email")} text={t.email} />
-              <input
-                id={id("email")}
-                name="email"
-                type="email"
-                autoComplete="email"
-                inputMode="email"
-                required
-                className={inputClass}
-                aria-invalid={Boolean(err("email"))}
-                aria-describedby={err("email") ? id("email-error") : undefined}
-                onChange={() => clearError("email")}
-              />
-              {errorText(err("email"), "email")}
-            </div>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div>
-              <Label
-                htmlFor={id("phone")}
-                text={t.phone}
-                optional={t.optional}
-              />
-              <input
-                id={id("phone")}
-                name="phone"
-                type="tel"
-                autoComplete="tel"
-                inputMode="tel"
-                className={inputClass}
-                aria-invalid={Boolean(err("phone"))}
-                aria-describedby={err("phone") ? id("phone-error") : undefined}
-                onChange={() => clearError("phone")}
-              />
-              {errorText(err("phone"), "phone")}
-            </div>
-            <div>
-              <Label
-                htmlFor={id("deadline")}
-                text={t.deadline}
-                optional={t.optional}
-              />
-              <input
-                id={id("deadline")}
-                name="deadline"
-                type="date"
-                min={today}
-                className={cn(inputClass, "[color-scheme:dark]")}
-              />
-            </div>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-[1fr_auto]">
-            <fieldset
-              aria-describedby={cn(
-                id("size-hint"),
-                sizeError && id("size-error"),
-              )}
-            >
-              <legend className="mb-2 text-sm font-medium">{t.size}</legend>
-              <div className="grid grid-cols-2 gap-3">
-                {(["width", "height"] as const).map((dim) => (
-                  <div key={dim} className="relative">
-                    <label htmlFor={id(dim)} className="sr-only">
-                      {t[dim]} ({t.unit})
-                    </label>
-                    <input
-                      id={id(dim)}
-                      name={dim}
-                      inputMode="decimal"
-                      placeholder={t[dim]}
-                      disabled={unsure}
-                      className={cn(inputClass, "pr-12")}
-                      aria-invalid={Boolean(sizeError)}
-                      onChange={() => {
-                        clearError("width");
-                        clearError("height");
-                      }}
-                    />
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-sm text-muted-foreground"
-                    >
-                      {t.unit}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <p
-                id={id("size-hint")}
-                className="mt-2 text-xs text-muted-foreground"
-              >
-                {t.sizeHint}
-              </p>
-              <label className="mt-3 flex cursor-pointer items-center gap-3 text-sm text-foreground/85">
-                <input
-                  type="checkbox"
-                  name="sizeUnsure"
-                  checked={unsure}
-                  onChange={(ev) => {
-                    setUnsure(ev.target.checked);
-                    clearError("width");
-                  }}
-                  className="size-4 accent-primary"
-                />
-                {t.sizeUnsure}
-              </label>
-              {errorText(sizeError, "size")}
-            </fieldset>
-
-            <div>
-              <Label htmlFor={id("quantity")} text={t.quantity} />
-              <div className="flex h-12 items-center rounded-lg border border-input bg-white/[0.03]">
-                <button
-                  type="button"
-                  aria-label={t.decrease}
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="flex size-12 items-center justify-center text-muted-foreground hover:text-foreground"
-                >
-                  <MinusIcon className="size-4" />
-                </button>
-                <input
-                  id={id("quantity")}
-                  name="quantity"
-                  inputMode="numeric"
-                  value={quantity}
-                  onChange={(ev: ChangeEvent<HTMLInputElement>) => {
-                    const v = Number.parseInt(
-                      ev.target.value.replace(/\D/g, ""),
-                      10,
-                    );
-                    setQuantity(Number.isNaN(v) ? 0 : Math.min(v, 999));
-                    clearError("quantity");
-                  }}
-                  className="h-full w-14 bg-transparent text-center text-base outline-none"
-                  aria-invalid={Boolean(err("quantity"))}
-                  aria-describedby={
-                    err("quantity") ? id("quantity-error") : undefined
-                  }
-                />
-                <button
-                  type="button"
-                  aria-label={t.increase}
-                  onClick={() => setQuantity((q) => Math.min(500, q + 1))}
-                  className="flex size-12 items-center justify-center text-muted-foreground hover:text-foreground"
-                >
-                  <PlusIcon className="size-4" />
-                </button>
-              </div>
-              {errorText(err("quantity"), "quantity")}
-            </div>
-          </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <Label htmlFor={id("name")} text={t.name} />
+          <input
+            id={id("name")}
+            name="name"
+            autoComplete="name"
+            placeholder={t.placeholders.name}
+            maxLength={80}
+            required
+            className={inputClass}
+            aria-invalid={Boolean(err("name"))}
+            aria-describedby={err("name") ? id("name-error") : undefined}
+            onChange={() => clearError("name")}
+          />
+          {errorText(err("name"), "name")}
         </div>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-1 flex-col">
-            <Label htmlFor={id("description")} text={t.description} />
-            <textarea
-              id={id("description")}
-              name="description"
-              rows={5}
-              placeholder={t.descriptionPlaceholder}
-              className={cn(
-                inputClass,
-                "h-auto min-h-36 flex-1 resize-y py-3 leading-relaxed",
-              )}
-              aria-invalid={Boolean(err("description"))}
-              aria-describedby={
-                err("description") ? id("description-error") : undefined
-              }
-              onChange={() => clearError("description")}
-            />
-            {errorText(err("description"), "description")}
-          </div>
-
-          <div>
-            <p className="mb-2 text-sm font-medium">
-              {t.files}{" "}
-              <span className="font-normal text-muted-foreground">
-                ({t.optional})
-              </span>
-            </p>
-            <label
-              htmlFor={id("files")}
-              onDragOver={(ev) => {
-                ev.preventDefault();
-                setDragging(true);
-              }}
-              onDragLeave={() => setDragging(false)}
-              onDrop={onDrop}
-              className={cn(
-                "flex cursor-pointer items-center gap-4 rounded-lg border border-dashed p-5 transition-colors",
-                dragging
-                  ? "border-brand-soft bg-brand/10"
-                  : "border-white/20 hover:border-white/35 hover:bg-white/[0.02]",
-                fileError && "border-destructive",
-              )}
-            >
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white/[0.05]">
-                <PaperclipIcon className="size-5" aria-hidden />
-              </span>
-              <span>
-                <span className="block font-medium">{t.filesDrop}</span>
-                <span className="mt-0.5 block text-sm text-muted-foreground">
-                  {t.filesHint}
-                </span>
-              </span>
-              <input
-                ref={fileInput}
-                id={id("files")}
-                type="file"
-                name="files"
-                multiple
-                accept={ACCEPT_ATTR}
-                className="sr-only"
-                aria-describedby={fileError ? id("files-error") : undefined}
-                aria-invalid={Boolean(fileError)}
-                onChange={(ev) => addFiles(ev.target.files)}
-              />
-            </label>
-            {files.length > 0 && (
-              <ul aria-label={t.filesSelected} className="mt-3 grid gap-2">
-                {files.map((file, i) => (
-                  <li
-                    key={`${file.name}-${file.size}-${file.lastModified}`}
-                    className="flex items-center gap-3 rounded-lg bg-white/[0.04] px-4 py-2.5 text-sm"
-                  >
-                    <FileIcon
-                      className="size-4 shrink-0 text-brand-soft"
-                      aria-hidden
-                    />
-                    <span className="min-w-0 flex-1 truncate">{file.name}</span>
-                    <span className="text-muted-foreground">
-                      {formatSize(file.size)}
-                    </span>
-                    <button
-                      type="button"
-                      aria-label={`${t.remove}: ${file.name}`}
-                      onClick={() => {
-                        setFiles((prev) => prev.filter((_, j) => j !== i));
-                        setFileError(null);
-                      }}
-                      className="-mr-2 flex size-8 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
-                    >
-                      <XIcon className="size-4" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {fileError && (
-              <p
-                id={id("files-error")}
-                className="mt-2 text-sm text-destructive"
-              >
-                {fileError}
-              </p>
-            )}
-          </div>
+        <div>
+          <Label htmlFor={id("email")} text={t.email} />
+          <input
+            id={id("email")}
+            name="email"
+            type="email"
+            placeholder={t.placeholders.email}
+            autoComplete="email"
+            inputMode="email"
+            maxLength={160}
+            required
+            className={inputClass}
+            aria-invalid={Boolean(err("email"))}
+            aria-describedby={err("email") ? id("email-error") : undefined}
+            onChange={() => clearError("email")}
+          />
+          {errorText(err("email"), "email")}
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-foreground/85">
+          <Label htmlFor={id("phone")} text={t.phone} optional={t.optional} />
+          <input
+            id={id("phone")}
+            name="phone"
+            type="tel"
+            placeholder={t.placeholders.phone}
+            autoComplete="tel"
+            inputMode="tel"
+            maxLength={30}
+            className={inputClass}
+            aria-invalid={Boolean(err("phone"))}
+            aria-describedby={err("phone") ? id("phone-error") : undefined}
+            onChange={() => clearError("phone")}
+          />
+          {errorText(err("phone"), "phone")}
+        </div>
+        <div>
+          <Label
+            htmlFor={id("deadline")}
+            text={t.deadline}
+            optional={t.optional}
+          />
+          <input
+            id={id("deadline")}
+            name="deadline"
+            type="date"
+            min={today}
+            className={cn(inputClass, "[color-scheme:dark]")}
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-[1fr_auto] lg:grid-cols-1 xl:grid-cols-[1fr_auto]">
+        {/* Każdy wymiar ma widoczną etykietę, bo podpowiedź w polu znika po wpisaniu liczby. */}
+        <fieldset>
+          <legend className="sr-only">{t.size}</legend>
+          <div className="grid grid-cols-3 gap-3">
+            {(["width", "height", "depth"] as const).map((dim) => (
+              <div key={dim}>
+                <Label htmlFor={id(dim)} text={t[dim]} />
+                <div className="relative">
+                  <input
+                    id={id(dim)}
+                    name={dim}
+                    inputMode="decimal"
+                    placeholder={t.placeholders[dim]}
+                    className={cn(inputClass, "pr-10")}
+                    aria-invalid={Boolean(sizeError)}
+                    aria-describedby={cn(
+                      id("size-hint"),
+                      sizeError && id("size-error"),
+                    )}
+                    onChange={() => {
+                      clearError("width");
+                      clearError("height");
+                      clearError("depth");
+                    }}
+                  />
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-muted-foreground"
+                  >
+                    {t.unit}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p
+            id={id("size-hint")}
+            className="mt-1.5 text-xs text-muted-foreground"
+          >
+            {t.sizeHint}
+          </p>
+          <label className="mt-2.5 flex cursor-pointer items-center gap-3 text-sm text-foreground/85">
             <input
               type="checkbox"
-              name="consent"
-              className="mt-1 size-4 shrink-0 accent-primary"
-              aria-invalid={Boolean(err("consent"))}
-              aria-describedby={
-                err("consent") ? id("consent-error") : undefined
-              }
-              onChange={() => clearError("consent")}
+              name="sizeUnsure"
+              checked={unsure}
+              onChange={(ev) => {
+                setUnsure(ev.target.checked);
+                clearError("width");
+              }}
+              className="size-4 accent-primary"
             />
-            <span>
-              {t.consent}{" "}
-              <Link
-                href={routes.privacy[locale]}
-                className="text-brand-soft underline underline-offset-4"
-              >
-                {t.privacy}
-              </Link>
-            </span>
+            {t.sizeUnsure}
           </label>
-          {errorText(err("consent"), "consent")}
-        </div>
+          {errorText(sizeError, "size")}
+        </fieldset>
 
-        <button
-          type="submit"
-          disabled={pending}
-          className="inline-flex h-14 items-center justify-center gap-3 rounded-lg bg-primary px-8 text-base font-semibold text-white shadow-glow transition-colors hover:bg-brand-strong disabled:cursor-wait disabled:opacity-80"
-        >
-          {pending && (
-            <Loader2Icon className="size-5 animate-spin" aria-hidden />
-          )}
-          {pending ? t.sending : t.submit}
-        </button>
+        <div>
+          <Label htmlFor={id("quantity")} text={t.quantity} />
+          <div className="flex h-11 w-fit items-center rounded-lg border border-input bg-white/[0.03] transition-colors has-[:focus-visible]:border-brand-soft has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-brand/25 has-[[aria-invalid=true]]:border-destructive">
+            <button
+              type="button"
+              aria-label={t.decrease}
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              className="flex size-11 items-center justify-center rounded-l-lg text-muted-foreground outline-none hover:text-foreground"
+            >
+              <MinusIcon className="size-4" />
+            </button>
+            <input
+              id={id("quantity")}
+              name="quantity"
+              inputMode="numeric"
+              value={quantity}
+              onChange={(ev: ChangeEvent<HTMLInputElement>) => {
+                const v = Number.parseInt(
+                  ev.target.value.replace(/\D/g, ""),
+                  10,
+                );
+                setQuantity(Number.isNaN(v) ? 0 : Math.min(v, 500));
+                clearError("quantity");
+              }}
+              className="h-full w-12 bg-transparent text-center text-base outline-none sm:text-sm"
+              aria-invalid={Boolean(err("quantity"))}
+              aria-describedby={
+                err("quantity") ? id("quantity-error") : undefined
+              }
+            />
+            <button
+              type="button"
+              aria-label={t.increase}
+              onClick={() => setQuantity((q) => Math.min(500, q + 1))}
+              className="flex size-11 items-center justify-center rounded-r-lg text-muted-foreground outline-none hover:text-foreground"
+            >
+              <PlusIcon className="size-4" />
+            </button>
+          </div>
+          {errorText(err("quantity"), "quantity")}
+        </div>
       </div>
+
+      <div>
+        <Label htmlFor={id("description")} text={t.description} />
+        <textarea
+          id={id("description")}
+          name="description"
+          rows={4}
+          maxLength={3000}
+          placeholder={t.descriptionPlaceholder}
+          className={cn(
+            inputClass,
+            "h-auto min-h-28 resize-y py-2.5 leading-relaxed",
+          )}
+          aria-invalid={Boolean(err("description"))}
+          aria-describedby={
+            err("description") ? id("description-error") : undefined
+          }
+          onChange={() => clearError("description")}
+        />
+        {errorText(err("description"), "description")}
+      </div>
+
+      <div>
+        <p className="mb-1.5 text-sm font-medium">
+          {t.files}{" "}
+          <span className="font-normal text-muted-foreground">
+            ({t.optional})
+          </span>
+        </p>
+        <label
+          htmlFor={id("files")}
+          onDragOver={(ev) => {
+            ev.preventDefault();
+            setDragging(true);
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={onDrop}
+          className={cn(
+            "flex cursor-pointer items-center gap-3 rounded-lg border border-dashed px-4 py-3 transition-colors has-[:focus-visible]:border-brand-soft has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-brand/25",
+            dragging
+              ? "border-brand-soft bg-brand/10"
+              : "border-white/20 hover:border-white/35 hover:bg-white/[0.02]",
+            fileError && "border-destructive",
+          )}
+        >
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/[0.05]">
+            <PaperclipIcon className="size-4" aria-hidden />
+          </span>
+          <span>
+            <span className="block text-sm font-medium">{t.filesDrop}</span>
+            <span className="mt-0.5 block text-xs text-muted-foreground">
+              {t.filesHint}
+            </span>
+          </span>
+          <input
+            ref={fileInput}
+            id={id("files")}
+            type="file"
+            name="files"
+            multiple
+            accept={ACCEPT_ATTR}
+            className="sr-only"
+            aria-describedby={fileError ? id("files-error") : undefined}
+            aria-invalid={Boolean(fileError)}
+            onChange={(ev) => addFiles(ev.target.files)}
+          />
+        </label>
+        {files.length > 0 && (
+          <ul aria-label={t.filesSelected} className="mt-2 grid gap-2">
+            {files.map((file, i) => (
+              <li
+                key={`${file.name}-${file.size}-${file.lastModified}`}
+                className="flex items-center gap-3 rounded-lg bg-white/[0.04] px-4 py-2 text-sm"
+              >
+                <FileIcon
+                  className="size-4 shrink-0 text-brand-soft"
+                  aria-hidden
+                />
+                <span className="min-w-0 flex-1 truncate">{file.name}</span>
+                <span className="text-muted-foreground">
+                  {formatSize(file.size)}
+                </span>
+                <button
+                  type="button"
+                  aria-label={`${t.remove}: ${file.name}`}
+                  onClick={() => {
+                    setFiles((prev) => prev.filter((_, j) => j !== i));
+                    setFileError(null);
+                  }}
+                  className="-mr-2 flex size-8 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
+                >
+                  <XIcon className="size-4" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {fileError && (
+          <p id={id("files-error")} className="mt-1.5 text-sm text-destructive">
+            {fileError}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label className="flex cursor-pointer items-start gap-3 text-sm leading-snug text-foreground/85">
+          <input
+            type="checkbox"
+            name="consent"
+            className="mt-0.5 size-4 shrink-0 accent-primary"
+            aria-invalid={Boolean(err("consent"))}
+            aria-describedby={err("consent") ? id("consent-error") : undefined}
+            onChange={() => clearError("consent")}
+          />
+          <span>
+            {t.consent}{" "}
+            <Link
+              href={routes.privacy[locale]}
+              className="text-brand-soft underline underline-offset-4"
+            >
+              {t.privacy}
+            </Link>
+          </span>
+        </label>
+        {errorText(err("consent"), "consent")}
+      </div>
+
+      <button
+        type="submit"
+        disabled={pending}
+        className="mt-1 inline-flex h-12 items-center justify-center gap-3 rounded-lg bg-primary px-8 text-base font-semibold text-white transition-colors hover:bg-brand-strong disabled:cursor-wait disabled:opacity-80"
+      >
+        {pending && <Loader2Icon className="size-5 animate-spin" aria-hidden />}
+        {pending ? t.sending : t.submit}
+      </button>
     </form>
   );
 }
@@ -549,7 +535,7 @@ function Label({
   optional?: string;
 }) {
   return (
-    <label htmlFor={htmlFor} className="mb-2 block text-sm font-medium">
+    <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-medium">
       {text}
       {optional && (
         <span className="font-normal text-muted-foreground"> ({optional})</span>

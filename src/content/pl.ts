@@ -135,7 +135,7 @@ export const pl: Dictionary = {
       },
       {
         q: "Jak duży może być lightbox?",
-        a: "Maksymalnie 256 × 256 mm z przodu i 256 mm głębokości. Tyle nasza drukarka wykonuje w jednym kawałku.",
+        a: "Maksymalnie 256 × 256 × 256 mm. Tyle nasza drukarka wykonuje w jednym kawałku.",
       },
       {
         q: "Od czego zależy cena?",
@@ -147,7 +147,7 @@ export const pl: Dictionary = {
       },
       {
         q: "Gdzie wysyłacie?",
-        a: "W całej Europie. Możesz też odebrać lightbox osobiście w Walsall. Rozmawiamy po polsku i po angielsku.",
+        a: "W całej Europie. Możesz też odebrać lightbox osobiście w Walsall.",
       },
     ],
   },
@@ -162,14 +162,23 @@ export const pl: Dictionary = {
       size: "Wymiary",
       width: "Szerokość",
       height: "Wysokość",
+      depth: "Głębokość",
       unit: "mm",
-      sizeHint: "Maksymalny rozmiar: 256 × 256 mm, głębokość do 256 mm.",
+      sizeHint: "Maksymalny rozmiar: 256 × 256 × 256 mm.",
       sizeUnsure: "Nie wiem jeszcze, pomóżcie dobrać",
       decrease: "Zmniejsz liczbę sztuk",
       increase: "Zwiększ liczbę sztuk",
       quantity: "Liczba sztuk",
       deadline: "Na kiedy",
-      description: "Opisz swój pomysł",
+      description: "Co ma świecić?",
+      placeholders: {
+        name: "Anna",
+        email: "anna@example.com",
+        phone: "+44 7700 900000",
+        width: "200",
+        height: "150",
+        depth: "60",
+      },
       descriptionPlaceholder:
         "Na przykład: logo naszej kawiarni, około 20 cm szerokości, białe i niebieskie światło, na ścianę za ladą.",
       files: "Dodaj grafikę",
@@ -192,7 +201,7 @@ export const pl: Dictionary = {
       name: "Podaj swoje imię.",
       email: "Podaj poprawny adres e-mail.",
       phone: "Podaj poprawny numer telefonu.",
-      size: "Podaj szerokość i wysokość do 256 mm albo zaznacz „Nie wiem jeszcze”.",
+      size: "Podaj wymiary do 256 × 256 × 256 mm albo zaznacz „Nie wiem jeszcze”.",
       quantity: "Podaj liczbę sztuk od 1 do 500.",
       description: "Napisz trochę więcej (co najmniej 20 znaków).",
       consent: "Potwierdź zgodę, aby wysłać zapytanie.",
@@ -212,6 +221,11 @@ export const pl: Dictionary = {
     delivery:
       "Wysyłamy w całej Europie. Możesz też odebrać zamówienie osobiście.",
     socials: "GlowBox Lab w mediach społecznościowych",
+    promises: [
+      "Odpowiadamy w ciągu 24 godzin",
+      "Bezpłatna wycena, bez zobowiązań",
+      "Rozmawiamy po polsku i po angielsku",
+    ],
   },
   footer: {
     tagline: "Personalizowane lightboxy LED z druku 3D.",
