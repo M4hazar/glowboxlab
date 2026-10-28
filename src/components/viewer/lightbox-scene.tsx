@@ -23,6 +23,7 @@ import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.j
 export type SceneHandle = {
   rotateBy: (radians: number) => void;
   zoomBy: (factor: number) => void;
+  resetZoom: () => void;
 };
 
 export type LightboxSceneProps = {
@@ -203,6 +204,11 @@ function CameraRig({
     },
     zoomBy: (factor) => {
       zoom.current = THREE.MathUtils.clamp(zoom.current * factor, 0.7, 1.9);
+    },
+    // Bez płynnego przejścia: wywoływane, gdy model jest ukryty (wyjście z pełnego ekranu).
+    resetZoom: () => {
+      zoom.current = 1;
+      camera.position.sub(target).setLength(BASE_DISTANCE).add(target);
     },
   }));
 

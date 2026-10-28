@@ -151,6 +151,40 @@ test("model 3D na górze strony: przycisk światła i pełny ekran", async ({
   await expect(viewer.getByRole("button", { name: t.zoomIn })).toHaveCount(0);
 });
 
+test("obrócony model 3D po wyjściu z pełnego ekranu nie wraca na chwilę do plakatu", async ({
+  page,
+  isMobile,
+}) => {
+  // Logika jest ta sama na każdym ekranie, a programowy WebGL rysuje pełny ekran telefonu
+  // (gęstość pikseli 2,6) zbyt wolno jak na test, więc sprawdzamy tylko na komputerze.
+  test.skip(
+    isMobile,
+    "pełny ekran telefonu w programowym WebGL trwa ponad minutę",
+  );
+  test.slow();
+  const t = en.viewer;
+  await page.goto("/");
+  const viewer = page.locator("#top");
+  // Plakat pokazuje domyślne ujęcie, więc po pojawieniu się modelu 3D znika na stałe.
+  const poster = viewer.locator('[role="img"] img');
+  await expect(poster).toBeHidden({ timeout: 60000 });
+
+  await viewer.getByRole("button", { name: t.fullscreen }).click();
+  const right = viewer.getByRole("button", { name: t.rotateRight });
+  await expect(right).toBeEnabled();
+  await right.click();
+  await viewer.getByRole("button", { name: t.zoomIn }).click();
+  await viewer.getByRole("button", { name: t.exitFullscreen }).click();
+  await expect(
+    viewer.getByRole("button", { name: t.fullscreen }),
+  ).toHaveAttribute("aria-pressed", "false");
+  await expect(poster).toBeHidden();
+  // Programowy WebGL w testach rysuje wolno, więc model wraca dłużej niż na prawdziwym urządzeniu.
+  await expect(
+    viewer.locator('[role="img"] > div', { has: page.locator("canvas") }),
+  ).toHaveCSS("opacity", "1", { timeout: 20000 });
+});
+
 test("portfolio: pasek się przewija, staje i pokazuje szczegóły projektu", async ({
   page,
 }) => {

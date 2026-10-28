@@ -115,6 +115,8 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
   const [light, setLight] = useState(true);
   const [mode, setMode] = useState<"poster" | "3d" | "fallback">("poster");
   const [ready, setReady] = useState(false);
+  // Plakat jest potrzebny tylko do pierwszego pojawienia się modelu 3D.
+  const [posterDone, setPosterDone] = useState(false);
   const [expanded, setExpanded] = useState(false);
   // Po przełączeniu pełnego ekranu model jest ukryty, dopóki nie narysuje się w nowym rozmiarze.
   const [settling, setSettling] = useState(false);
@@ -122,6 +124,8 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
   const toggleExpanded = (value: boolean) => {
     setExpanded(value);
     if (mode === "3d") setSettling(true);
+    // Przybliżenie jest tylko na pełnym ekranie, więc po wyjściu kadr wraca do zwykłego.
+    if (!value) handle.current?.resetZoom();
   };
 
   // Model ładuje się i renderuje tylko wtedy, gdy jest na ekranie.
@@ -144,6 +148,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
   const close = useCallback(() => {
     setExpanded(false);
     setSettling(true);
+    handle.current?.resetZoom();
   }, []);
 
   // Zabezpieczenie, gdyby rozmiar się nie zmienił i model nie dał znaku.
@@ -185,9 +190,10 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
             : "aspect-square [mask-image:radial-gradient(closest-side,black_72%,transparent)]",
         )}
       >
-        {/* Plakat to render tej samej sceny w tym samym kadrze. Zostaje pod modelem 3D,
-            który pojawia się nad nim, więc przejście jest niewidoczne. Na pełnym ekranie kadr
-            modelu jest inny niż plakatu (zwłaszcza na telefonie), więc plakat się chowa,
+        {/* Plakat to render tej samej sceny w tym samym kadrze. Model 3D pojawia się nad nim,
+            więc przejście jest niewidoczne, a potem plakat znika: pokazuje domyślne ujęcie
+            i po obrocie modelu prześwitywałby przy wyjściu z pełnego ekranu. Na pełnym ekranie
+            kadr modelu jest inny niż plakatu (zwłaszcza na telefonie), więc plakat się chowa,
             a do wczytania modelu widać tylko wskaźnik ładowania. */}
         <Image
           src={`/images/lightbox-${light ? "on" : "off"}.webp`}
@@ -199,7 +205,7 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
           className={cn(
             "object-cover",
             expanded && "object-contain",
-            expanded && mode !== "fallback" && "invisible",
+            ((expanded && mode !== "fallback") || posterDone) && "invisible",
           )}
         />
         {expanded && loading && (
@@ -217,6 +223,9 @@ export function ModelViewer({ dict }: { dict: Dictionary }) {
               settling ? "duration-0" : "duration-300",
               ready && !settling ? "opacity-100" : "opacity-0",
             )}
+            onTransitionEnd={() => setPosterDone(true)}
+            // Przejście przerwane pełnym ekranem: plakat i tak już nie wróci.
+            onTransitionCancel={() => setPosterDone(true)}
           >
             <LightboxScene
               light={light}
