@@ -214,6 +214,14 @@ test("podstrona portfolio pokazuje wszystkie projekty", async ({ page }) => {
   await expect(page).toHaveURL(/\/pl#quote$/);
 });
 
+test("powrót z podstrony prowadzi na górę strony głównej", async ({ page }) => {
+  await page.route("**/*.glb", () => {});
+  await page.goto(routes.portfolio.pl);
+  await page.getByRole("link", { name: pl.legal.back }).click();
+  await expect(page).toHaveURL(/\/pl$/);
+  await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
+});
+
 test.describe("przeglądarka po polsku", () => {
   test.use({ locale: "pl-PL" });
 
