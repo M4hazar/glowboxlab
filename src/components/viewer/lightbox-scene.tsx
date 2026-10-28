@@ -40,7 +40,7 @@ const INITIAL_AZIMUTH = -0.62;
 const INITIAL_ELEVATION = 0.06;
 
 // Kolory światła: część niebieska, część biała, poświata na podłodze.
-const GLOW = { blue: "#0066ff", white: "#ffffff", spill: "#1a7cff" };
+const GLOW = { blue: "#0055ff", white: "#ffffff", spill: "#1a7cff" };
 
 function useLightboxMaterials() {
   return useMemo(
@@ -129,7 +129,7 @@ function Lightbox({
     return new THREE.CanvasTexture(canvas);
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     const target = light ? 1 : 0;
     level.current = THREE.MathUtils.damp(
       level.current,
@@ -139,7 +139,7 @@ function Lightbox({
     );
     const l = level.current;
     mats.blue.emissiveIntensity = l * 1.7;
-    mats.white.emissiveIntensity = l * 1.25;
+    mats.white.emissiveIntensity = l * 1.05;
     if (spill.current) spill.current.intensity = l * 6;
     if (pool.current) pool.current.opacity = l * 0.55;
     if (group.current) {
@@ -149,8 +149,6 @@ function Lightbox({
         6,
         delta,
       );
-      group.current.position.y =
-        Math.sin(state.clock.elapsedTime * 0.9) * 0.025;
     }
   });
 
@@ -198,10 +196,10 @@ function Floor() {
     >
       <planeGeometry args={[40, 40]} />
       <MeshReflectorMaterial
-        blur={[400, 120]}
+        blur={[300, 90]}
         resolution={512}
         mixBlur={1}
-        mixStrength={18}
+        mixStrength={10}
         roughness={0.92}
         depthScale={1}
         minDepthThreshold={0.4}
@@ -254,12 +252,29 @@ function CameraRig({
   return null;
 }
 
+// Model pokazujemy dopiero po skompilowaniu shaderów i kilku klatkach,
+// żeby przejście z plakatu było płynne i bez przycięć.
 function ReadySignal({ onReady }: { onReady?: () => void }) {
+  const { gl, scene, camera } = useThree();
+  const compiled = useRef(false);
   const frames = useRef(0);
   const done = useRef(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const finish = () => {
+      if (!cancelled) compiled.current = true;
+    };
+    gl.compileAsync(scene, camera).then(finish, finish);
+    return () => {
+      cancelled = true;
+    };
+  }, [gl, scene, camera]);
+
   useFrame(() => {
+    if (done.current || !compiled.current) return;
     frames.current += 1;
-    if (!done.current && frames.current > 30) {
+    if (frames.current > 12) {
       done.current = true;
       onReady?.();
     }
@@ -328,10 +343,10 @@ export default function LightboxScene({
         <EffectComposer multisampling={4}>
           <Bloom
             mipmapBlur
-            luminanceThreshold={0.22}
-            luminanceSmoothing={0.15}
-            intensity={0.75}
-            radius={0.72}
+            luminanceThreshold={0.25}
+            luminanceSmoothing={0.1}
+            intensity={0.8}
+            radius={0.35}
           />
         </EffectComposer>
         <ReadySignal onReady={onReady} />
