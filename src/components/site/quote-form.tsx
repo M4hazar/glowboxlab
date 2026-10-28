@@ -516,7 +516,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
       <button
         type="submit"
         disabled={pending}
-        className="mt-1 inline-flex h-12 items-center justify-center gap-3 rounded-lg bg-primary px-8 text-base font-semibold text-white shadow-glow transition-colors hover:bg-brand-strong disabled:cursor-wait disabled:opacity-80"
+        className="mt-1 inline-flex h-12 items-center justify-center gap-3 rounded-lg bg-primary px-8 text-base font-semibold text-white transition-colors hover:bg-brand-strong disabled:cursor-wait disabled:opacity-80"
       >
         {pending && <Loader2Icon className="size-5 animate-spin" aria-hidden />}
         {pending ? t.sending : t.submit}

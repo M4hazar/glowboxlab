@@ -135,7 +135,7 @@ export const en = {
       increase: "Increase quantity",
       quantity: "Quantity",
       deadline: "Needed by",
-      description: "Describe your idea",
+      description: "What should glow?",
       placeholders: {
         name: "Emma",
         email: "emma@example.com",

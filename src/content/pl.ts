@@ -138,11 +138,11 @@ export const pl: Dictionary = {
       increase: "Zwiększ liczbę sztuk",
       quantity: "Liczba sztuk",
       deadline: "Na kiedy",
-      description: "Opisz swój pomysł",
+      description: "Co ma świecić?",
       placeholders: {
         name: "Anna",
         email: "anna@example.com",
-        phone: "+48 600 000 000",
+        phone: "+44 7700 900000",
         width: "200",
         height: "150",
         depth: "60",
