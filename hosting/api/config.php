@@ -4,8 +4,8 @@
 return [
     // Skrzynka, na którą przychodzą zapytania (kilka adresów rozdziel przecinkami).
     'to' => 'hello@glowboxlab.com',
-    // Nadawca: adres w Twojej domenie na OVH (np. skrzynka utworzona w panelu OVH).
+    // Nadawca: istniejąca skrzynka w domenie strony na OVH (może być ta sama co wyżej).
     // OVH może odrzucać wiadomości wysyłane z adresu spoza domeny strony.
-    'from' => 'formularz@glowboxlab.com',
+    'from' => 'hello@glowboxlab.com',
     'from_name' => 'GlowBox Lab',
 ];
