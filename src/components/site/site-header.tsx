@@ -140,7 +140,7 @@ export function SiteHeader({
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-4">
-          <div className="hidden items-center gap-1 sm:flex">
+          <div className="hidden items-center gap-3 sm:flex">
             <ThemeToggle dict={dict} />
             <LanguageSwitch dict={dict} routeKey={routeKey} />
           </div>
@@ -216,7 +216,7 @@ export function SiteHeader({
                   >
                     {dict.contact.whatsapp}
                   </a>
-                  <div className="flex items-center justify-center gap-2 pt-2">
+                  <div className="flex items-center justify-center gap-4 pt-2">
                     <ThemeToggle dict={dict} />
                     <LanguageSwitch dict={dict} routeKey={routeKey} />
                   </div>
