@@ -45,7 +45,13 @@ const dimension = z
 
 export const quoteSchema = z
   .object({
-    name: z.string().trim().min(2, "name").max(80, "name"),
+    name: z
+      .string()
+      .trim()
+      .min(2, "name")
+      .max(80, "name")
+      // Imię trafia do tematu e-maila, więc bez znaków sterujących (np. nowej linii).
+      .refine((v) => !/\p{Cc}/u.test(v), "name"),
     email: z.email("email").max(160, "email"),
     phone: z
       .string()

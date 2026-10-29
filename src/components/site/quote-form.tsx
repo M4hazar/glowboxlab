@@ -35,6 +35,7 @@ import {
   validateFiles,
 } from "@/lib/quote-schema";
 import { type Locale, routes } from "@/lib/site";
+import { ELAPSED_FIELD, HONEYPOT_FIELD } from "@/lib/spam-guard";
 import { cn } from "@/lib/utils";
 
 const initial: QuoteState = { status: "idle" };
@@ -67,8 +68,12 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
   const [done, setDone] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
   const [today, setToday] = useState<string>();
+  const shownAt = useRef(0);
 
-  useEffect(() => setToday(new Date().toISOString().slice(0, 10)), []);
+  useEffect(() => {
+    shownAt.current = Date.now();
+    setToday(new Date().toISOString().slice(0, 10));
+  }, []);
 
   const fileMessage = (err: { key: QuoteErrorKey; file?: string }) =>
     e[err.key].replace("{file}", err.file ?? "");
@@ -125,6 +130,7 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
     const data = new FormData(form);
     data.delete("files");
     for (const file of files) data.append("files", file);
+    data.set(ELAPSED_FIELD, String(Date.now() - shownAt.current));
     setFailed(false);
 
     const parsed = quoteSchema.safeParse(readQuoteForm(data));
@@ -196,10 +202,12 @@ export function QuoteForm({ dict }: { dict: Dictionary }) {
         aria-hidden
         className="absolute -left-[9999px] h-px w-px overflow-hidden"
       >
-        <label>
-          Company
-          <input type="text" name="company" tabIndex={-1} autoComplete="off" />
-        </label>
+        <input
+          type="text"
+          name={HONEYPOT_FIELD}
+          tabIndex={-1}
+          autoComplete="off"
+        />
       </div>
 
       <div id={id("summary")} aria-live="assertive" className="empty:hidden">

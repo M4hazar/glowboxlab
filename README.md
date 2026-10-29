@@ -30,6 +30,10 @@ Bez `RESEND_API_KEY` formularz działa lokalnie i wypisuje zapytanie w konsoli.
 
 Załączniki są ograniczone do 3 plików i 4 MB łącznie (limit funkcji Vercel to 4,5 MB).
 
+Ochrona przed spamem (`src/lib/spam-guard.ts`) działa bez captchy, ciasteczek i zewnętrznych
+usług: ukryte pole pułapka, minimalny czas wypełnienia formularza (3 s) i limit 5 zapytań
+na 10 minut z jednego adresu IP. Boty dostają udawany sukces.
+
 ## Komendy
 
 | Komenda                       | Co robi                                                      |

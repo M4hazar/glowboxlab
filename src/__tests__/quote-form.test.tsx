@@ -73,5 +73,7 @@ describe("QuoteForm", () => {
     expect(data.get("sizeUnsure")).toBeNull();
     expect(data.get("locale")).toBe("pl");
     expect((data.getAll("files")[0] as File).name).toBe("logo.svg");
+    expect(Number(data.get("elapsed"))).toBeGreaterThanOrEqual(0);
+    expect(data.get("extra_note")).toBe("");
   });
 });
