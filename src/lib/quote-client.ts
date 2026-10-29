@@ -17,11 +17,14 @@ export async function submitQuote(
   _prev: QuoteState,
   formData: FormData,
 ): Promise<QuoteState> {
+  // PHP zachowuje tylko ostatni z kilku plików o tej samej nazwie pola,
+  // a wszystkie dopiero przy nazwie z nawiasami (files[]).
+  const body = new FormData();
+  for (const [key, value] of formData) {
+    body.append(key === "files" ? "files[]" : key, value);
+  }
   try {
-    const response = await fetch(QUOTE_ENDPOINT, {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(QUOTE_ENDPOINT, { method: "POST", body });
     if (!response.ok) return { status: "failed" };
     return (await response.json()) as QuoteState;
   } catch {

@@ -22,13 +22,17 @@ AddCharset utf-8 .html .txt .css .js .xml .json
   RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
-  # Pierwsze wejście na stronę główną: przeglądarka po polsku trafia na /pl.
+  # Pierwsze wejście na stronę główną: przeglądarka z polskim na pierwszym miejscu
+  # (przeglądarki podają języki od najważniejszego) trafia na /pl, chyba że ma q=0.
   # Ręczny wybór w przełączniku języka (ciasteczko NEXT_LOCALE) ma pierwszeństwo.
   # Tylko zwykłe wczytanie strony, nie zapytania w tle.
-  RewriteCond %{HTTP_COOKIE} !(^|;\s*)NEXT_LOCALE=en(;|$)
   RewriteCond %{HTTP:Sec-Fetch-Dest} ^(document)?$
-  RewriteCond %{HTTP_COOKIE} (^|;\s*)NEXT_LOCALE=pl(;|$) [OR]
+  RewriteCond %{HTTP_COOKIE} (^|;\s*)NEXT_LOCALE=pl(;|$)
+  RewriteRule ^$ /pl [R=302,L]
+  RewriteCond %{HTTP:Sec-Fetch-Dest} ^(document)?$
+  RewriteCond %{HTTP_COOKIE} !(^|;\s*)NEXT_LOCALE=en(;|$)
   RewriteCond %{HTTP:Accept-Language} ^\s*pl [NC]
+  RewriteCond %{HTTP:Accept-Language} !^\s*pl[^,]*;\s*q=0(\.0*)?\s*(,|$) [NC]
   RewriteRule ^$ /pl [R=302,L]
 
   # Adres z ukośnikiem na końcu prowadzi do wersji bez niego (/pl/ -> /pl).

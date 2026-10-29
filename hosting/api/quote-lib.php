@@ -275,11 +275,14 @@ function quote_build_email(array $data, array $files, array $config): array
         . "--$alt--\r\n";
     foreach ($files as $file) {
         $content = (string) file_get_contents($file['tmp']);
-        $name = quote_header_text($file['name']);
+        // Nazwa pliku według RFC 2231 (filename*) z zapasową nazwą bez polskich znaków.
+        $plain = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $file['name']);
+        $ascii = preg_replace('/[^A-Za-z0-9._-]/', '_', $plain !== false ? $plain : $file['name']);
+        $encoded = rawurlencode($file['name']);
         $body .= "--$mixed\r\n"
-            . "Content-Type: application/octet-stream; name=\"$name\"\r\n"
+            . "Content-Type: application/octet-stream; name=\"$ascii\"\r\n"
             . "Content-Transfer-Encoding: base64\r\n"
-            . "Content-Disposition: attachment; filename=\"$name\"\r\n\r\n"
+            . "Content-Disposition: attachment; filename*=UTF-8''$encoded; filename=\"$ascii\"\r\n\r\n"
             . chunk_split(base64_encode($content));
     }
     $body .= "--$mixed--\r\n";

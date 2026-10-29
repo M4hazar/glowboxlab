@@ -60,6 +60,16 @@ check('więcej niż 3 pliki to błąd', quote_validate_files(array_fill(0, 4, $f
 check('ponad 4 MB to błąd', quote_validate_files([$file('a.pdf', 5 * 1024 * 1024)]) === ['key' => 'fileSize']);
 check('plik odrzucony przez PHP to błąd rozmiaru', quote_validate_files([$file('a.pdf', 0, UPLOAD_ERR_INI_SIZE)]) === ['key' => 'fileSize']);
 
+check(
+    'wszystkie pliki z files[] trafiają do zapytania',
+    count(quote_files(['files' => [
+        'name' => ['logo.svg', 'brief.pdf', ''],
+        'size' => [10, 20, 0],
+        'tmp_name' => ['/tmp/a', '/tmp/b', ''],
+        'error' => [UPLOAD_ERR_OK, UPLOAD_ERR_OK, UPLOAD_ERR_NO_FILE],
+    ]])) === 2,
+);
+
 $dir = sys_get_temp_dir() . '/glowbox-quote-test-' . bin2hex(random_bytes(4));
 $start = 1_000_000;
 $results = [];
@@ -80,6 +90,19 @@ rmdir($dir);
 );
 check('temat jest zakodowany w UTF-8', str_contains($subject, '=?UTF-8?B?') && !str_contains($subject, "\n"));
 check('odpowiedź trafia do klienta', str_contains($headers, 'Reply-To: pawel@example.com'));
+$attachment = tempnam(sys_get_temp_dir(), 'glowbox');
+file_put_contents($attachment, 'x');
+[, $withFile] = quote_build_email(
+    quote_validate($valid)[0],
+    [['name' => 'logo żółte.svg', 'size' => 1, 'tmp' => $attachment, 'error' => UPLOAD_ERR_OK]],
+    ['from' => 'formularz@glowboxlab.com', 'from_name' => 'GlowBox Lab'],
+);
+unlink($attachment);
+check(
+    'nazwa załącznika według RFC 2231 z zapasową nazwą ASCII',
+    str_contains($withFile, "filename*=UTF-8''logo%20%C5%BC%C3%B3%C5%82te.svg")
+        && str_contains($withFile, 'filename="logo_'),
+);
 check('treść ma wersję tekstową i HTML', str_contains($body, 'text/plain') && str_contains($body, 'text/html'));
 
 echo $failures === 0 ? "\nWszystkie testy PHP przeszły.\n" : "\nNieudane testy: $failures\n";
