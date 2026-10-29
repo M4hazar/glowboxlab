@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl, type RouteKey, routes } from "@/lib/site";
 
+// Eksport statyczny wymaga jawnego zapisu tej trasy do pliku.
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return (Object.keys(routes) as RouteKey[]).flatMap((key) =>
     (["en", "pl"] as const).map((locale) => ({

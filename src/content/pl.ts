@@ -280,7 +280,7 @@ export const pl: Dictionary = {
   },
   legal: {
     back: "Wróć na stronę główną",
-    updated: "Ostatnia aktualizacja: 28 października 2026",
+    updated: "Ostatnia aktualizacja: 29 października 2026",
   },
   notFound: {
     title: "Ta strona nie istnieje.",

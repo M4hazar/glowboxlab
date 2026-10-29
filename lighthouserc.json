@@ -1,8 +1,8 @@
 {
   "ci": {
     "collect": {
-      "startServerCommand": "pnpm start --port 3100",
-      "startServerReadyPattern": "Ready",
+      "startServerCommand": "PORT=3100 bash scripts/serve.sh",
+      "startServerReadyPattern": "GlowBox Lab",
       "url": ["http://localhost:3100/", "http://localhost:3100/pl"],
       "numberOfRuns": 1,
       "settings": {

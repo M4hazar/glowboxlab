@@ -20,10 +20,13 @@ export default defineConfig({
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
   webServer: {
-    command: `pnpm start --port ${PORT}`,
+    // Apache z PHP i .htaccess z folderu out, jak na hostingu OVH (scripts/serve.sh).
+    command: "bash scripts/serve.sh",
+    // Skrypt sam zamyka Apache po SIGTERM (domyślny SIGKILL zostawiłby serwer).
+    gracefulShutdown: { signal: "SIGTERM", timeout: 5000 },
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     // Formularz wyceny loguje zapytanie zamiast wysyłać e-mail.
-    env: { QUOTE_DRY_RUN: "1" },
+    env: { PORT: String(PORT), QUOTE_DRY_RUN: "1" },
   },
 });
