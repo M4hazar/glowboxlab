@@ -3,8 +3,13 @@ import { expect, type Page, test } from "@playwright/test";
 import { en } from "../../src/content/en";
 import { cookies } from "../../src/content/legal";
 import { pl } from "../../src/content/pl";
+import { QUOTE_ENDPOINT } from "../../src/lib/quote-client";
 import { routes, site } from "../../src/lib/site";
-import { MIN_FILL_MS } from "../../src/lib/spam-guard";
+import {
+  ELAPSED_FIELD,
+  HONEYPOT_FIELD,
+  MIN_FILL_MS,
+} from "../../src/lib/spam-guard";
 
 const pages = [
   { path: "/", dict: en },
@@ -464,6 +469,42 @@ test("strona wysyła nagłówki bezpieczeństwa", async ({ request }) => {
     "frame-ancestors 'none'",
   );
   expect(headers["strict-transport-security"]).toContain("max-age=");
+});
+
+test("skrypt formularza na serwerze sprawdza dane i zatrzymuje boty", async ({
+  request,
+}) => {
+  const valid = {
+    name: "Paweł",
+    email: "pawel@example.com",
+    sizeUnsure: "on",
+    quantity: "1",
+    description: "Our café logo, about 20 cm wide, for the wall.",
+    locale: "en",
+    [ELAPSED_FIELD]: String(MIN_FILL_MS + 1000),
+  };
+  const post = (multipart: Record<string, string>) =>
+    request.post(QUOTE_ENDPOINT, { multipart }).then((r) => r.json());
+
+  expect(await post(valid)).toEqual({ status: "success", name: "Paweł" });
+  expect(await post({ ...valid, name: "P" })).toEqual({
+    status: "error",
+    errors: { name: "name" },
+  });
+  // Boty dostają udawany sukces bez imienia.
+  expect(await post({ ...valid, [HONEYPOT_FIELD]: "spam" })).toEqual({
+    status: "success",
+    name: "",
+  });
+  expect(await post({ ...valid, [ELAPSED_FIELD]: "500" })).toEqual({
+    status: "success",
+    name: "",
+  });
+  expect((await request.get(QUOTE_ENDPOINT)).status()).toBe(405);
+  // Ustawienia i biblioteka formularza nie są dostępne z przeglądarki.
+  expect((await request.get("/api/config.php")).status()).toBe(403);
+  expect((await request.get("/api/quote-lib.php")).status()).toBe(403);
+  expect((await request.get("/.htaccess")).status()).toBe(403);
 });
 
 test("polityka bezpieczeństwa treści nie blokuje niczego na stronie", async ({

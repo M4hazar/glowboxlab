@@ -23,7 +23,10 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - run: pnpm test:php
       - run: pnpm build
+      # Podgląd jak na hostingu OVH: Apache z PHP i .htaccess (scripts/serve.sh).
+      - run: sudo apt-get update && sudo apt-get install -y apache2 libapache2-mod-php
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e
       - run: pnpm lighthouse

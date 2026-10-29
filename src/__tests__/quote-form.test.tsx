@@ -5,7 +5,7 @@ import { QuoteForm } from "@/components/site/quote-form";
 import { pl } from "@/content/pl";
 
 const submitQuote = vi.hoisted(() => vi.fn());
-vi.mock("@/app/actions/quote", () => ({ submitQuote }));
+vi.mock("@/lib/quote-client", () => ({ submitQuote }));
 
 describe("QuoteForm", () => {
   beforeEach(() => {

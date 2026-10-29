@@ -274,7 +274,7 @@ export const en = {
   },
   legal: {
     back: "Back to home page",
-    updated: "Last updated: 28 October 2026",
+    updated: "Last updated: 29 October 2026",
   },
   notFound: {
     title: "This page does not exist.",

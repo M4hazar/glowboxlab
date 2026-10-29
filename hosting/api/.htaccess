@@ -1,0 +1,6 @@
+# Z tego folderu z przeglądarki dostępny jest tylko skrypt formularza.
+# Ustawienia, biblioteka i dane limitu zapytań są niedostępne z zewnątrz.
+Require all denied
+<Files "quote.php">
+  Require all granted
+</Files>

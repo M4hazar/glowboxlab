@@ -21,8 +21,9 @@ import {
   useState,
   useTransition,
 } from "react";
-import { type QuoteState, submitQuote } from "@/app/actions/quote";
+
 import type { Dictionary } from "@/content/en";
+import { type QuoteState, submitQuote } from "@/lib/quote-client";
 import {
   ACCEPT_ATTR,
   fieldErrors,

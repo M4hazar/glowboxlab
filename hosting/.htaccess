@@ -1,0 +1,75 @@
+# GlowBox Lab na zwykłym hostingu OVH (Apache). Zastępuje to, co wcześniej robił serwer Node.js.
+
+Options -Indexes -MultiViews
+DirectorySlash Off
+ErrorDocument 404 /404.html
+
+AddType model/gltf-binary .glb
+AddType image/webp .webp
+AddType image/avif .avif
+AddType application/manifest+json .webmanifest
+AddDefaultCharset utf-8
+AddCharset utf-8 .html .txt .css .js .xml .json
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Zawsze HTTPS i adres bez www (najpierw włącz certyfikat SSL w panelu OVH).
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+  RewriteCond %{SERVER_PORT} ^80$
+  RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Pierwsze wejście na stronę główną: przeglądarka po polsku trafia na /pl.
+  # Ręczny wybór w przełączniku języka (ciasteczko NEXT_LOCALE) ma pierwszeństwo.
+  # Tylko zwykłe wczytanie strony, nie zapytania w tle.
+  RewriteCond %{HTTP_COOKIE} !(^|;\s*)NEXT_LOCALE=en(;|$)
+  RewriteCond %{HTTP:Sec-Fetch-Dest} ^(document)?$
+  RewriteCond %{HTTP_COOKIE} (^|;\s*)NEXT_LOCALE=pl(;|$) [OR]
+  RewriteCond %{HTTP:Accept-Language} ^\s*pl [NC]
+  RewriteRule ^$ /pl [R=302,L]
+
+  # Adres z ukośnikiem na końcu prowadzi do wersji bez niego (/pl/ -> /pl).
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # Adresy bez .html: /pl -> pl.html, /pl/portfolio -> pl/portfolio.html.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Podstawowe nagłówki bezpieczeństwa. Polityka treści: wszystko z własnej domeny.
+  # Skrypty inline są potrzebne Next.js (strony są statyczne, więc bez nonce),
+  # 'wasm-unsafe-eval' dekoderowi modelu 3D.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' data: blob:; worker-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Header always set Strict-Transport-Security "max-age=63072000"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+
+  # Strony zawsze świeże, pliki z _next/static mają w nazwie skrót treści i mogą czekać rok.
+  <FilesMatch "\.(html|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <If "%{REQUEST_URI} =~ m#^/_next/static/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+  <FilesMatch "\.(webp|avif|png|jpg|svg|glb|woff2)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml application/javascript application/json image/svg+xml model/gltf-binary
+</IfModule>
+
+# Pliki techniczne nie są dostępne z przeglądarki.
+<FilesMatch "^\.(ovhconfig|htaccess)$">
+  Require all denied
+</FilesMatch>

@@ -47,14 +47,14 @@ export const privacy: Record<Locale, LegalDoc> = {
       {
         heading: "Who receives it",
         body: [
-          "Vercel hosts the website and Resend delivers quote requests to our mailbox by email. Our email provider stores our correspondence, and if you order with delivery, the courier receives your name, address and phone number. They process data only as needed to provide their service.",
+          "OVHcloud hosts the website and our mailbox, so quote requests from the form and our correspondence are stored on its servers. If you order with delivery, the courier receives your name, address and phone number. They process data only as needed to provide their service.",
           "If you contact us on WhatsApp, Meta processes your messages under its own privacy policy.",
         ],
       },
       {
         heading: "Transfers outside the UK and the EEA",
         body: [
-          "Vercel and Resend are based in the United States. Both are certified under the EU-US Data Privacy Framework, which the European Commission recognises as providing adequate protection, and the UK recognises it through its UK Extension. Their data processing terms with us also include the EU Standard Contractual Clauses with the UK Addendum. You can check the certifications at dataprivacyframework.gov, and we will send you a copy of the contractual safeguards if you ask.",
+          "OVHcloud is based in France and keeps the website and our mailbox on servers in the European Union. The UK recognises the EU and the EEA as providing adequate protection for personal data, so no further safeguards are needed. We do not send the data from the form outside the UK and the EEA.",
         ],
       },
       {
@@ -124,14 +124,14 @@ export const privacy: Record<Locale, LegalDoc> = {
       {
         heading: "Komu przekazujemy dane",
         body: [
-          "Vercel hostuje stronę, a Resend dostarcza zapytania z formularza na naszą skrzynkę e-mail. Nasz dostawca poczty przechowuje korespondencję, a przy zamówieniu z dostawą kurier otrzymuje imię i nazwisko, adres oraz numer telefonu. Te firmy przetwarzają dane tylko w zakresie potrzebnym do świadczenia usługi.",
+          "OVHcloud utrzymuje stronę i naszą skrzynkę e-mail, więc zapytania z formularza i korespondencja są przechowywane na jego serwerach. Przy zamówieniu z dostawą kurier otrzymuje imię i nazwisko, adres oraz numer telefonu. Te firmy przetwarzają dane tylko w zakresie potrzebnym do świadczenia usługi.",
           "Jeśli piszesz do nas na WhatsApp, wiadomości przetwarza Meta zgodnie z własną polityką prywatności.",
         ],
       },
       {
         heading: "Przekazywanie danych poza Wielką Brytanię i EOG",
         body: [
-          "Vercel i Resend mają siedzibę w Stanach Zjednoczonych. Obie firmy mają certyfikat EU-US Data Privacy Framework, który Komisja Europejska uznaje za zapewniający odpowiedni poziom ochrony, a Wielka Brytania uznaje go w ramach brytyjskiego rozszerzenia. Umowy powierzenia danych z tymi firmami zawierają też standardowe klauzule umowne UE z brytyjskim aneksem. Certyfikaty sprawdzisz na dataprivacyframework.gov, a kopię zabezpieczeń umownych wyślemy Ci na prośbę.",
+          "OVHcloud ma siedzibę we Francji i przechowuje stronę oraz naszą skrzynkę na serwerach w Unii Europejskiej. Wielka Brytania uznaje, że UE i EOG zapewniają odpowiedni poziom ochrony danych osobowych, więc dodatkowe zabezpieczenia nie są potrzebne. Danych z formularza nie przekazujemy poza Wielką Brytanię i EOG.",
         ],
       },
       {
