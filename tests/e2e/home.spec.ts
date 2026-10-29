@@ -4,6 +4,7 @@ import { en } from "../../src/content/en";
 import { cookies } from "../../src/content/legal";
 import { pl } from "../../src/content/pl";
 import { routes, site } from "../../src/lib/site";
+import { MIN_FILL_MS } from "../../src/lib/spam-guard";
 
 const pages = [
   { path: "/", dict: en },
@@ -101,6 +102,7 @@ test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
   // Programowy WebGL potrafi na długo zablokować stronę, a ten test nie dotyczy modelu.
   await page.route("**/*.glb", () => {});
   await page.goto("/#quote");
+  const shownAt = Date.now();
   const form = page.locator("#quote form");
   await form.getByRole("button", { name: f.submit }).click();
   await expect(form.getByText(en.quote.errors.summary)).toBeVisible();
@@ -119,6 +121,10 @@ test("formularz wyceny waliduje pola i wysyła zapytanie", async ({ page }) => {
     buffer: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>'),
   });
   await expect(form.getByText("logo.svg")).toBeVisible();
+  // Formularz wysłany szybciej niż człowiek to bot i dostaje tylko udawany sukces.
+  await page.waitForTimeout(
+    Math.max(0, MIN_FILL_MS + 500 - (Date.now() - shownAt)),
+  );
   await form.getByRole("button", { name: f.submit }).click();
 
   await expect(

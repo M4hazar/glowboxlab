@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { Resend } from "resend";
 import {
   fieldErrors,
@@ -11,6 +12,7 @@ import {
   readQuoteForm,
   validateFiles,
 } from "@/lib/quote-schema";
+import { checkSubmission, rateLimited } from "@/lib/spam-guard";
 
 export type QuoteState =
   | { status: "idle" }
@@ -53,8 +55,12 @@ export async function submitQuote(
   _prev: QuoteState,
   formData: FormData,
 ): Promise<QuoteState> {
-  // Pole pułapka: boty wypełniają je, ludzie go nie widzą.
-  if (formData.get("company")) return { status: "success", name: "" };
+  // Pułapka i zbyt szybkie wysłanie: udajemy sukces, żeby bot nie próbował dalej.
+  const verdict = checkSubmission(formData);
+  if (verdict !== "ok") {
+    console.info(`[quote] Blocked as spam (${verdict}).`);
+    return { status: "success", name: "" };
+  }
 
   const parsed = quoteSchema.safeParse(readQuoteForm(formData));
   const files = readQuoteFiles(formData);
@@ -66,6 +72,13 @@ export async function submitQuote(
       errors: parsed.success ? {} : fieldErrors(parsed.error),
       fileError,
     };
+  }
+
+  // Seria zapytań z jednego adresu: zwykły błąd z podpowiedzią, żeby napisać inaczej.
+  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (ip && rateLimited(ip)) {
+    console.warn("[quote] Rate limit reached.");
+    return { status: "failed" };
   }
 
   const data = parsed.data;

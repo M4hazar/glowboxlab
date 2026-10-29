@@ -103,6 +103,12 @@ describe("quoteSchema", () => {
     });
   });
 
+  it("imię nie może zawierać nowej linii (trafia do tematu e-maila)", () => {
+    expect(errorsFor({ ...valid, name: "Paweł\nBcc: x@y.z" })).toEqual({
+      name: "name",
+    });
+  });
+
   it("telefon jest opcjonalny", () => {
     expect(errorsFor({ ...valid, phone: "" })).toEqual({});
   });
